@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Ujian Matematika T. Lanjut - Landscape Tablet</title>
+    
+    <!-- MathJax Library untuk Format Rumus Matematika LaTeX -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+            touch-action: manipulation;
+        }
+
+        body {
+            background-color: #f0f2f5;
+            color: #1c1e21;
+            height: 100vh;
+            overflow: hidden; /* Prevent body scroll, layout handle scrolling */
+        }
+
+        /* Layout Utama untuk Landscape / Tablet */
+        .app-layout {
+            display: flex;
+            height: 100vh;
+            width: 100vw;
+        }
+
+        /* SIDEBAR KIRI (Control Center: Header, Timer, Navigasi, Form) */
+        .sidebar {
+            width: 340px;
+            min-width: 340px;
+            background-color: #1a365d;
+            color: #ffffff;
+            display: flex;
+            flex-direction: column;
+            padding: 20px;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.15);
+            z-index: 10;
+            overflow-y: auto;
+        }
+
+        .school-info {
+            text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            padding-bottom: 12px;
+            margin-bottom: 15px;
+        }
+
+        .school-info h4 { font-size: 11px; text-transform: uppercase; letter-spacing: 0.5px; opacity: 0.8; }
+        .school-info h3 { font-size: 13px; font-weight: 700; text-transform: uppercase; margin: 2px 0; color: #cbd5e0; }
+        .school-info h2 { font-size: 15px; font-weight: 800; text-transform: uppercase; color: #63b3ed; }
+
+        /* Timer Card */
+        .timer-card {
+            background: #2b6cb0;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            margin-bottom: 15px;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+
+        .timer-title { font-size: 11px; text-transform: uppercase; opacity: 0.9; margin-bottom: 2px; }
+        .timer-clock { font-size: 28px; font-weight: bold; letter-spacing: 2px; color: #ffffff; }
+
+        .timer-clock.warning {
+            color: #feb2b2;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes blink {
+            50% { opacity: 0.5; }
+        }
+
+        /* Form Identitas */
+        .identity-form {
+            background: rgba(255,255,255,0.08);
+            border-radius: 8px;
+            padding: 12px;
+            margin-bottom: 15px;
+        }
+
+        .identity-form h5 {
+            font-size: 12px;
+            margin-bottom: 10px;
+            color: #90cdf4;
+            text-transform: uppercase;
+        }
+
+        .form-group {
+            margin-bottom: 8px;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 11px;
+            margin-bottom: 3px;
+            opacity: 0.85;
+        }
+
+        .form-group input {
+            width: 100%;
+            padding: 8px 10px;
+            border-radius: 5px;
+            border: 1px solid #4a5568;
+            background-color: #2d3748;
+            color: #fff;
+            font-size: 14px; /* Minimum 16px di iOS untuk cegah zoom, 14px OK jika viewport fit */
+        }
+
+        /* Grid Navigasi Soal */
+        .nav-section {
+            margin-bottom: 15px;
+        }
+
+        .nav-section h5 {
+            font-size: 12px;
+            margin-bottom: 8px;
+            color: #90cdf4;
+            text-transform: uppercase;
+        }
+
+        .question-grid {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 8px;
+        }
+
+        .nav-btn {
+            background-color: #2d3748;
+            color: #fff;
+            border: 1px solid #4a5568;
+            padding: 8px 0;
+            border-radius: 6px;
+            font-size: 13px;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+
+        .nav-btn.answered {
+            background-color: #38a169;
+            border-color: #2f855a;
+        }
+
+        .nav-btn:active {
+            transform: scale(0.95);
+        }
+
+        /* Tombol Submit Sidebar */
+        .btn-submit {
+            background-color: #319795;
+            color: white;
+            border: none;
+            padding: 12px;
+            font-size: 14px;
+            font-weight: bold;
+            border-radius: 6px;
+            cursor: pointer;
+            width: 100%;
+            margin-top: auto;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.2);
+        }
+
+        .btn-submit:hover { background-color: #2c7a7b; }
+
+        /* AREA KANAN (Main Content - Lembar Soal Scrollable) */
+        .main-content {
+            flex: 1;
+            overflow-y: auto;
+            padding: 25px 30px;
+            scroll-behavior: smooth;
+        }
+
+        .exam-header-banner {
+            background: #fff;
+            padding: 15px 20px;
+            border-radius: 8px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.05);
+            border-left: 5px solid #3182ce;
+        }
+
+        .exam-header-banner h2 { font-size: 18px; color: #2b6cb0; }
+        .exam-header-banner p { font-size: 13px; color: #718096; margin-top: 4px; }
+
+        /* Card Soal */
+        .question-card {
+            background: #ffffff;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 20px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.04);
+            border: 1px solid #e2e8f0;
+        }
+
+        .question-header {
+            font-size: 15px;
+            font-weight: 700;
+            color: #2d3748;
+            margin-bottom: 12px;
+            display: flex;
+            align-items: center;
+        }
+
+        .question-badge {
+            background-color: #ebf8ff;
+            color: #2b6cb0;
+            padding: 3px 10px;
+            border-radius: 15px;
+            font-size: 12px;
+            margin-right: 10px;
+        }
+
+        .question-body {
+            font-size: 15px;
+            color: #2d3748;
+            margin-bottom: 15px;
+            overflow-x: auto;
+        }
+
+        .answer-input {
+            width: 100%;
+            min-height: 90px;
+            padding: 12px;
+            border: 1px solid #cbd5e0;
+            border-radius: 6px;
+            font-size: 15px;
+            font-family: inherit;
+            resize: vertical;
+            background-color: #f8fafc;
+        }
+
+        .answer-input:focus {
+            outline: none;
+            border-color: #3182ce;
+            background-color: #fff;
+            box-shadow: 0 0 0 3px rgba(49, 130, 206, 0.15);
+        }
+
+        .sub-question {
+            background-color: #f7fafc;
+            padding: 12px;
+            border-radius: 6px;
+            margin-top: 10px;
+            border: 1px solid #edf2f7;
+        }
+
+        .sub-question label {
+            font-weight: 600;
+            display: block;
+            margin-bottom: 6px;
+            font-size: 14px;
+        }
+
+        /* Mobile / Portrait Fallback */
+        @media (max-width: 768px), (orientation: portrait) {
+            .app-layout {
+                flex-direction: column;
+                overflow-y: auto;
+            }
+            body { overflow: auto; }
+            .sidebar {
+                width: 100%;
+                min-width: 100%;
+                height: auto;
+            }
+            .main-content {
+                overflow-y: visible;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="app-layout">
+        
+        <!-- SIDEBAR KIRI (Sticky Navigation & Timer) -->
+        <aside class="sidebar">
+            <div class="school-info">
+                <h4>SMA Negeri Taruna Nala Jatim</h4>
+                <h3>Asesmen Sumatif XII</h3>
+                <h2>Matematika T. Lanjut</h2>
+            </div>
+
+            <!-- Timer Card -->
+            <div class="timer-card">
+                <div class="timer-title">Sisa Waktu Ujian</div>
+                <div class="timer-clock" id="timer-display">60:00</div>
+            </div>
+
+            <!-- Form Identitas Siswa -->
+            <div class="identity-form">
+                <h5>Identitas Peserta</h5>
+                <div class="form-group">
+                    <label>Nama Lengkap</label>
+                    <input type="text" id="nama" placeholder="Isi nama..." required>
+                </div>
+                <div class="form-group" style="display: flex; gap: 8px;">
+                    <div style="flex: 1;">
+                        <label>Kelas</label>
+                        <input type="text" id="kelas" value="XII" required>
+                    </div>
+                    <div style="flex: 1;">
+                        <label>No. Absen</label>
+                        <input type="number" id="absen" min="1" max="50" required>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Grid Navigasi Soal -->
+            <div class="nav-section">
+                <h5>Navigasi Soal</h5>
+                <div class="question-grid">
+                    <button class="nav-btn" id="nav-1" onclick="scrollToQuestion('q1')">1</button>
+                    <button class="nav-btn" id="nav-2" onclick="scrollToQuestion('q2')">2</button>
+                    <button class="nav-btn" id="nav-3" onclick="scrollToQuestion('q3')">3</button>
+                    <button class="nav-btn" id="nav-4" onclick="scrollToQuestion('q4')">4</button>
+                    <button class="nav-btn" id="nav-5" onclick="scrollToQuestion('q5')">5</button>
+                    <button class="nav-btn" id="nav-6" onclick="scrollToQuestion('q6')">6</button>
+                    <button class="nav-btn" id="nav-7" onclick="scrollToQuestion('q7')">7</button>
+                    <button class="nav-btn" id="nav-8" onclick="scrollToQuestion('q8')">8</button>
+                    <button class="nav-btn" id="nav-9" onclick="scrollToQuestion('q9')">9</button>
+                    <button class="nav-btn" id="nav-10" onclick="scrollToQuestion('q10')">10</button>
+                </div>
+            </div>
+
+            <!-- Tombol Selesai/Kirim -->
+            <button type="button" class="btn-submit" id="btn-submit" onclick="submitExam()">Kirim Jawaban</button>
+        </aside>
+
+        <!-- AREA KANAN (Daftar Soal Matematika) -->
+        <main class="main-content" id="main-content">
+            
+            <div class="exam-header-banner">
+                <h2>Limit Fungsi Aljabar, Trigonometri, dan Tak Hingga</h2>
+                <p>Waktu Pengerjaan: 60 Menit | Jawablah pertanyaan di bawah ini dengan jelas pada kolom yang tersedia.</p>
+            </div>
+
+            <form id="exam-form">
+                
+                <!-- Soal 1 -->
+                <div class="question-card" id="q1">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 1</span> Piecewise Function
+                    </div>
+                    <div class="question-body">
+                        Diketahui fungsi berikut:
+                        \[
+                        f(x) = \begin{cases} 
+                        3\pi, & \text{untuk } 0 < x < 1 \\ 
+                        2, & \text{untuk } x = 1 \\ 
+                        4 - x, & \text{untuk } 1 < x \le 4 \\ 
+                        1 + (x - 4)^2, & \text{untuk } x > 4 
+                        \end{cases}
+                        \]
+                        Berdasarkan konsep limit yang sudah dipelajari, tentukan nilai limit fungsi berikut:
+                    </div>
+
+                    <div class="sub-question">
+                        <label>a. \(\lim_{x \to 1} f(x) = ...\)</label>
+                        <textarea class="answer-input" name="ans_1a" oninput="checkAnswered(1)"></textarea>
+                    </div>
+                    <div class="sub-question">
+                        <label>b. \(\lim_{x \to 4} f(x) = ...\)</label>
+                        <textarea class="answer-input" name="ans_1b" oninput="checkAnswered(1)"></textarea>
+                    </div>
+                    <div class="sub-question">
+                        <label>c. \(\lim_{x \to 5} f(x) = ...\)</label>
+                        <textarea class="answer-input" name="ans_1c" oninput="checkAnswered(1)"></textarea>
+                    </div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="question-card" id="q2">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 2</span> Limit Aljabar
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 1} \frac{3x^2 - x - 2}{x - 1} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_2" oninput="checkAnswered(2)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="question-card" id="q3">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 3</span> Limit Bentuk Akar
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 0} \frac{6x}{\sqrt{1-3x} - \sqrt{1+3x}} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_3" oninput="checkAnswered(3)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 4 -->
+                <div class="question-card" id="q4">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 4</span> Limit Trigonometri
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 0} \frac{x \sin 4x}{1 - \cos 2x} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_4" oninput="checkAnswered(4)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 5 -->
+                <div class="question-card" id="q5">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 5</span> Limit Trigonometri
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 3} \frac{2x^2 - 7x + 3}{x \tan(x - 3)} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_5" oninput="checkAnswered(5)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 6 -->
+                <div class="question-card" id="q6">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 6</span> Limit Trigonometri
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 0} \frac{\cos 6x - 1}{x \tan x} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_6" oninput="checkAnswered(6)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 7 -->
+                <div class="question-card" id="q7">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 7</span> Limit Trigonometri
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to 0} \frac{\cos x - \cos 7x}{x \tan 3x} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_7" oninput="checkAnswered(7)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 8 -->
+                <div class="question-card" id="q8">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 8</span> Limit Trigonometri
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to \frac{\pi}{4}} \frac{\tan(4x - \pi) \cos 2x}{\sin(4x - \pi)} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_8" oninput="checkAnswered(8)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 9 -->
+                <div class="question-card" id="q9">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 9</span> Limit Tak Hingga
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to \infty} \left[ (4x - 1) - \sqrt{16x^2 - 6x + 7} \right] = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_9" oninput="checkAnswered(9)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+                <!-- Soal 10 -->
+                <div class="question-card" id="q10">
+                    <div class="question-header">
+                        <span class="question-badge">Soal 10</span> Limit Tak Hingga
+                    </div>
+                    <div class="question-body">
+                        \[ \lim_{x \to \infty} \frac{(3x - 2)(x + 5)(2x - 1)(4x + 3)}{(x^2 + 3)(2x + 5)(3x - 4)} = ... \]
+                    </div>
+                    <textarea class="answer-input" name="ans_10" oninput="checkAnswered(10)" placeholder="Tulis langkah pengerjaan/jawaban..."></textarea>
+                </div>
+
+            </form>
+        </main>
+    </div>
+
+    <!-- Script Logika Ujian -->
+    <script>
+        // Setup Timer 60 Menit
+        let totalSeconds = 60 * 60;
+        let isSubmitted = false;
+
+        const timerDisplay = document.getElementById('timer-display');
+        const btnSubmit = document.getElementById('btn-submit');
+
+        function updateTimer() {
+            const mins = Math.floor(totalSeconds / 60);
+            const secs = totalSeconds % 60;
+            timerDisplay.textContent = `${String(mins).padStart(2, '0')}:${String(secs).padStart(2, '0')}`;
+
+            if (totalSeconds <= 300) { // < 5 Menit
+                timerDisplay.classList.add('warning');
+            }
+        }
+
+        const timerInterval = setInterval(() => {
+            if (isSubmitted) {
+                clearInterval(timerInterval);
+                return;
+            }
+
+            if (totalSeconds <= 0) {
+                clearInterval(timerInterval);
+                alert('Waktu 60 menit habis! Jawaban Anda otomatis terkirim.');
+                finishExam();
+            } else {
+                totalSeconds--;
+                updateTimer();
+            }
+        }, 1000);
+
+        // Smooth Scroll ke Soal
+        function scrollToQuestion(id) {
+            const element = document.getElementById(id);
+            if (element) {
+                element.scrollIntoView({ behavior: 'smooth', block: 'start' });
+            }
+        }
+
+        // Penanda Tombol Navigasi Hijau saat Soal Terisi
+        function checkAnswered(num) {
+            const navBtn = document.getElementById(`nav-${num}`);
+            let isFilled = false;
+
+            if (num === 1) {
+                const a = document.querySelector('[name="ans_1a"]').value.trim();
+                const b = document.querySelector('[name="ans_1b"]').value.trim();
+                const c = document.querySelector('[name="ans_1c"]').value.trim();
+                if (a !== "" || b !== "" || c !== "") isFilled = true;
+            } else {
+                const val = document.querySelector(`[name="ans_${num}"]`).value.trim();
+                if (val !== "") isFilled = true;
+            }
+
+            if (isFilled) {
+                navBtn.classList.add('answered');
+            } else {
+                navBtn.classList.remove('answered');
+            }
+        }
+
+        // Submit Ujian
+        function submitExam() {
+            const nama = document.getElementById('nama').value.trim();
+            if (!nama) {
+                alert('Mohon isi Nama Lengkap terlebih dahulu!');
+                document.getElementById('nama').focus();
+                return;
+            }
+
+            if (confirm('Apakah Anda yakin ingin menyelesaikan dan mengirimkan jawaban ujian?')) {
+                finishExam();
+            }
+        }
+
+        function finishExam() {
+            isSubmitted = true;
+            
+            // Kunci semua input
+            const inputs = document.querySelectorAll('input, textarea, button');
+            inputs.forEach(i => i.disabled = true);
+
+            timerDisplay.style.color = '#a0aec0';
+            timerDisplay.textContent = "SELESAI";
+            btnSubmit.textContent = "Jawaban Terkirim";
+            btnSubmit.style.backgroundColor = "#718096";
+
+            alert('Terima kasih! Ujian Anda telah berhasil dikirim.');
+        }
+    </script>
+</body>
+</html>
