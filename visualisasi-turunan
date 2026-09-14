@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Belajar Turunan bersama Pak Ananda</title>
+
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;800&display=swap" rel="stylesheet">
+
+  <!-- MathJax untuk Rendering Matematika -->
+  <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body {
+      background-color: #0f172a;
+      color: #f8fafc;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding-bottom: 50px;
+    }
+
+    /* --- HERO HEADER STYLES --- */
+    .hero-header {
+      position: relative;
+      width: 100%;
+      min-height: 50vh;
+      background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 3rem 2rem;
+    }
+
+    /* Animasi Simbol Matematika Melayang */
+    .math-symbol {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.08);
+      font-size: 4rem;
+      font-weight: 800;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+      user-select: none;
+    }
+
+    .s1 { top: 15%; left: 10%; animation-delay: 0s; }
+    .s2 { bottom: 20%; right: 15%; animation-delay: 2s; font-size: 5rem; }
+    .s3 { top: 25%; right: 10%; animation-delay: 4s; }
+    .s4 { bottom: 15%; left: 15%; animation-delay: 1s; font-size: 6rem; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-20px) rotate(10deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.1);
+      color: #38bdf8;
+      padding: 8px 18px;
+      border-radius: 50px;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 20px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(56, 189, 248, 0.3);
+    }
+
+    .main-title {
+      font-size: clamp(2.2rem, 5vw, 4rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #fff;
+      margin-bottom: 10px;
+    }
+
+    .gradient-text {
+      background: linear-gradient(to right, #00c6ff, #0072ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      display: inline-block;
+      transition: transform 0.3s ease;
+    }
+
+    .gradient-text:hover {
+      transform: scale(1.03);
+      text-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+    }
+
+    .sub-title {
+      font-size: clamp(1.3rem, 3vw, 2.2rem);
+      font-weight: 600;
+      color: #cbd5e1;
+      margin-bottom: 30px;
+    }
+
+    .highlight {
+      background: linear-gradient(to right, #f59e0b, #fbbf24);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      font-weight: 800;
+    }
+
+    .cta-btn {
+      display: inline-block;
+      background: linear-gradient(45deg, #ec4899, #8b5cf6);
+      color: white;
+      text-decoration: none;
+      padding: 14px 32px;
+      border-radius: 50px;
+      font-weight: 600;
+      font-size: 1rem;
+      box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+      transition: all 0.3s ease;
+    }
+
+    .cta-btn:hover {
+      transform: translateY(-3px) scale(1.02);
+      box-shadow: 0 15px 25px rgba(139, 92, 246, 0.5);
+    }
+
+    /* --- CONTENT INTERAKTIF --- */
+    .container {
+      background: #1e293b;
+      padding: 30px;
+      border-radius: 16px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+      max-width: 900px;
+      width: 90%;
+      margin-top: -30px;
+      position: relative;
+      z-index: 20;
+      border: 1px solid rgba(255, 255, 255, 0.05);
+    }
+
+    .section-title {
+      text-align: center;
+      font-size: 1.5rem;
+      font-weight: 600;
+      color: #38bdf8;
+      margin-bottom: 10px;
+    }
+
+    .description {
+      color: #94a3b8;
+      line-height: 1.6;
+      margin-bottom: 25px;
+      text-align: center;
+      font-size: 0.95rem;
+    }
+
+    .controls {
+      background: #0f172a;
+      padding: 20px;
+      border-radius: 12px;
+      margin-bottom: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 15px;
+      border: 1px solid #334155;
+    }
+
+    .control-row {
+      display: flex;
+      align-items: center;
+      gap: 15px;
+      flex-wrap: wrap;
+    }
+
+    label {
+      font-weight: 600;
+      color: #e2e8f0;
+      min-width: 90px;
+    }
+
+    select {
+      background-color: #1e293b;
+      color: #f8fafc;
+      padding: 8px 12px;
+      border-radius: 8px;
+      border: 1px solid #475569;
+      outline: none;
+      font-size: 0.95rem;
+      cursor: pointer;
+    }
+
+    input[type=range] {
+      flex-grow: 1;
+      cursor: pointer;
+      accent-color: #38bdf8;
+    }
+
+    .zoom-controls {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+
+    .btn {
+      background-color: #0284c7;
+      color: white;
+      border: none;
+      padding: 8px 16px;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 0.85rem;
+      transition: background 0.2s, transform 0.1s;
+    }
+
+    .btn:hover {
+      background-color: #0369a1;
+      transform: translateY(-1px);
+    }
+
+    .btn-reset {
+      background-color: #475569;
+    }
+    .btn-reset:hover {
+      background-color: #334155;
+    }
+
+    .stats {
+      display: flex;
+      justify-content: space-around;
+      font-size: 0.9rem;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+
+    .stat-item {
+      background: #1e293b;
+      padding: 10px 16px;
+      border-radius: 8px;
+      border: 1px solid #334155;
+      color: #cbd5e1;
+    }
+
+    .stat-item strong {
+      color: #f8fafc;
+    }
+
+    .canvas-container {
+      position: relative;
+      display: flex;
+      justify-content: center;
+    }
+
+    canvas {
+      border: 1px solid #334155;
+      border-radius: 12px;
+      background-color: #0f172a;
+      display: block;
+      cursor: grab;
+      width: 100%;
+      max-width: 800px;
+      height: 420px;
+    }
+
+    canvas:active {
+      cursor: grabbing;
+    }
+
+    .formula {
+      text-align: center;
+      margin-top: 25px;
+      font-size: 1.1rem;
+      color: #f1f5f9;
+      min-height: 60px;
+      background: #0f172a;
+      padding: 15px;
+      border-radius: 10px;
+      border: 1px solid #334155;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- HERO HEADER -->
+  <header class="hero-header">
+    <div class="math-symbol s1">∑</div>
+    <div class="math-symbol s2">∫</div>
+    <div class="math-symbol s3">π</div>
+    <div class="math-symbol s4">√</div>
+
+    <div class="header-content">
+      <div class="badge">✨ Taklukkan Matematika SMA!</div>
+      <h1 class="main-title">
+        <span class="gradient-text">Belajar Matematika</span>
+      </h1>
+      <h2 class="sub-title">bersama <span class="highlight">Pak Ananda</span></h2>
+      <a href="#materi" class="cta-btn">Mulai Eksplorasi 🚀</a>
+    </div>
+  </header>
+
+  <!-- VISUALISASI INTERAKTIF -->
+  <div class="container" id="materi">
+    <h3 class="section-title">Visualisasi Hubungan Diferensial & Limit (\(h \to 0\))</h3>
+    <p class="description">
+      Geser slider <strong>\(h\)</strong> untuk melihat garis sekan mendekati garis singgung (turunan). <br>
+      <em>Tip: Anda dapat <strong>menggeser (drag)</strong> kanvas grafik menggunakan mouse/layar sentuh.</em>
+    </p>
+
+    <div class="controls">
+      <!-- Pilihan Kurva -->
+      <div class="control-row">
+        <label for="funcSelect">Pilih Kurva:</label>
+        <select id="funcSelect" onchange="updateFunction()">
+          <option value="deg2">Kurva Kuadrat: f(x) = x²</option>
+          <option value="deg4">Polinomial Derajat 4: f(x) = x⁴ - 2x² + x</option>
+          <option value="sin">Trigonometri: f(x) = sin(x)</option>
+          <option value="cos">Trigonometri: f(x) = cos(x)</option>
+          <option value="tan" selected>Trigonometri: f(x) = tan(x)</option>
+        </select>
+      </div>
+
+      <!-- Slider Nilai h -->
+      <div class="control-row">
+        <label for="hSlider">Nilai \(h\):</label>
+        <input type="range" id="hSlider" min="0.01" max="2.0" step="0.01" value="1.0">
+        <span id="hValue" style="font-weight: bold; width: 45px; color: #38bdf8;">1.00</span>
+      </div>
+
+      <!-- Kontrol Tampilan (Zoom & Reset) -->
+      <div class="zoom-controls">
+        <span style="font-size: 0.9rem; margin-right: 5px;"><strong>Tampilan:</strong></span>
+        <button class="btn" onclick="changeZoom(1.2)">Perbesar (+)</button>
+        <button class="btn" onclick="changeZoom(0.8)">Perkecil (-)</button>
+        <button class="btn btn-reset" onclick="resetView()">Reset Posisi</button>
+      </div>
+
+      <!-- Info Titik dan Gradien -->
+      <div class="stats">
+        <div class="stat-item">Titik A: <strong id="pointAVal">(0.52, 0.58)</strong></div>
+        <div class="stat-item">Titik B: <strong id="pointBVal">(1.52, 18.73)</strong></div>
+        <div class="stat-item">Gradien Sekan: <strong id="slopeVal" style="color: #38bdf8;">18.15</strong></div>
+      </div>
+    </div>
+
+    <div class="canvas-container">
+      <canvas id="graphCanvas" width="800" height="420"></canvas>
+    </div>
+
+    <div class="formula" id="formulaBox">
+      \[ \text{Gradien Sesaat} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h} \]
+    </div>
+  </div>
+
+<script>
+  const canvas = document.getElementById('graphCanvas');
+  const ctx = canvas.getContext('2d');
+  const hSlider = document.getElementById('hSlider');
+  const hValueDisplay = document.getElementById('hValue');
+  const pointAVal = document.getElementById('pointAVal');
+  const pointBVal = document.getElementById('pointBVal');
+  const slopeVal = document.getElementById('slopeVal');
+  const funcSelect = document.getElementById('funcSelect');
+  const formulaBox = document.getElementById('formulaBox');
+
+  // Konfigurasi dasar
+  let defaultOriginX = 400;
+  let defaultOriginY = 210;
+  let baseScale = 100; 
+
+  let scale = baseScale;
+  let originX = defaultOriginX; 
+  let originY = defaultOriginY;
+
+  // Variabel melacak Dragging
+  let isDragging = false;
+  let startX = 0;
+  let startY = 0;
+
+  let currentFunc = 'tan';
+  let xA = Math.PI / 6;
+
+  function f(x) {
+    if (currentFunc === 'deg2') return x * x;
+    if (currentFunc === 'deg4') return Math.pow(x, 4) - 2 * Math.pow(x, 2) + x;
+    if (currentFunc === 'sin') return Math.sin(x);
+    if (currentFunc === 'cos') return Math.cos(x);
+    if (currentFunc === 'tan') return Math.tan(x);
+  }
+
+  function updateFunction() {
+    currentFunc = funcSelect.value;
+    if (currentFunc === 'deg2') {
+      xA = 1.0;
+      defaultOriginX = 250;
+      defaultOriginY = 340;
+      baseScale = 80;
+      formulaBox.innerHTML = "\\[ f(x) = x^2 \\implies f'(1) = \\lim_{h \\to 0} \\frac{f(1+h) - f(1)}{h} = 2 \\]";
+    } else if (currentFunc === 'deg4') {
+      xA = 0.8;
+      defaultOriginX = 280;
+      defaultOriginY = 280;
+      baseScale = 90;
+      formulaBox.innerHTML = "\\[ f(x) = x^4 - 2x^2 + x \\implies f'(0.8) = \\lim_{h \\to 0} \\frac{f(0.8+h) - f(0.8)}{h} \\approx 0.048 \\]";
+    } else if (currentFunc === 'sin') {
+      xA = Math.PI / 3;
+      defaultOriginX = 250;
+      defaultOriginY = 250;
+      baseScale = 110;
+      formulaBox.innerHTML = "\\[ f(x) = \\sin(x) \\implies f'\\left(\\frac{\\pi}{3}\\right) = \\lim_{h \\to 0} \\frac{\\sin(\\frac{\\pi}{3}+h) - \\sin(\\frac{\\pi}{3})}{h} = \\cos\\left(\\frac{\\pi}{3}\\right) = 0.5 \\]";
+    } else if (currentFunc === 'cos') {
+      xA = Math.PI / 6;
+      defaultOriginX = 280;
+      defaultOriginY = 210;
+      baseScale = 110;
+      formulaBox.innerHTML = "\\[ f(x) = \\cos(x) \\implies f'\\left(\\frac{\\pi}{6}\\right) = \\lim_{h \\to 0} \\frac{\\cos(\\frac{\\pi}{6}+h) - \\cos(\\frac{\\pi}{6})}{h} = -\\sin\\left(\\frac{\\pi}{6}\\right) = -0.5 \\]";
+    } else if (currentFunc === 'tan') {
+      xA = Math.PI / 6;
+      defaultOriginX = 400;
+      defaultOriginY = 210;
+      baseScale = 100;
+      formulaBox.innerHTML = "\\[ f(x) = \\tan(x) \\implies f'\\left(\\frac{\\pi}{6}\\right) = \\lim_{h \\to 0} \\frac{\\tan(\\frac{\\pi}{6}+h) - \\tan(\\frac{\\pi}{6})}{h} = \\sec^2\\left(\\frac{\\pi}{6}\\right) \\approx 1.333 \\]";
+    }
+    resetView();
+    
+    if (window.MathJax) {
+      MathJax.typesetPromise([formulaBox]);
+    }
+  }
+
+  function changeZoom(factor) {
+    scale *= factor;
+    drawGraph();
+  }
+
+  function resetView() {
+    scale = baseScale;
+    originX = defaultOriginX;
+    originY = defaultOriginY;
+    drawGraph();
+  }
+
+  function toScreenX(x) { return originX + x * scale; }
+  function toScreenY(y) { return originY - y * scale; }
+
+  function drawGraph() {
+    const h = parseFloat(hSlider.value);
+    const yA = f(xA);
+    const xB = xA + h;
+    const yB = f(xB);
+    const slope = (yB - yA) / h;
+
+    // Update UI Teks
+    hValueDisplay.textContent = h.toFixed(2);
+    pointAVal.textContent = `(${xA.toFixed(2)}, ${yA.toFixed(2)})`;
+    pointBVal.textContent = `(${xB.toFixed(2)}, ${yB.toFixed(2)})`;
+    slopeVal.textContent = slope.toFixed(2);
+
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+
+    // 1. Grid Koordinat
+    ctx.strokeStyle = '#1e293b';
+    ctx.lineWidth = 1;
+    for (let x = -20; x <= 20; x += 0.5) {
+      ctx.beginPath();
+      ctx.moveTo(toScreenX(x), 0);
+      ctx.lineTo(toScreenX(x), canvas.height);
+      ctx.stroke();
+    }
+    for (let y = -20; y <= 20; y += 0.5) {
+      ctx.beginPath();
+      ctx.moveTo(0, toScreenY(y));
+      ctx.lineTo(canvas.width, toScreenY(y));
+      ctx.stroke();
+    }
+
+    // Sumbu X & Y Utama
+    ctx.strokeStyle = '#475569';
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(0, originY);
+    ctx.lineTo(canvas.width, originY);
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(originX, 0);
+    ctx.lineTo(originX, canvas.height);
+    ctx.stroke();
+
+    // 2. Gambar Kurva Fungsi
+    ctx.beginPath();
+    ctx.strokeStyle = '#f8fafc';
+    ctx.lineWidth = 3;
+    
+    let isDrawing = false;
+    for (let px = 0; px <= canvas.width; px++) {
+      let x = (px - originX) / scale;
+      let y = f(x);
+      let py = toScreenY(y);
+
+      // Filter Asimtot Tan(x)
+      if (currentFunc === 'tan' && (Math.abs(y) > 30 || Math.abs(x % Math.PI) > 1.5 && Math.abs(x % Math.PI) < 1.64)) {
+        isDrawing = false;
+        continue;
+      }
+
+      if (!isDrawing) {
+        ctx.moveTo(px, py);
+        isDrawing = true;
+      } else {
+        ctx.lineTo(px, py);
+      }
+    }
+    ctx.stroke();
+
+    // 3. Garis Sekan (Biru Cyan)
+    ctx.beginPath();
+    ctx.strokeStyle = '#38bdf8';
+    ctx.lineWidth = 2;
+    let xStart = -10;
+    let yStart = yA + slope * (xStart - xA);
+    let xEnd = 10;
+    let yEnd = yA + slope * (xEnd - xA);
+    ctx.moveTo(toScreenX(xStart), toScreenY(yStart));
+    ctx.lineTo(toScreenX(xEnd), toScreenY(yEnd));
+    ctx.stroke();
+
+    // 4. Komponen h (Segitiga Putus-putus Oranye)
+    ctx.beginPath();
+    ctx.strokeStyle = '#f59e0b';
+    ctx.lineWidth = 1.5;
+    ctx.setLineDash([4, 4]);
+    ctx.moveTo(toScreenX(xA), toScreenY(yA));
+    ctx.lineTo(toScreenX(xB), toScreenY(yA));
+    ctx.lineTo(toScreenX(xB), toScreenY(yB));
+    ctx.stroke();
+    ctx.setLineDash([]);
+
+    if (h > 0.12) {
+      ctx.fillStyle = '#f59e0b';
+      ctx.font = 'bold 12px Poppins, sans-serif';
+      ctx.fillText('h', toScreenX(xA + h/2) - 3, toScreenY(yA) + 18);
+    }
+
+    // 5. Titik A (Merah Muda)
+    ctx.beginPath();
+    ctx.arc(toScreenX(xA), toScreenY(yA), 6, 0, 2 * Math.PI);
+    ctx.fillStyle = '#ec4899';
+    ctx.fill();
+    ctx.fillStyle = '#f8fafc';
+    ctx.font = 'bold 13px Poppins, sans-serif';
+    ctx.fillText('A', toScreenX(xA) - 18, toScreenY(yA) - 8);
+
+    // 6. Titik B (Biru Cyan)
+    ctx.beginPath();
+    ctx.arc(toScreenX(xB), toScreenY(yB), 6, 0, 2 * Math.PI);
+    ctx.fillStyle = '#38bdf8';
+    ctx.fill();
+    ctx.fillText('B', toScreenX(xB) + 10, toScreenY(yB) - 5);
+  }
+
+  // --- LOGIKA MOUSE & TOUCH DRAGGING ---
+  canvas.addEventListener('mousedown', (e) => {
+    isDragging = true;
+    startX = e.clientX - originX;
+    startY = e.clientY - originY;
+  });
+
+  window.addEventListener('mousemove', (e) => {
+    if (isDragging) {
+      originX = e.clientX - startX;
+      originY = e.clientY - startY;
+      drawGraph();
+    }
+  });
+
+  window.addEventListener('mouseup', () => { isDragging = false; });
+
+  canvas.addEventListener('touchstart', (e) => {
+    if (e.touches.length === 1) {
+      isDragging = true;
+      startX = e.touches[0].clientX - originX;
+      startY = e.touches[0].clientY - originY;
+    }
+  });
+
+  window.addEventListener('touchmove', (e) => {
+    if (isDragging && e.touches.length === 1) {
+      originX = e.touches[0].clientX - startX;
+      originY = e.touches[0].clientY - startY;
+      drawGraph();
+    }
+  });
+
+  window.addEventListener('touchend', () => { isDragging = false; });
+
+  hSlider.addEventListener('input', drawGraph);
+  
+  // Inisialisasi awal
+  updateFunction();
+</script>
+
+</body>
+</html>
