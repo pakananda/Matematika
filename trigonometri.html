@@ -1,0 +1,493 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>LKPD Trigonometri - MGMP Matematika SMAN Taruna Nala</title>
+    
+    <!-- Google Fonts: Poppins -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    
+    <!-- Memuat MathJax untuk render rumus matematika -->
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    
+    <style>
+        /* CSS Reset & Variabel */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        :root {
+            --primary-color: #3b82f6;
+            --secondary-color: #1e3a8a;
+            --bg-color: #f3f4f6;
+            --text-color: #1f2937;
+            --card-bg: #ffffff;
+        }
+
+        body {
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            scroll-behavior: smooth;
+        }
+
+        /* ================= HEADER MGMP TARUNA NALA ================= */
+        .mgmp-header {
+            position: relative;
+            width: 100%;
+            min-height: 60vh;
+            background: radial-gradient(circle at center, #1e3a8a 0%, #0f172a 100%);
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            padding: 3rem 2rem;
+            overflow: hidden;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+        }
+
+        .mgmp-header::before {
+            content: '';
+            position: absolute;
+            top: 0; left: 0; right: 0; bottom: 0;
+            background-image: linear-gradient(rgba(255, 255, 255, 0.05) 1px, transparent 1px),
+                              linear-gradient(90deg, rgba(255, 255, 255, 0.05) 1px, transparent 1px);
+            background-size: 30px 30px;
+            pointer-events: none;
+        }
+
+        .logo-container {
+            position: relative;
+            z-index: 10;
+            margin-bottom: 1.5rem;
+        }
+
+        .school-logo {
+            width: 140px;
+            height: auto;
+            filter: drop-shadow(0 10px 15px rgba(0, 0, 0, 0.5));
+            animation: floatLogo 5s ease-in-out infinite;
+            transition: transform 0.3s ease, filter 0.3s ease;
+        }
+
+        .school-logo:hover {
+            transform: scale(1.1);
+            filter: drop-shadow(0 0 25px rgba(251, 191, 36, 0.6));
+            cursor: pointer;
+        }
+
+        @keyframes floatLogo {
+            0% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+            100% { transform: translateY(0px); }
+        }
+
+        .content-wrapper {
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge-mgmp {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: #e2e8f0;
+            padding: 6px 15px;
+            border-radius: 4px;
+            font-size: 0.85rem;
+            font-weight: 600;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            margin-bottom: 1.5rem;
+            border-left: 3px solid #fbbf24;
+            backdrop-filter: blur(4px);
+        }
+
+        .title-primary {
+            font-size: clamp(2rem, 4vw, 3.5rem);
+            font-weight: 800;
+            color: #ffffff;
+            line-height: 1.2;
+            margin-bottom: 0.5rem;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.5);
+        }
+
+        .title-secondary {
+            font-size: clamp(1.2rem, 2.5vw, 2.2rem);
+            font-weight: 700;
+            background: linear-gradient(to right, #fde047, #f59e0b, #d97706);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            margin-top: 5px;
+            transition: transform 0.3s ease;
+        }
+
+        .title-secondary:hover {
+            transform: scale(1.03);
+            text-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
+        }
+
+        .decorative-line {
+            width: 80px;
+            height: 4px;
+            background: linear-gradient(to right, transparent, #fbbf24, transparent);
+            margin: 25px auto 0;
+            border-radius: 2px;
+        }
+
+        /* ================= KONTEN MATERI LKPD ================= */
+        .lkpd-title {
+            text-align: center;
+            color: var(--secondary-color);
+            margin: 3rem 0 1rem 0;
+            font-size: 2rem;
+            font-weight: 800;
+        }
+
+        .container {
+            max-width: 900px;
+            margin: 0 auto 3rem;
+            padding: 0 1.5rem;
+        }
+
+        .card {
+            background-color: var(--card-bg);
+            border-radius: 12px;
+            padding: 2rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            animation: fadeIn 0.8s ease-out forwards;
+            opacity: 0;
+            transform: translateY(20px);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
+        }
+        
+        /* Mengembalikan padding list yang di-reset */
+        .card ul, .card ol {
+            padding-left: 1.5rem;
+            margin-bottom: 1rem;
+        }
+        
+        .card h2 { margin-bottom: 1rem; color: var(--secondary-color); }
+        .card h3 { margin-bottom: 0.8rem; color: var(--primary-color); }
+        .card p { margin-bottom: 1rem; }
+
+        .grid-2 {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1.5rem;
+        }
+
+        .svg-container {
+            text-align: center;
+            margin: 1.5rem 0;
+            overflow-x: auto;
+        }
+
+        .formula-box {
+            background-color: #eef2ff;
+            border-left: 4px solid var(--primary-color);
+            padding: 1.5rem;
+            margin: 1rem 0;
+            border-radius: 0 8px 8px 0;
+            overflow-x: auto;
+        }
+
+        @keyframes fadeIn {
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .delay-1 { animation-delay: 0.2s; }
+        .delay-2 { animation-delay: 0.4s; }
+        .delay-3 { animation-delay: 0.6s; }
+
+        .btn-jump {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: #f59e0b;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 50px;
+            text-decoration: none;
+            font-weight: bold;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+            transition: all 0.3s ease;
+            z-index: 1000;
+        }
+
+        .btn-jump:hover {
+            background-color: #d97706;
+            transform: scale(1.05);
+        }
+
+        .btn-toggle {
+            background-color: var(--primary-color);
+            color: white;
+            border: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1rem;
+            font-weight: 600;
+            margin-top: 1rem;
+            transition: background 0.3s ease;
+        }
+        
+        .btn-toggle:hover {
+            background-color: var(--secondary-color);
+        }
+
+        .jawaban-content {
+            display: none;
+            margin-top: 15px;
+            padding-top: 15px;
+            border-top: 2px dashed #e5e7eb;
+            animation: fadeIn 0.5s ease-out forwards;
+        }
+
+        .soal-list li {
+            margin-bottom: 2.5rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #f3f4f6;
+        }
+        
+        .soal-list li:last-child {
+            border-bottom: none;
+        }
+
+        .mjx-chtml {
+            font-size: 110% !important;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Header Baru MGMP -->
+    <header class="mgmp-header">
+        <div class="logo-container">
+            <img src="https://pakananda.github.io/Matematika/smantar.png" alt="Logo SMA Negeri Taruna Nala" class="school-logo">
+        </div>
+        <div class="content-wrapper">
+            <div class="badge-mgmp">Forum Pendidik</div>
+            <h1 class="title-primary">Musyawarah Guru Mata Pelajaran<br>Matematika</h1>
+            <h2 class="title-secondary">SMA Negeri Taruna Nala Jawa Timur</h2>
+            <div class="decorative-line"></div>
+        </div>
+    </header>
+
+    <!-- Tombol Mengambang -->
+    <a href="#latihan-soal" class="btn-jump">📝 Ke Latihan Soal</a>
+
+    <!-- Judul Materi -->
+    <h2 class="lkpd-title">LKPD: Perbandingan Trigonometri<br>Pada Segitiga Siku-Siku</h2>
+
+    <div class="container">
+        
+        <!-- Materi Dasar -->
+        <div class="card delay-1">
+            <h2>1. Konsep Dasar Perbandingan</h2>
+            <p>Perhatikan segitiga siku-siku ABC dengan titik sudut siku-siku di C pada Gambar 3.1. Panjang sisi (dalam satuan panjang) di hadapan sudut A adalah <b>a</b>, panjang sisi di hadapan sudut B adalah <b>b</b>, dan panjang sisi di hadapan sudut C adalah <b>c</b>.</p>
+            
+            <div class="svg-container">
+                <svg width="250" height="200" viewBox="-20 -20 250 200">
+                    <polygon points="0,150 200,150 0,0" fill="#eef2ff" stroke="#1e3a8a" stroke-width="3"/>
+                    <polyline points="0,135 15,135 15,150" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+                    <path d="M 160,150 A 40,40 0 0,0 167,125" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+                    <text x="175" y="145" font-family="Arial" font-size="16" fill="#1e3a8a">α°</text>
+                    <path d="M 0,40 A 40,40 0 0,0 25,20" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+                    <text x="5" y="30" font-family="Arial" font-size="16" fill="#1e3a8a">β°</text>
+                    <text x="-15" y="-5" font-family="Arial" font-weight="bold" font-size="18">B</text>
+                    <text x="210" y="165" font-family="Arial" font-weight="bold" font-size="18">A</text>
+                    <text x="-15" y="165" font-family="Arial" font-weight="bold" font-size="18">C</text>
+                    <text x="-15" y="80" font-family="Arial" font-style="italic" font-size="18">a</text>
+                    <text x="100" y="175" font-family="Arial" font-style="italic" font-size="18">b</text>
+                    <text x="110" y="70" font-family="Arial" font-style="italic" font-size="18">c</text>
+                </svg>
+                <p><i>Gambar 3.1 Segitiga Siku-Siku</i></p>
+            </div>
+
+            <p>Terhadap sudut A:</p>
+            <ul>
+                <li>Sisi <b>a</b> disebut sisi siku-siku di <b>depan</b> sudut A.</li>
+                <li>Sisi <b>b</b> disebut sisi siku-siku di <b>dekat</b> (berimpit) sudut A.</li>
+                <li>Sisi <b>c</b> (sisi miring) disebut <b>hipotenusa</b>.</li>
+            </ul>
+
+            <div class="formula-box">
+                <p>Berdasarkan keterangan di atas, didefinisikan 6 (enam) perbandingan trigonometri terhadap sudut \(\alpha^\circ\) sebagai berikut:</p>
+                <div class="grid-2">
+                    <div>
+                        <p>\( \sin \alpha^\circ = \frac{\text{depan}}{\text{miring}} = \frac{a}{c} \)</p>
+                        <p>\( \cos \alpha^\circ = \frac{\text{dekat}}{\text{miring}} = \frac{b}{c} \)</p>
+                        <p>\( \tan \alpha^\circ = \frac{\text{depan}}{\text{dekat}} = \frac{a}{b} \)</p>
+                    </div>
+                    <div>
+                        <p>\( \csc \alpha^\circ = \frac{\text{miring}}{\text{depan}} = \frac{c}{a} \)</p>
+                        <p>\( \sec \alpha^\circ = \frac{\text{miring}}{\text{dekat}} = \frac{c}{b} \)</p>
+                        <p>\( \cot \alpha^\circ = \frac{\text{dekat}}{\text{depan}} = \frac{b}{a} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Rumus Kebalikan & Perbandingan -->
+        <div class="card delay-2">
+            <h2>2. Rumus Kebalikan dan Perbandingan</h2>
+            <p>Berdasarkan definisi di atas, dapat diturunkan hubungan matematika dengan syarat \( 0 < \alpha < 90^\circ \).</p>
+            
+            <div class="grid-2">
+                <div class="formula-box">
+                    <h3>Rumus Kebalikan</h3>
+                    <p>\( \sin \alpha^\circ = \frac{1}{\csc \alpha^\circ} \)</p>
+                    <p>\( \cos \alpha^\circ = \frac{1}{\sec \alpha^\circ} \)</p>
+                    <p>\( \tan \alpha^\circ = \frac{1}{\cot \alpha^\circ} \)</p>
+                    <p>\( \csc \alpha^\circ = \frac{1}{\sin \alpha^\circ} \)</p>
+                    <p>\( \sec \alpha^\circ = \frac{1}{\cos \alpha^\circ} \)</p>
+                    <p>\( \cot \alpha^\circ = \frac{1}{\tan \alpha^\circ} \)</p>
+                </div>
+                <div class="formula-box">
+                    <h3>Rumus Perbandingan</h3>
+                    <p>\( \tan \alpha^\circ = \frac{\sin \alpha^\circ}{\cos \alpha^\circ} \)</p>
+                    <p>\( \cot \alpha^\circ = \frac{\cos \alpha^\circ}{\sin \alpha^\circ} \)</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Contoh Soal -->
+        <div class="card delay-3">
+            <h2>Contoh 3.1</h2>
+            <p>Segitiga siku-siku \(ABC\) mempunyai panjang sisi \( a = \sqrt{3} \) dan \( b = 1 \) (perhatikan Gambar 3.2). Carilah nilai dari keenam perbandingan trigonometri untuk sudut \( \alpha^\circ \).</p>
+            
+            <div class="svg-container">
+                <svg width="200" height="200" viewBox="-30 -30 200 220">
+                    <polygon points="0,150 120,150 0,0" fill="#eef2ff" stroke="#1e3a8a" stroke-width="3"/>
+                    <polyline points="0,135 15,135 15,150" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+                    <path d="M 90,150 A 30,30 0 0,1 102,127" fill="none" stroke="#1e3a8a" stroke-width="2"/>
+                    <text x="94" y="146" font-family="Arial" font-size="14" fill="#1e3a8a">α°</text>
+                    <text x="-15" y="-10" font-family="Times New Roman" font-size="18">B</text>
+                    <text x="-15" y="170" font-family="Times New Roman" font-size="18">C</text>
+                    <text x="130" y="170" font-family="Times New Roman" font-size="18">A</text>
+                    <text x="-20" y="80" font-family="Times New Roman" font-style="italic" font-size="18">a</text>
+                    <text x="60" y="175" font-family="Times New Roman" font-style="italic" font-size="18">b</text>
+                    <text x="70" y="70" font-family="Times New Roman" font-style="italic" font-size="18">c</text>
+                </svg>
+                <p><i>Gambar 3.2 Segitiga Siku-Siku</i></p>
+            </div>
+            
+            <button class="btn-toggle" onclick="toggleJawaban()">Lihat / Sembunyikan Jawaban 💡</button>
+            
+            <div class="jawaban-content" id="jawaban">
+                <p><b>Jawab:</b></p>
+                <p>Nilai \( c \) dihitung terlebih dahulu dengan memakai teorema Pythagoras:</p>
+                <p>\( c = \sqrt{a^2 + b^2} = \sqrt{(\sqrt{3})^2 + (1)^2} = \sqrt{3 + 1} = \sqrt{4} = 2 \)</p>
+                <p>Jadi, nilai-nilai perbandingan trigonometrinya adalah:</p>
+                <div class="grid-2">
+                    <div>
+                        <p>\( \sin \alpha^\circ = \frac{a}{c} = \frac{\sqrt{3}}{2} = \frac{1}{2}\sqrt{3} \)</p>
+                        <p>\( \cos \alpha^\circ = \frac{b}{c} = \frac{1}{2} \)</p>
+                        <p>\( \tan \alpha^\circ = \frac{a}{b} = \frac{\sqrt{3}}{1} = \sqrt{3} \)</p>
+                    </div>
+                    <div>
+                        <p>\( \csc \alpha^\circ = \frac{c}{a} = \frac{2}{\sqrt{3}} = \frac{2}{3}\sqrt{3} \)</p>
+                        <p>\( \sec \alpha^\circ = \frac{c}{b} = \frac{2}{1} = 2 \)</p>
+                        <p>\( \cot \alpha^\circ = \frac{b}{a} = \frac{1}{\sqrt{3}} = \frac{1}{3}\sqrt{3} \)</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Latihan Soal -->
+        <div id="latihan-soal" class="card">
+            <h2>Latihan Soal</h2>
+            <ol class="soal-list">
+                <li>
+                    <p>Dari segitiga berikut ini, jika \( \sin \theta = \frac{2}{5} \) tentukan nilai \( x \).</p>
+                    <svg width="150" height="150" viewBox="-10 -10 120 150">
+                        <polygon points="0,120 80,120 80,0" fill="none" stroke="#000" stroke-width="2"/>
+                        <polyline points="70,120 70,110 80,110" fill="none" stroke="#000" stroke-width="1"/>
+                        <path d="M 20,120 A 20,20 0 0,0 25,100" fill="none" stroke="#000"/>
+                        <text x="25" y="115" font-size="14">θ</text>
+                        <text x="40" y="140" font-size="14" font-style="italic">x</text>
+                        <text x="85" y="60" font-size="14">12</text>
+                    </svg>
+                </li>
+                <li>
+                    <p>Diberikan sebuah segitiga siku-siku ABC siku-siku di B, dengan panjang \( BC = 12 \) cm dan \( AB = 16 \) cm. Sudut di A adalah \(\theta\). Tentukan:</p>
+                    <ul>
+                        <li>(a). Panjang AC</li>
+                        <li>(b). \( \sin \theta \)</li>
+                        <li>(c). \( \cos \theta \)</li>
+                        <li>(d). \( \tan \theta \)</li>
+                    </ul>
+                </li>
+                <li>
+                    <p>Perhatikan segitiga siku-siku KLM, siku-siku di L. Diketahui \( \tan M = \frac{16}{30} \). Tentukan \( \sin M \) dan \( \cos M \).</p>
+                </li>
+                <li>
+                    <p>Perhatikan gambar berikut:</p>
+                    <div class="svg-container" style="text-align: left;">
+                        <svg width="420" height="200" viewBox="-10 -10 390 180">
+                            <!-- Fill Tanda Siku-Siku -->
+                            <polygon points="64,138 76,138 76,150 64,150" fill="#dcfce7" stroke="#374151" stroke-width="1.5"/>
+                            <polygon points="100,150 94.86,139.18 105.7,134.04 110.84,144.86" fill="#dcfce7" stroke="#374151" stroke-width="1.5"/>
+                    
+                            <polygon points="64,74 64,150 100,150" fill="none" stroke="#374151" stroke-width="2"/>
+                            <polygon points="64,74 100,150 360,27" fill="none" stroke="#374151" stroke-width="2"/>
+                    
+                            <path d="M 323.9,44.1 A 40,40 0 0,1 320.5,33.3" fill="none" stroke="#374151" stroke-width="1.5"/>
+                            <text x="333" y="49" font-family="Times New Roman" font-style="italic" font-weight="bold" font-size="16" fill="#1f2937">α</text>
+                    
+                            <circle cx="64" cy="74" r="2.5" fill="#991b1b"/>
+                            <circle cx="64" cy="150" r="2.5" fill="#991b1b"/>
+                            <circle cx="100" cy="150" r="2.5" fill="#991b1b"/>
+                            <circle cx="360" cy="27" r="2.5" fill="#991b1b"/>
+                    
+                            <text x="20" y="117" font-family="Times New Roman" font-weight="bold" font-size="16" fill="#1f2937">2√<tspan text-decoration="overline">10</tspan></text>
+                            <text x="78" y="170" font-family="Times New Roman" font-weight="bold" font-size="16" fill="#1f2937">3</text>
+                            <text x="200" y="32" font-family="Times New Roman" font-weight="bold" font-size="16" fill="#1f2937">25</text>
+                        </svg>
+                    </div>
+                    <p>Nilai \( \cos \alpha = \cdot\cdot\cdot \)</p>
+                </li>
+                <li>
+                    <p>Jika \( \sin 30^\circ = \frac{1}{2} \) dan \( \cos 60^\circ = \frac{1}{2} \), maka tentukan nilai \( x \), \( y \), atau \( r \) pada segitiga (a) dan (b) sesuai pada LKPD.</p>
+                </li>
+                <li>
+                    <p>Diketahui \( \Delta KLM \) siku-siku di M dan \( \tan L = \frac{1}{3}\sqrt{3} \). Nilai \( \cos L \) adalah...</p>
+                </li>
+                <li>
+                    <p>Pada suatu segitiga siku-siku ABC, dengan \( \angle B = 90^\circ \), \( AB = 24 \) cm dan \( BC = 7 \) cm hitung:</p>
+                    <ul>
+                        <li>(a). \( \sin A \), \( \cos A \), dan \( \tan A \)</li>
+                        <li>(b). \( \sin C \), \( \cos C \), dan \( \tan C \)</li>
+                    </ul>
+                </li>
+            </ol>
+        </div>
+
+    </div>
+
+    <script>
+        function toggleJawaban() {
+            const jawaban = document.getElementById("jawaban");
+            if (jawaban.style.display === "none" || jawaban.style.display === "") {
+                jawaban.style.display = "block";
+            } else {
+                jawaban.style.display = "none";
+            }
+        }
+    </script>
+</body>
+</html>
