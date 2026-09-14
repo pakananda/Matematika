@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LKPD Trigonometri - MGMP Matematika SMAN Taruna Nala</title>
+    <title>LKPD & Visualisasi Trigonometri - SMAN Taruna Nala</title>
     
     <!-- Google Fonts: Poppins -->
     <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
@@ -128,11 +128,6 @@
             transition: transform 0.3s ease;
         }
 
-        .title-secondary:hover {
-            transform: scale(1.03);
-            text-shadow: 0 0 15px rgba(245, 158, 11, 0.3);
-        }
-
         .decorative-line {
             width: 80px;
             height: 4px;
@@ -164,16 +159,8 @@
             box-shadow: 0 4px 6px rgba(0,0,0,0.05);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
             animation: fadeIn 0.8s ease-out forwards;
-            opacity: 0;
-            transform: translateY(20px);
         }
 
-        .card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 10px 15px rgba(0,0,0,0.1);
-        }
-        
-        /* Mengembalikan padding list yang di-reset */
         .card ul, .card ol {
             padding-left: 1.5rem;
             margin-bottom: 1rem;
@@ -205,12 +192,36 @@
         }
 
         @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
             to { opacity: 1; transform: translateY(0); }
         }
 
-        .delay-1 { animation-delay: 0.2s; }
-        .delay-2 { animation-delay: 0.4s; }
-        .delay-3 { animation-delay: 0.6s; }
+        /* ================= TOMBOL MENGAMBANG & INTERAKTIF ================= */
+        .btn-action-container {
+            display: flex;
+            justify-content: center;
+            gap: 15px;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .btn-vis-toggle {
+            background-color: #10b981;
+            color: white;
+            padding: 12px 25px;
+            border: none;
+            border-radius: 50px;
+            font-size: 1.1rem;
+            font-weight: bold;
+            cursor: pointer;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.15);
+            transition: all 0.3s ease;
+        }
+
+        .btn-vis-toggle:hover {
+            background-color: #059669;
+            transform: scale(1.05);
+        }
 
         .btn-jump {
             position: fixed;
@@ -244,10 +255,6 @@
             margin-top: 1rem;
             transition: background 0.3s ease;
         }
-        
-        .btn-toggle:hover {
-            background-color: var(--secondary-color);
-        }
 
         .jawaban-content {
             display: none;
@@ -262,14 +269,137 @@
             padding-bottom: 1rem;
             border-bottom: 1px solid #f3f4f6;
         }
-        
-        .soal-list li:last-child {
-            border-bottom: none;
+        .soal-list li:last-child { border-bottom: none; }
+        .mjx-chtml { font-size: 110% !important; }
+
+        /* ================= VISUALISASI INTERAKTIF CSS ================= */
+        #visualizer-section {
+            display: none; /* Sembunyikan secara default */
+            margin-bottom: 3rem;
+            animation: fadeIn 0.5s ease-out forwards;
         }
 
-        .mjx-chtml {
-            font-size: 110% !important;
+        .vis-tabs {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 25px;
+            flex-wrap: wrap;
         }
+        .vis-tab-btn {
+            padding: 10px 20px;
+            border: 2px solid #3498db;
+            background: white;
+            color: #3498db;
+            font-weight: bold;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        .vis-tab-btn.active, .vis-tab-btn:hover {
+            background: #3498db;
+            color: white;
+        }
+
+        .vis-tab-content { display: none; }
+        .vis-tab-content.active { display: block; }
+
+        .vis-content-layout {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 20px;
+            justify-content: center;
+        }
+        
+        .vis-canvas-container {
+            flex: 1;
+            min-width: 320px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        
+        .vis-canvas-container canvas, .full-width-canvas canvas {
+            border: 2px solid #ecf0f1;
+            border-radius: 8px;
+            background-color: #fafafa;
+            max-width: 100%;
+        }
+
+        .vis-controls-container {
+            flex: 1;
+            min-width: 300px;
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .vis-slider-group {
+            background: #eef2f5;
+            padding: 15px;
+            border-radius: 8px;
+        }
+        
+        .vis-slider-group label {
+            font-weight: bold;
+            color: #34495e;
+            display: block;
+            margin-bottom: 8px;
+        }
+        
+        .vis-slider-group input[type=range] { width: 100%; cursor: pointer; }
+        
+        .angle-display {
+            font-size: 1.2rem;
+            color: #2980b9;
+            font-weight: bold;
+        }
+
+        .vis-card-box {
+            border-left: 5px solid;
+            padding: 12px 15px;
+            background: #f8f9fa;
+            border-radius: 4px;
+        }
+        .card-sin { border-color: #e74c3c; } 
+        .card-cos { border-color: #2ecc71; } 
+        .card-tan { border-color: #9b59b6; } 
+
+        .vis-formula { font-size: 1.05rem; margin: 3px 0; }
+        
+        .vis-legend {
+            display: flex;
+            gap: 15px;
+            margin-top: 10px;
+            font-size: 0.9rem;
+            font-weight: bold;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .legend-item { display: flex; align-items: center; gap: 5px; }
+        .color-box { width: 12px; height: 12px; border-radius: 2px; }
+        
+        .bg-depan { background-color: #e74c3c; }
+        .bg-samping { background-color: #2ecc71; }
+        .bg-miring { background-color: #3498db; }
+        
+        .text-depan { color: #e74c3c; font-weight: bold; }
+        .text-samping { color: #2ecc71; font-weight: bold; }
+        .text-tan { color: #9b59b6; font-weight: bold; }
+
+        .full-width-canvas {
+            width: 100%;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+        .func-selector {
+            display: flex;
+            gap: 10px;
+            margin-top: 10px;
+        }
+        .radio-label { font-weight: normal !important; cursor: pointer; }
     </style>
 </head>
 <body>
@@ -287,14 +417,104 @@
         </div>
     </header>
 
-    <!-- Tombol Mengambang -->
+    <!-- Tombol Mengambang (Jump Soal) -->
     <a href="#latihan-soal" class="btn-jump">📝 Ke Latihan Soal</a>
 
-    <!-- Judul Materi -->
     <h2 class="lkpd-title">LKPD: Perbandingan Trigonometri<br>Pada Segitiga Siku-Siku</h2>
+
+    <!-- Tombol Buka Visualisasi -->
+    <div class="btn-action-container">
+        <button class="btn-vis-toggle" onclick="toggleVisualizer()" id="btn-toggle-vis">
+            🧮 Buka Visualisasi Interaktif
+        </button>
+    </div>
 
     <div class="container">
         
+        <!-- ================= VISUALISASI INTERAKTIF (SEMBUNYI SECARA DEFAULT) ================= -->
+        <div id="visualizer-section" class="card">
+            <h2 style="text-align:center; color:#2c3e50; margin-bottom:5px;">Pembelajaran Interaktif Trigonometri</h2>
+            <p style="text-align:center; color:#7f8c8d; margin-bottom:20px;">Modul Eksplorasi Visual</p>
+
+            <div class="vis-tabs">
+                <button class="vis-tab-btn active" onclick="switchVisTab(1)">1. Segitiga Siku-Siku</button>
+                <button class="vis-tab-btn" onclick="switchVisTab(2)">2. Lingkaran Satuan & Kurva</button>
+            </div>
+
+            <!-- TAB 1: SEGITIGA SIKU-SIKU -->
+            <div id="vis-tab1" class="vis-tab-content active">
+                <div class="vis-content-layout">
+                    <div class="vis-canvas-container">
+                        <canvas id="trigCanvas" width="380" height="300"></canvas>
+                        <div class="vis-legend">
+                            <div class="legend-item"><div class="color-box bg-depan"></div> Depan (a)</div>
+                            <div class="legend-item"><div class="color-box bg-samping"></div> Samping (b)</div>
+                            <div class="legend-item"><div class="color-box bg-miring"></div> Miring (c)</div>
+                        </div>
+                    </div>
+
+                    <div class="vis-controls-container">
+                        <div class="vis-slider-group">
+                            <label for="angleSlider1">Geser Sudut (&theta;): <span id="angleValue1" class="angle-display">30°</span></label>
+                            <input type="range" id="angleSlider1" min="5" max="85" value="30">
+                        </div>
+
+                        <div class="vis-card-box card-sin">
+                            <div class="vis-formula"><b>SIN (&theta;)</b> = <span class="text-depan">Demi</span> (Depan / Miring)</div>
+                            <div>sin(&theta;) = <span id="valDepan1">0</span> / <span id="valMiring1">0</span> = <b id="resSin1" class="text-depan">0.50</b></div>
+                        </div>
+
+                        <div class="vis-card-box card-cos">
+                            <div class="vis-formula"><b>COS (&theta;)</b> = <span class="text-samping">Sami</span> (Samping / Miring)</div>
+                            <div>cos(&theta;) = <span id="valSamping1">0</span> / <span id="valMiring2">0</span> = <b id="resCos1" class="text-samping">0.87</b></div>
+                        </div>
+
+                        <div class="vis-card-box card-tan">
+                            <div class="vis-formula"><b>TAN (&theta;)</b> = <span class="text-depan">Desa</span> (Depan / Samping)</div>
+                            <div>tan(&theta;) = <span id="valDepan2">0</span> / <span id="valSamping2">0</span> = <b id="resTan1" class="text-tan">0.58</b></div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- TAB 2: LINGKARAN SATUAN & KURVA -->
+            <div id="vis-tab2" class="vis-tab-content">
+                <div class="vis-slider-group" style="margin-bottom: 15px;">
+                    <div style="display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap;">
+                        <div>
+                            <label for="angleSlider2">Putar Sudut (&theta;): <span id="angleValue2" class="angle-display">45°</span></label>
+                        </div>
+                        <div class="func-selector">
+                            <label class="radio-label"><input type="radio" name="funcType" value="sin" checked onchange="drawTab2()"> <span class="text-depan">Sinus</span></label>
+                            <label class="radio-label"><input type="radio" name="funcType" value="cos" onchange="drawTab2()"> <span class="text-samping">Kosinus</span></label>
+                            <label class="radio-label"><input type="radio" name="funcType" value="tan" onchange="drawTab2()"> <span class="text-tan">Tangen</span></label>
+                        </div>
+                    </div>
+                    <input type="range" id="angleSlider2" min="0" max="360" value="45">
+                </div>
+
+                <div class="full-width-canvas">
+                    <canvas id="unitCircleCanvas" width="850" height="320"></canvas>
+                </div>
+
+                <div style="display: flex; gap: 15px; margin-top: 15px; flex-wrap: wrap; justify-content: center;">
+                    <div class="vis-card-box card-sin" style="flex:1; min-width: 150px; text-align:center;">
+                        <div class="vis-formula"><b>Nilai Sinus (Y)</b></div>
+                        <div id="resSin2" style="font-size:1.2rem; font-weight:bold;">0.71</div>
+                    </div>
+                    <div class="vis-card-box card-cos" style="flex:1; min-width: 150px; text-align:center;">
+                        <div class="vis-formula"><b>Nilai Kosinus (X)</b></div>
+                        <div id="resCos2" style="font-size:1.2rem; font-weight:bold;">0.71</div>
+                    </div>
+                    <div class="vis-card-box card-tan" style="flex:1; min-width: 150px; text-align:center;">
+                        <div class="vis-formula"><b>Nilai Tangen (Y/X)</b></div>
+                        <div id="resTan2" style="font-size:1.2rem; font-weight:bold;">1.00</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <!-- ================= END VISUALISASI INTERAKTIF ================= -->
+
         <!-- Materi Dasar -->
         <div class="card delay-1">
             <h2>1. Konsep Dasar Perbandingan</h2>
@@ -476,18 +696,256 @@
                 </li>
             </ol>
         </div>
-
     </div>
 
     <script>
+        // --- Fungsi Toggle Jawaban ---
         function toggleJawaban() {
             const jawaban = document.getElementById("jawaban");
-            if (jawaban.style.display === "none" || jawaban.style.display === "") {
-                jawaban.style.display = "block";
+            jawaban.style.display = (jawaban.style.display === "none" || jawaban.style.display === "") ? "block" : "none";
+        }
+
+        // --- Fungsi Toggle Visualizer ---
+        function toggleVisualizer() {
+            const section = document.getElementById("visualizer-section");
+            const btn = document.getElementById("btn-toggle-vis");
+            
+            if (section.style.display === "none" || section.style.display === "") {
+                section.style.display = "block";
+                btn.innerHTML = "✖ Tutup Visualisasi Interaktif";
+                btn.style.backgroundColor = "#e11d48";
+                
+                // Pastikan canvas dirender saat pertama kali dibuka
+                drawTab1();
+                drawTab2();
             } else {
-                jawaban.style.display = "none";
+                section.style.display = "none";
+                btn.innerHTML = "🧮 Buka Visualisasi Interaktif";
+                btn.style.backgroundColor = "#10b981";
             }
         }
+
+        // --- Visualizer Tabs ---
+        function switchVisTab(tabIndex) {
+            document.querySelectorAll('.vis-tab-btn').forEach((btn, idx) => {
+                btn.classList.toggle('active', idx === tabIndex - 1);
+            });
+            document.querySelectorAll('.vis-tab-content').forEach((content, idx) => {
+                content.classList.toggle('active', idx === tabIndex - 1);
+            });
+            if(tabIndex === 1) drawTab1();
+            if(tabIndex === 2) drawTab2();
+        }
+
+        // ==========================================
+        // LOGIKA TAB 1: SEGITIGA SIKU-SIKU
+        // ==========================================
+        const canvas1 = document.getElementById('trigCanvas');
+        const ctx1 = canvas1.getContext('2d');
+        const slider1 = document.getElementById('angleSlider1');
+
+        function drawTab1() {
+            if(!canvas1 || !ctx1) return;
+            const angleDeg = parseFloat(slider1.value);
+            const angleRad = angleDeg * (Math.PI / 180);
+
+            const originX = 50;
+            const originY = 240;
+            const miringLength = 220;
+
+            const samping = miringLength * Math.cos(angleRad);
+            const depan = miringLength * Math.sin(angleRad);
+
+            const A = { x: originX, y: originY };
+            const B = { x: originX + samping, y: originY };
+            const C = { x: originX + samping, y: originY - depan };
+
+            ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
+
+            // Samping
+            ctx1.beginPath(); ctx1.moveTo(A.x, A.y); ctx1.lineTo(B.x, B.y);
+            ctx1.strokeStyle = '#2ecc71'; ctx1.lineWidth = 4; ctx1.stroke();
+
+            // Depan
+            ctx1.beginPath(); ctx1.moveTo(B.x, B.y); ctx1.lineTo(C.x, C.y);
+            ctx1.strokeStyle = '#e74c3c'; ctx1.lineWidth = 4; ctx1.stroke();
+
+            // Miring
+            ctx1.beginPath(); ctx1.moveTo(A.x, A.y); ctx1.lineTo(C.x, C.y);
+            ctx1.strokeStyle = '#3498db'; ctx1.lineWidth = 4; ctx1.stroke();
+
+            // Siku-siku
+            ctx1.beginPath(); ctx1.rect(B.x - 12, B.y - 12, 12, 12);
+            ctx1.strokeStyle = '#7f8c8d'; ctx1.lineWidth = 1.5; ctx1.stroke();
+
+            // Busur Sudut
+            ctx1.beginPath(); ctx1.arc(A.x, A.y, 35, 0, -angleRad, true);
+            ctx1.strokeStyle = '#f39c12'; ctx1.lineWidth = 2; ctx1.stroke();
+
+            ctx1.fillStyle = '#d35400'; ctx1.font = 'bold 14px Arial';
+            ctx1.fillText('θ', A.x + 40, A.y - 8);
+
+            // Text Values
+            document.getElementById('angleValue1').innerText = angleDeg + '°';
+            const valMiring = 10;
+            const valDepan = (Math.sin(angleRad) * valMiring).toFixed(1);
+            const valSamping = (Math.cos(angleRad) * valMiring).toFixed(1);
+
+            document.getElementById('valDepan1').innerText = valDepan;
+            document.getElementById('valDepan2').innerText = valDepan;
+            document.getElementById('valSamping1').innerText = valSamping;
+            document.getElementById('valSamping2').innerText = valSamping;
+            document.getElementById('valMiring1').innerText = valMiring;
+            document.getElementById('valMiring2').innerText = valMiring;
+
+            document.getElementById('resSin1').innerText = Math.sin(angleRad).toFixed(2);
+            document.getElementById('resCos1').innerText = Math.cos(angleRad).toFixed(2);
+            document.getElementById('resTan1').innerText = Math.tan(angleRad).toFixed(2);
+        }
+
+        slider1.addEventListener('input', drawTab1);
+
+        // ==========================================
+        // LOGIKA TAB 2: LINGKARAN SATUAN & KURVA
+        // ==========================================
+        const canvas2 = document.getElementById('unitCircleCanvas');
+        const ctx2 = canvas2.getContext('2d');
+        const slider2 = document.getElementById('angleSlider2');
+
+        function drawTab2() {
+            if(!canvas2 || !ctx2) return;
+            const angleDeg = parseFloat(slider2.value);
+            const angleRad = angleDeg * (Math.PI / 180);
+            const funcType = document.querySelector('input[name="funcType"]:checked').value;
+
+            ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
+
+            // Pusat Lingkaran Satuan
+            const circleCenterX = 160;
+            const circleCenterY = 160;
+            const radius = 100;
+
+            // Sumbu Koordinat Lingkaran
+            ctx2.strokeStyle = '#bdc3c7'; ctx2.lineWidth = 1;
+            ctx2.beginPath();
+            ctx2.moveTo(circleCenterX - 130, circleCenterY); ctx2.lineTo(circleCenterX + 130, circleCenterY);
+            ctx2.moveTo(circleCenterX, circleCenterY - 130); ctx2.lineTo(circleCenterX, circleCenterY + 130);
+            ctx2.stroke();
+
+            // Lingkaran Satuan
+            ctx2.beginPath();
+            ctx2.arc(circleCenterX, circleCenterY, radius, 0, Math.PI * 2);
+            ctx2.strokeStyle = '#34495e'; ctx2.lineWidth = 2;
+            ctx2.stroke();
+
+            // Titik pada Lingkaran (Y canvas terbalik)
+            const pointX = circleCenterX + radius * Math.cos(-angleRad);
+            const pointY = circleCenterY + radius * Math.sin(-angleRad);
+
+            // Garis Jari-jari
+            ctx2.beginPath();
+            ctx2.moveTo(circleCenterX, circleCenterY);
+            ctx2.lineTo(pointX, pointY);
+            ctx2.strokeStyle = '#3498db'; ctx2.lineWidth = 2;
+            ctx2.stroke();
+
+            // Komponen Kosinus (X)
+            ctx2.beginPath();
+            ctx2.moveTo(circleCenterX, circleCenterY);
+            ctx2.lineTo(pointX, circleCenterY);
+            ctx2.strokeStyle = '#2ecc71'; ctx2.lineWidth = 3;
+            ctx2.stroke();
+
+            // Komponen Sinus (Y)
+            ctx2.beginPath();
+            ctx2.moveTo(pointX, circleCenterY);
+            ctx2.lineTo(pointX, pointY);
+            ctx2.strokeStyle = '#e74c3c'; ctx2.lineWidth = 3;
+            ctx2.stroke();
+
+            // Titik Sudut
+            ctx2.beginPath();
+            ctx2.arc(pointX, pointY, 5, 0, Math.PI * 2);
+            ctx2.fillStyle = '#9b59b6'; ctx2.fill();
+
+            // --- GRAPH/KURVA ---
+            const graphStartX = 310;
+            const graphWidth = 500;
+            const graphCenterY = 160;
+
+            // Sumbu Grafik
+            ctx2.strokeStyle = '#bdc3c7'; ctx2.lineWidth = 1;
+            ctx2.beginPath();
+            ctx2.moveTo(graphStartX, graphCenterY); ctx2.lineTo(graphStartX + graphWidth, graphCenterY);
+            ctx2.moveTo(graphStartX, graphCenterY - 130); ctx2.lineTo(graphStartX, graphCenterY + 130);
+            ctx2.stroke();
+
+            // Label Sudut
+            ctx2.fillStyle = '#7f8c8d'; ctx2.font = '12px Arial';
+            ctx2.fillText('0°', graphStartX, graphCenterY + 20);
+            ctx2.fillText('90°', graphStartX + graphWidth * 0.25, graphCenterY + 20);
+            ctx2.fillText('180°', graphStartX + graphWidth * 0.5, graphCenterY + 20);
+            ctx2.fillText('270°', graphStartX + graphWidth * 0.75, graphCenterY + 20);
+            ctx2.fillText('360°', graphStartX + graphWidth, graphCenterY + 20);
+
+            // Kurva Referensi
+            ctx2.beginPath();
+            let color = '#e74c3c';
+            if (funcType === 'cos') color = '#2ecc71';
+            if (funcType === 'tan') color = '#9b59b6';
+
+            for (let x = 0; x <= 360; x++) {
+                const r = x * (Math.PI / 180);
+                let val = 0;
+                if (funcType === 'sin') val = Math.sin(r);
+                if (funcType === 'cos') val = Math.cos(r);
+                if (funcType === 'tan') val = Math.tan(r);
+
+                const canvasX = graphStartX + (x / 360) * graphWidth;
+                let canvasY = graphCenterY - val * radius;
+
+                if (canvasY < 20) canvasY = 20;
+                if (canvasY > 300) canvasY = 300;
+
+                if (x === 0) ctx2.moveTo(canvasX, canvasY);
+                else ctx2.lineTo(canvasX, canvasY);
+            }
+            ctx2.strokeStyle = color; ctx2.lineWidth = 2.5; ctx2.stroke();
+
+            // Garis Penunjuk Posisi
+            const currentGraphX = graphStartX + (angleDeg / 360) * graphWidth;
+            let currentGraphY = graphCenterY;
+
+            if (funcType === 'sin') currentGraphY = graphCenterY - Math.sin(angleRad) * radius;
+            if (funcType === 'cos') currentGraphY = graphCenterY - Math.cos(angleRad) * radius;
+            if (funcType === 'tan') currentGraphY = graphCenterY - Math.tan(angleRad) * radius;
+
+            ctx2.setLineDash([4, 4]);
+            ctx2.beginPath();
+            if(funcType === 'sin') {
+                ctx2.moveTo(pointX, pointY);
+                ctx2.lineTo(currentGraphX, currentGraphY);
+            } else {
+                ctx2.moveTo(currentGraphX, graphCenterY);
+                ctx2.lineTo(currentGraphX, currentGraphY);
+            }
+            ctx2.strokeStyle = '#e67e22'; ctx2.lineWidth = 1.5; ctx2.stroke();
+            ctx2.setLineDash([]); 
+
+            if(currentGraphY >= 20 && currentGraphY <= 300) {
+                ctx2.beginPath();
+                ctx2.arc(currentGraphX, currentGraphY, 6, 0, Math.PI * 2);
+                ctx2.fillStyle = '#e67e22'; ctx2.fill();
+            }
+
+            document.getElementById('angleValue2').innerText = angleDeg + '°';
+            document.getElementById('resSin2').innerText = Math.sin(angleRad).toFixed(2);
+            document.getElementById('resCos2').innerText = Math.cos(angleRad).toFixed(2);
+            const tanVal = Math.tan(angleRad);
+            document.getElementById('resTan2').innerText = Math.abs(tanVal) > 100 ? '∞' : tanVal.toFixed(2);
+        }
+
+        slider2.addEventListener('input', drawTab2);
     </script>
 </body>
 </html>
