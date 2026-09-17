@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Belajar Matematika Bersama Pak Ananda - Aturan Rantai</title>
+    
+    <!-- Google Fonts & MathJax -->
+    <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;600;700;800&display=swap" rel="stylesheet">
+    <script src="https://polyfill.io/v3/polyfill.min.js?features=es6"></script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Poppins', sans-serif;
+        }
+
+        body {
+            background-color: #f8fafc;
+            color: #334155;
+            line-height: 1.6;
+        }
+
+        /* --- HERO HEADER STYLES --- */
+        .hero-header {
+            position: relative;
+            width: 100%;
+            min-height: 60vh;
+            background: linear-gradient(135deg, #0f172a 0%, #1e1b4b 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            overflow: hidden;
+            padding: 3rem 1.5rem;
+        }
+
+        .math-symbol {
+            position: absolute;
+            color: rgba(255, 255, 255, 0.08);
+            font-size: 4rem;
+            font-weight: 800;
+            animation: float 6s ease-in-out infinite;
+            pointer-events: none;
+            user-select: none;
+        }
+        
+        .s1 { top: 15%; left: 10%; animation-delay: 0s; }
+        .s2 { bottom: 20%; right: 15%; animation-delay: 2s; font-size: 5rem; }
+        .s3 { top: 25%; right: 10%; animation-delay: 4s; }
+        .s4 { bottom: 15%; left: 15%; animation-delay: 1s; font-size: 6rem; }
+
+        @keyframes float {
+            0% { transform: translateY(0px) rotate(0deg); }
+            50% { transform: translateY(-20px) rotate(10deg); }
+            100% { transform: translateY(0px) rotate(0deg); }
+        }
+
+        .header-content {
+            position: relative;
+            z-index: 10;
+        }
+
+        .badge {
+            display: inline-block;
+            background: rgba(255, 255, 255, 0.1);
+            color: #38bdf8;
+            padding: 8px 18px;
+            border-radius: 50px;
+            font-size: 0.9rem;
+            font-weight: 600;
+            margin-bottom: 20px;
+            backdrop-filter: blur(5px);
+            border: 1px solid rgba(56, 189, 248, 0.3);
+        }
+
+        .main-title {
+            font-size: clamp(2.2rem, 5vw, 4rem);
+            font-weight: 800;
+            line-height: 1.2;
+            color: #fff;
+            margin-bottom: 10px;
+        }
+
+        .gradient-text {
+            background: linear-gradient(to right, #00c6ff, #0072ff);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            display: inline-block;
+            transition: transform 0.3s ease;
+        }
+
+        .gradient-text:hover {
+            transform: scale(1.03);
+            text-shadow: 0 0 20px rgba(0, 198, 255, 0.5);
+        }
+
+        .sub-title {
+            font-size: clamp(1.3rem, 3vw, 2.2rem);
+            font-weight: 600;
+            color: #cbd5e1;
+            margin-bottom: 30px;
+        }
+
+        .highlight {
+            background: linear-gradient(to right, #f59e0b, #fbbf24);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            font-weight: 800;
+        }
+
+        .cta-btn {
+            display: inline-block;
+            background: linear-gradient(45deg, #ec4899, #8b5cf6);
+            color: white;
+            text-decoration: none;
+            padding: 14px 32px;
+            border-radius: 50px;
+            font-weight: 600;
+            font-size: 1.05rem;
+            box-shadow: 0 10px 20px rgba(139, 92, 246, 0.3);
+            transition: all 0.3s ease;
+        }
+
+        .cta-btn:hover {
+            transform: translateY(-3px) scale(1.02);
+            box-shadow: 0 15px 25px rgba(139, 92, 246, 0.5);
+        }
+
+        /* --- CONTENT CONTAINER STYLES --- */
+        .container {
+            max-width: 950px;
+            margin: -40px auto 60px auto;
+            position: relative;
+            z-index: 20;
+            background: #ffffff;
+            padding: 40px;
+            border-radius: 16px;
+            box-shadow: 0 10px 25px rgba(15, 23, 42, 0.08);
+        }
+
+        .section {
+            margin-bottom: 45px;
+        }
+
+        h2 {
+            color: #0f172a;
+            font-size: 1.75rem;
+            border-bottom: 3px solid #38bdf8;
+            padding-bottom: 8px;
+            margin-bottom: 20px;
+        }
+
+        h3 {
+            color: #1e3a8a;
+            margin: 20px 0 10px 0;
+            font-size: 1.25rem;
+        }
+
+        /* Formula & Example Boxes */
+        .formula-box {
+            background-color: #f0f9ff;
+            border-left: 5px solid #0284c7;
+            padding: 18px 22px;
+            margin: 20px 0;
+            border-radius: 0 8px 8px 0;
+        }
+
+        .example-box {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            border-left: 5px solid #16a34a;
+            padding: 22px;
+            margin: 25px 0;
+            border-radius: 8px;
+        }
+
+        .step-list {
+            background: #f8fafc;
+            padding: 20px 20px 20px 40px;
+            border: 1px solid #e2e8f0;
+            border-radius: 8px;
+        }
+
+        /* --- STYLES KALKULATOR INTERAKTIF --- */
+        .calc-box {
+            background: #f8fafc;
+            border: 2px solid #38bdf8;
+            border-radius: 12px;
+            padding: 25px;
+            margin: 30px 0;
+            box-shadow: 0 4px 15px rgba(56, 189, 248, 0.15);
+        }
+
+        .calc-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .input-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        .input-group label {
+            font-weight: 600;
+            font-size: 0.85rem;
+            color: #475569;
+            margin-bottom: 5px;
+        }
+
+        .input-group select, .input-group input {
+            padding: 10px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 0.95rem;
+            outline: none;
+            transition: border-color 0.2s;
+        }
+
+        .input-group select:focus, .input-group input:focus {
+            border-color: #0284c7;
+        }
+
+        .btn-calc {
+            background: linear-gradient(135deg, #0284c7, #2563eb);
+            color: white;
+            width: 100%;
+            padding: 12px;
+            font-size: 1rem;
+            border-radius: 8px;
+            margin-top: 10px;
+        }
+
+        .btn-calc:hover {
+            background: linear-gradient(135deg, #0369a1, #1d4ed8);
+        }
+
+        .calc-result {
+            display: none;
+            margin-top: 20px;
+            background: #ffffff;
+            padding: 20px;
+            border-radius: 8px;
+            border: 1px solid #e2e8f0;
+        }
+
+        /* Problem Card Styling */
+        .problem-card {
+            background: #ffffff;
+            border: 1px solid #e2e8f0;
+            border-radius: 10px;
+            padding: 22px;
+            margin-bottom: 22px;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .problem-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0,0,0,0.06);
+        }
+
+        .problem-title {
+            font-weight: 700;
+            font-size: 1.1rem;
+            color: #1e293b;
+            margin-bottom: 12px;
+        }
+
+        /* Buttons & Collapsible Content */
+        .btn-group {
+            margin-top: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        button {
+            padding: 9px 18px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-weight: 600;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .btn-hint {
+            background-color: #fef08a;
+            color: #854d0e;
+        }
+
+        .btn-hint:hover {
+            background-color: #fde047;
+        }
+
+        .btn-solution {
+            background-color: #2563eb;
+            color: #ffffff;
+        }
+
+        .btn-solution:hover {
+            background-color: #1d4ed8;
+        }
+
+        .collapsible-content {
+            display: none;
+            margin-top: 15px;
+            padding: 18px;
+            border-radius: 8px;
+            font-size: 0.95rem;
+        }
+
+        .hint-content {
+            background-color: #fefce8;
+            border: 1px solid #fef08a;
+            color: #713f12;
+        }
+
+        .solution-content {
+            background-color: #f0fdf4;
+            border: 1px solid #bbf7d0;
+            color: #14532d;
+        }
+
+        hr {
+            border: none;
+            height: 1px;
+            background-color: #e2e8f0;
+            margin: 40px 0;
+        }
+
+        @media (max-width: 640px) {
+            .container {
+                padding: 20px;
+                margin-top: -20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <!-- HERO HEADER -->
+    <header class="hero-header">
+        <div class="math-symbol s1">∑</div>
+        <div class="math-symbol s2">∫</div>
+        <div class="math-symbol s3">π</div>
+        <div class="math-symbol s4">√</div>
+
+        <div class="header-content">
+            <div class="badge">✨ Taklukkan Matematika SMA!</div>
+            <h1 class="main-title">
+                <span class="gradient-text">Belajar Matematika</span>
+            </h1>
+            <h2 class="sub-title">bersama <span class="highlight">Pak Ananda</span></h2>
+            <a href="#materi" class="cta-btn">Mulai Eksplorasi 🚀</a>
+        </div>
+    </header>
+
+    <!-- CONTENT CONTAINER -->
+    <div class="container">
+        
+        <!-- BAGIAN 1: SUB-MATERI -->
+        <div class="section" id="materi">
+            <h2>A. Sub-Materi: Pengenalan Aturan Rantai</h2>
+            
+            <p><strong>Aturan Rantai (Chain Rule)</strong> adalah teknik dasar dalam kalkulus diferensial yang digunakan untuk menentukan turunan dari fungsi komposit (fungsi di dalam fungsi, seperti \( y = f(g(x)) \)).</p>
+
+            <h3>1. Formula Dasar (2 Lapisan)</h3>
+            <p>Jika \( y = f(u) \) dan \( u = g(x) \), maka turunan \( y \) terhadap \( x \) dirumuskan sebagai:</p>
+            <div class="formula-box">
+                <p><strong>Notasi Leibniz:</strong> $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx}$$</p>
+                <p><strong>Notasi Fungsi:</strong> $$\frac{d}{dx}[f(g(x))] = f'(g(x)) \cdot g'(x)$$</p>
+            </div>
+
+            <h3>2. Aturan Rantai Bertingkat (3 Lapisan)</h3>
+            <p>Untuk fungsi dengan tiga lapisan bersarang \( y = f(g(h(x))) \), rumusnya diperluas menjadi:</p>
+            <div class="formula-box">
+                $$\frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dv} \cdot \frac{dv}{dx}$$
+                $$\text{dengan } u = g(v) \text{ dan } v = h(x)$$
+            </div>
+
+            <h3>3. Strategi "Kupas Bawang" (Metode Praktis)</h3>
+            <ol class="step-list">
+                <li><strong>Lapis Paling Luar:</strong> Turunkan fungsi luar, biarkan fungsi di dalamnya tetap utuh.</li>
+                <li><strong>Lapis Tengah:</strong> Kalikan dengan turunan dari fungsi di dalam lapisan pertama.</li>
+                <li><strong>Lapis Paling Dalam:</strong> Kalikan terus ke dalam hingga ke variabel utama (\(x\)).</li>
+            </ol>
+
+            <!-- KALKULATOR INTERAKTIF ATURAN RANTAI -->
+            <div class="calc-box">
+                <h3>⚡ Kalkulator Aturan Rantai Interaktif</h3>
+                <p style="font-size:0.9rem; color:#64748b; margin-bottom:15px;">Simulasikan bentuk fungsi bertingkat \( y = [f(g(x))]^n \) dan lihat langkah penyelesaiannya.</p>
+                
+                <div class="calc-grid">
+                    <div class="input-group">
+                        <label>Lapisan 1 (Pangkat \(n\)):</label>
+                        <input type="number" id="calc-n" value="3" min="1" max="10">
+                    </div>
+                    <div class="input-group">
+                        <label>Lapisan 2 (Trigonometri):</label>
+                        <select id="calc-trig">
+                            <option value="cos">cos(u)</option>
+                            <option value="sin">sin(u)</option>
+                            <option value="tan">tan(u)</option>
+                            <option value="none">Tanpa Trigonometri (Langsung Aljabar)</option>
+                        </select>
+                    </div>
+                    <div class="input-group">
+                        <label>Lapisan 3 (Inner \(ax^k + b\)):</label>
+                        <div style="display:flex; gap:5px;">
+                            <input type="number" id="calc-a" value="2" placeholder="a" style="width:50px;">
+                            <span style="align-self:center;">\(x\)</span>
+                            <input type="number" id="calc-k" value="2" placeholder="k" style="width:50px;">
+                            <span style="align-self:center;">+</span>
+                            <input type="number" id="calc-b" value="1" placeholder="b" style="width:50px;">
+                        </div>
+                    </div>
+                </div>
+
+                <button class="btn-calc" onclick="calculateChainRule()">Hitung Turunan Sekarang 🧮</button>
+
+                <div id="calc-result" class="calc-result">
+                    <p><strong>Fungsi yang diinput:</strong> <span id="res-function"></span></p>
+                    <hr style="margin: 15px 0;">
+                    <p><strong>Langkah Penurunan (Kupas Bawang):</strong></p>
+                    <div id="res-steps" style="margin: 10px 0 10px 20px;"></div>
+                    <p><strong>Hasil Akhir:</strong></p>
+                    <div id="res-final" class="formula-box" style="margin-top:10px;"></div>
+                </div>
+            </div>
+
+            <!-- ULASAN CONTOH SOAL -->
+            <div class="example-box">
+                <h3>Ulasan Contoh Soal & Langkah Penyelesaian</h3>
+                <p><strong>Soal:</strong> Carilah turunan pertama dari \( y = \cos^3(2x^2 + 1) \).</p>
+                <br>
+                <p><strong>Ulasan Pembahasan:</strong></p>
+                <p>Tulis ulang fungsi agar bentuk bersarangnya terlihat jelas: \( y = [\cos(2x^2 + 1)]^3 \).</p>
+                <ul>
+                    <li><strong>Lapisan 1 (Luar):</strong> Fungsi Pangkat \( (\dots)^3 \)</li>
+                    <li><strong>Lapisan 2 (Tengah):</strong> Fungsi Trigonometri \( \cos(\dots) \)</li>
+                    <li><strong>Lapisan 3 (Dalam):</strong> Fungsi Aljabar \( 2x^2 + 1 \)</li>
+                </ul>
+                <br>
+                <p><strong>Proses Penurunan (Kupas Bawang):</strong></p>
+                <ol style="margin-left: 20px;">
+                    <li>Turunkan Pangkat: \( 3[\cos(2x^2 + 1)]^2 \)</li>
+                    <li>Turunkan Kosinus: \( -\sin(2x^2 + 1) \)</li>
+                    <li>Turunkan Aljabar Dalam: \( \frac{d}{dx}(2x^2 + 1) = 4x \)</li>
+                </ol>
+                <br>
+                <p><strong>Hasil Akhir (Kalikan Semua):</strong></p>
+                $$\frac{dy}{dx} = 3\cos^2(2x^2 + 1) \cdot (-\sin(2x^2 + 1)) \cdot 4x$$
+                $$\frac{dy}{dx} = -12x \cdot \cos^2(2x^2 + 1) \cdot \sin(2x^2 + 1)$$
+            </div>
+        </div>
+
+        <hr>
+
+        <!-- BAGIAN 2: SUB-LATIHAN SOAL -->
+        <div class="section" id="latihan">
+            <h2>B. Sub-Latihan Soal (10 Nomor)</h2>
+            <p>Selesaikan latihan soal aljabar dan trigonometri di bawah ini untuk menguji pemahaman Anda. Gunakan tombol <strong>Petunjuk (Hint)</strong> untuk panduan awal.</p>
+
+            <!-- Soal 1 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 1 (Dasar Polinomial)</div>
+                <p>Tentukan turunan pertama dari \( y = (3x - 5)^4 \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-1')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-1')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-1" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Misalkan \( u = 3x - 5 \). Maka \( y = u^4 \). Gunakan \( \frac{dy}{dx} = \frac{dy}{du} \cdot \frac{du}{dx} \).
+                </div>
+                <div id="sol-1" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Misal \( u = 3x - 5 \implies \frac{du}{dx} = 3 \)<br>
+                    2. Maka \( y = u^4 \implies \frac{dy}{du} = 4u^3 \)<br>
+                    3. \( \frac{dy}{dx} = 4u^3 \cdot 3 = 12(3x - 5)^3 \)
+                </div>
+            </div>
+
+            <!-- Soal 2 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 2 (Polinomial Kompleks)</div>
+                <p>Tentukan turunan pertama dari \( y = (2x^2 - 4x + 1)^5 \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-2')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-2')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-2" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Turunkan pangkatnya terlebih dahulu, lalu kalikan dengan turunan fungsi di dalam kurung: \( (2x^2 - 4x + 1) \).
+                </div>
+                <div id="sol-2" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Turunan luar: \( 5(2x^2 - 4x + 1)^4 \)<br>
+                    2. Turunan dalam: \( \frac{d}{dx}(2x^2 - 4x + 1) = 4x - 4 \)<br>
+                    3. \( \frac{dy}{dx} = 5(2x^2 - 4x + 1)^4 \cdot (4x - 4) = 5(4x - 4)(2x^2 - 4x + 1)^4 \)<br>
+                    <em>Bentuk disederhanakan:</em> \( 20(x - 1)(2x^2 - 4x + 1)^4 \)
+                </div>
+            </div>
+
+            <!-- Soal 3 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 3 (Bentuk Akar)</div>
+                <p>Carilah \( f'(x) \) dari \( f(x) = \sqrt{x^3 + 5x} \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-3')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-3')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-3" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Ubah bentuk akar menjadi pangkat pecahan: \( f(x) = (x^3 + 5x)^{1/2} \).
+                </div>
+                <div id="sol-3" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Ubah ke pangkat: \( f(x) = (x^3 + 5x)^{1/2} \)<br>
+                    2. Turunkan: \( f'(x) = \frac{1}{2}(x^3 + 5x)^{-1/2} \cdot (3x^2 + 5) \)<br>
+                    3. Ubah kembali ke bentuk pecahan/akar:<br>
+                    $$f'(x) = \frac{3x^2 + 5}{2\sqrt{x^3 + 5x}}$$
+                </div>
+            </div>
+
+            <!-- Soal 4 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 4 (Trigonometri Sederhana)</div>
+                <p>Tentukan turunan dari \( y = \sin(5x^2 - 2) \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-4')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-4')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-4" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Turunan dari \( \sin(u) \) adalah \( \cos(u) \cdot u' \).
+                </div>
+                <div id="sol-4" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Misal \( u = 5x^2 - 2 \implies u' = 10x \)<br>
+                    2. Turunan fungsi luar: \( \cos(u) \)<br>
+                    3. Hasil: \( \frac{dy}{dx} = \cos(5x^2 - 2) \cdot 10x = 10x \cos(5x^2 - 2) \)
+                </div>
+            </div>
+
+            <!-- Soal 5 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 5 (Trigonometri Berpangkat)</div>
+                <p>Hitung turunan dari \( y = \cos^4(x) \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-5')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-5')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-5" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Tulis ulang sebagai \( y = (\cos x)^4 \). Turunkan pangkatnya dulu, lalu kalikan dengan turunan dari \( \cos x \).
+                </div>
+                <div id="sol-5" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. \( y = (\cos x)^4 \)<br>
+                    2. Turunan luar (pangkat): \( 4(\cos x)^3 \)<br>
+                    3. Turunan dalam (\( \cos x \)): \( -\sin x \)<br>
+                    4. \( \frac{dy}{dx} = 4\cos^3(x) \cdot (-\sin x) = -4 \sin(x) \cos^3(x) \)
+                </div>
+            </div>
+
+            <!-- Soal 6 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 6 (Akar & Polinomial Pecahan)</div>
+                <p>Tentukan turunan dari \( y = \frac{1}{\sqrt{4x^2 + 9}} \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-6')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-6')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-6" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Ubah bentuk pecahan akar menjadi pangkat negatif: \( y = (4x^2 + 9)^{-1/2} \).
+                </div>
+                <div id="sol-6" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Bentuk pangkat: \( y = (4x^2 + 9)^{-1/2} \)<br>
+                    2. Turunan luar (pangkat): \( -\frac{1}{2}(4x^2 + 9)^{-3/2} \)<br>
+                    3. Turunan dalam: \( \frac{d}{dx}(4x^2 + 9) = 8x \)<br>
+                    4. Kalikan: \( \frac{dy}{dx} = -\frac{1}{2}(4x^2 + 9)^{-3/2} \cdot 8x = \frac{-4x}{(4x^2 + 9)^{3/2}} = \frac{-4x}{(4x^2 + 9)\sqrt{4x^2 + 9}} \)
+                </div>
+            </div>
+
+            <!-- Soal 7 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 7 (Trigonometri Tangen)</div>
+                <p>Tentukan turunan dari \( y = \tan(3x^3 - 2x) \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-7')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-7')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-7" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Turunan dari \( \tan(u) \) adalah \( \sec^2(u) \cdot u' \).
+                </div>
+                <div id="sol-7" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Misal \( u = 3x^3 - 2x \implies u' = 9x^2 - 2 \)<br>
+                    2. Turunan luar: \( \sec^2(u) \)<br>
+                    3. Hasil: \( \frac{dy}{dx} = \sec^2(3x^3 - 2x) \cdot (9x^2 - 2) = (9x^2 - 2)\sec^2(3x^3 - 2x) \)
+                </div>
+            </div>
+
+            <!-- Soal 8 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 8 (Tiga Lapisan: Trigonometri & Pangkat)</div>
+                <p>Tentukan turunan dari \( y = \sin^3(4x) \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-8')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-8')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-8" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Fungsi ini adalah \( [\sin(4x)]^3 \). Ada 3 lapisan: (1) pangkat 3, (2) fungsi sin, (3) fungsi \(4x\).
+                </div>
+                <div id="sol-8" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Lapis 1 (Pangkat): \( 3[\sin(4x)]^2 \)<br>
+                    2. Lapis 2 (Sinus): \( \cos(4x) \)<br>
+                    3. Lapis 3 (Linier): \( 4 \)<br>
+                    4. Kalikan semua: \( \frac{dy}{dx} = 3\sin^2(4x) \cdot \cos(4x) \cdot 4 = 12 \sin^2(4x) \cos(4x) \)
+                </div>
+            </div>
+
+            <!-- Soal 9 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 9 (Tiga Lapisan: Akar & Trigonometri)</div>
+                <p>Cari turunan dari \( y = \sqrt{\cos(6x)} \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-9')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-9')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-9" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Tulis ulang sebagai \( y = [\cos(6x)]^{1/2} \). Terdapat 3 lapisan: (1) Pangkat \( 1/2 \), (2) Kosinus, (3) Sudut \( 6x \).
+                </div>
+                <div id="sol-9" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Lapis 1 (Pangkat): \( \frac{1}{2}[\cos(6x)]^{-1/2} \)<br>
+                    2. Lapis 2 (Kosinus): \( -\sin(6x) \)<br>
+                    3. Lapis 3 (Linear): \( 6 \)<br>
+                    4. Kalikan semua: <br>
+                        $$ \frac{dy}{dx} = \frac{1}{2\sqrt{\cos(6x)}} \cdot (-\sin(6x)) \cdot 6 = \frac{-3\sin(6x)}{\sqrt{\cos(6x)}} $$
+                </div>
+            </div>
+
+            <!-- Soal 10 -->
+            <div class="problem-card">
+                <div class="problem-title">Soal 10 (Pecahan Bertingkat)</div>
+                <p>Tentukan turunan dari \( y = \left(\frac{x+1}{x-1}\right)^3 \).</p>
+                <div class="btn-group">
+                    <button class="btn-hint" onclick="toggleContent('hint-10')">Petunjuk (Hint)</button>
+                    <button class="btn-solution" onclick="toggleContent('sol-10')">Lihat Pembahasan</button>
+                </div>
+                <div id="hint-10" class="collapsible-content hint-content">
+                    <strong>Hint:</strong> Gunakan aturan rantai untuk pangkatnya, lalu gunakan aturan hasil bagi \( \left(\frac{u}{v}\right)' = \frac{u'v - uv'}{v^2} \) untuk bagian dalam kurung.
+                </div>
+                <div id="sol-10" class="collapsible-content solution-content">
+                    <strong>Pembahasan:</strong><br>
+                    1. Turunan luar: \( 3\left(\frac{x+1}{x-1}\right)^2 \)<br>
+                    2. Turunan dalam (aturan hasil bagi):<br>
+                        $$ \frac{d}{dx}\left(\frac{x+1}{x-1}\right) = \frac{1(x-1) - (x+1)(1)}{(x-1)^2} = \frac{-2}{(x-1)^2} $$<br>
+                    3. Kalikan keduanya:<br>
+                        $$ \frac{dy}{dx} = 3\left(\frac{x+1}{x-1}\right)^2 \cdot \frac{-2}{(x-1)^2} = \frac{-6(x+1)^2}{(x-1)^4} $$
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <script>
+        // Fungsi untuk toggle visibilitas hint dan pembahasan
+        function toggleContent(id) {
+            var element = document.getElementById(id);
+            if (element.style.display === "block") {
+                element.style.display = "none";
+            } else {
+                element.style.display = "block";
+            }
+        }
+
+        // FUNGSI KALKULATOR ATURAN RANTAI
+        function calculateChainRule() {
+            const n = parseFloat(document.getElementById('calc-n').value) || 1;
+            const trig = document.getElementById('calc-trig').value;
+            const a = parseFloat(document.getElementById('calc-a').value) || 0;
+            const k = parseFloat(document.getElementById('calc-k').value) || 1;
+            const b = parseFloat(document.getElementById('calc-b').value) || 0;
+
+            // Formatter Polinomial Inner
+            let innerStr = "";
+            if (a !== 0) {
+                if (a === 1) innerStr += "x";
+                else if (a === -1) innerStr += "-x";
+                else innerStr += a + "x";
+
+                if (k > 1) innerStr += "^" + k;
+            }
+            if (b > 0) innerStr += " + " + b;
+            else if (b < 0) innerStr += " - " + Math.abs(b);
+            if (innerStr === "") innerStr = "x";
+
+            // Formatter Turunan Inner (ax^k + b)' = (a*k)x^(k-1)
+            const ak = a * k;
+            const k1 = k - 1;
+            let innerDeriv = "";
+            if (ak !== 0) {
+                if (ak === 1 && k1 > 0) innerDeriv = "";
+                else if (ak === -1 && k1 > 0) innerDeriv = "-";
+                else innerDeriv = ak.toString();
+
+                if (k1 === 1) innerDeriv += "x";
+                else if (k1 > 1) innerDeriv += "x^" + k1;
+            } else {
+                innerDeriv = "0";
+            }
+
+            let displayFunc = "";
+            let stepsHtml = "";
+            let finalMath = "";
+
+            if (trig !== "none") {
+                // Kasus 3 Lapisan
+                displayFunc = `y = \\${trig}^{${n}}(${innerStr})`;
+                
+                let trigDeriv = "";
+                let trigNext = "";
+                if (trig === "cos") { trigDeriv = `-\\sin(${innerStr})`; trigNext = `\\sin(${innerStr})`; }
+                else if (trig === "sin") { trigDeriv = `\\cos(${innerStr})`; trigNext = `\\cos(${innerStr})`; }
+                else if (trig === "tan") { trigDeriv = `\\sec^2(${innerStr})`; trigNext = `\\sec^2(${innerStr})`; }
+
+                const n1 = n - 1;
+                let outerDeriv = "";
+                if (n1 === 0) outerDeriv = "1";
+                else if (n1 === 1) outerDeriv = `${n}\\${trig}(${innerStr})`;
+                else outerDeriv = `${n}\\${trig}^{${n1}}(${innerStr})`;
+
+                stepsHtml = `
+                    <ol>
+                        <li><strong>Lapisan 1 (Pangkat):</strong> \\(${outerDeriv}\\)</li>
+                        <li><strong>Lapisan 2 (Trigonometri):</strong> \\(${trigDeriv}\\)</li>
+                        <li><strong>Lapisan 3 (Aljabar):</strong> \\(${innerDeriv}\\)</li>
+                    </ol>
+                `;
+
+                const totalCoeff = n * ak * (trig === "cos" ? -1 : 1);
+                let coeffStr = totalCoeff === 1 ? "" : (totalCoeff === -1 ? "-" : totalCoeff);
+                
+                let xPart = "";
+                if (k1 === 1) xPart = "x";
+                else if (k1 > 1) xPart = `x^{${k1}}`;
+
+                let trigPowPart = "";
+                if (n1 === 1) trigPowPart = `\\${trig}(${innerStr})`;
+                else if (n1 > 1) trigPowPart = `\\${trig}^{${n1}}(${innerStr})`;
+
+                finalMath = `\\frac{dy}{dx} = ${coeffStr}${xPart} ${trigPowPart} ${trigNext}`;
+            } else {
+                // Kasus 2 Lapisan
+                displayFunc = `y = (${innerStr})^{${n}}`;
+                const n1 = n - 1;
+                let outerDeriv = `${n}(${innerStr})^{${n1}}`;
+
+                stepsHtml = `
+                    <ol>
+                        <li><strong>Lapisan 1 (Pangkat):</strong> \\(${outerDeriv}\\)</li>
+                        <li><strong>Lapisan 2 (Aljabar Dalam):</strong> \\(${innerDeriv}\\)</li>
+                    </ol>
+                `;
+
+                const totalCoeff = n * ak;
+                let coeffStr = totalCoeff === 1 ? "" : (totalCoeff === -1 ? "-" : totalCoeff);
+                
+                let xPart = "";
+                if (k1 === 1) xPart = "x";
+                else if (k1 > 1) xPart = `x^{${k1}}`;
+
+                finalMath = `\\frac{dy}{dx} = ${coeffStr}${xPart}(${innerStr})^{${n1}}`;
+            }
+
+            document.getElementById('res-function').innerHTML = `\\(${displayFunc}\\)`;
+            document.getElementById('res-steps').innerHTML = stepsHtml;
+            document.getElementById('res-final').innerHTML = `\\[${finalMath}\\]`;
+            document.getElementById('calc-result').style.display = 'block';
+
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise([document.getElementById('calc-result')]);
+            }
+        }
+    </script>
+
+</body>
+</html>
