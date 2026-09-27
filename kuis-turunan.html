@@ -1,0 +1,787 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Kuis Interaktif Turunan Fungsi Aljabar & Trigonometri</title>
+  
+  <!-- Google Fonts: Poppins -->
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  
+  <!-- Bootstrap 5 CSS -->
+  <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
+  
+  <!-- Konfigurasi & Script MathJax -->
+  <script>
+    window.MathJax = {
+      tex: {
+        inlineMath: [['$', '$'], ['\\(', '\\)']],
+        displayMath: [['$$', '$$'], ['\\[', '\\]']]
+      },
+      options: {
+        skipHtmlTags: ['script', 'noscript', 'style', 'textarea', 'pre']
+      }
+    };
+  </script>
+  <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+  
+  <style>
+    * {
+      font-family: 'Poppins', sans-serif;
+    }
+
+    body { 
+      background-color: #f8fafc; 
+      color: #0f172a;
+      user-select: none;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+    }
+
+    /* --- HERO HEADER STYLE (LIGHT TONE) --- */
+    .hero-header {
+      position: relative;
+      width: 100%;
+      min-height: 38vh;
+      background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      overflow: hidden;
+      padding: 2.5rem 1.5rem;
+      box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    }
+
+    /* Animasi Simbol Matematika Melayang */
+    .math-symbol {
+      position: absolute;
+      color: rgba(255, 255, 255, 0.15);
+      font-size: 4rem;
+      font-weight: 800;
+      animation: float 6s ease-in-out infinite;
+      pointer-events: none;
+    }
+    
+    .s1 { top: 15%; left: 8%; animation-delay: 0s; }
+    .s2 { bottom: 15%; right: 10%; animation-delay: 2s; font-size: 5rem; }
+    .s3 { top: 20%; right: 12%; animation-delay: 4s; }
+    .s4 { bottom: 10%; left: 12%; animation-delay: 1s; font-size: 5.5rem; }
+
+    @keyframes float {
+      0% { transform: translateY(0px) rotate(0deg); }
+      50% { transform: translateY(-15px) rotate(8deg); }
+      100% { transform: translateY(0px) rotate(0deg); }
+    }
+
+    .header-content {
+      position: relative;
+      z-index: 10;
+    }
+
+    .hero-badge {
+      display: inline-block;
+      background: rgba(255, 255, 255, 0.2);
+      color: #ffffff;
+      padding: 6px 18px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      margin-bottom: 12px;
+      backdrop-filter: blur(5px);
+      border: 1px solid rgba(255, 255, 255, 0.3);
+    }
+
+    .main-title {
+      font-size: clamp(2rem, 4vw, 3.2rem);
+      font-weight: 800;
+      line-height: 1.2;
+      color: #ffffff;
+      margin-bottom: 6px;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
+    }
+
+    .sub-title {
+      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
+      font-weight: 600;
+      color: #e0f2fe;
+      margin-bottom: 12px;
+    }
+
+    .highlight {
+      color: #fef08a;
+      font-weight: 800;
+    }
+
+    /* --- DASHBOARD / KUIS STYLES (THEMA PUTIH) --- */
+    .card { 
+      background-color: #ffffff;
+      border-radius: 16px; 
+      border: 1px solid #e2e8f0; 
+      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+      color: #0f172a;
+    }
+
+    .form-select, .form-control {
+      background-color: #ffffff;
+      border: 1px solid #cbd5e1;
+      color: #0f172a;
+      font-weight: 500;
+    }
+
+    .form-select:focus, .form-control:focus {
+      background-color: #ffffff;
+      color: #0f172a;
+      border-color: #0284c7;
+      box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.2);
+    }
+
+    .form-check-input {
+      background-color: #ffffff;
+      border-color: #94a3b8;
+    }
+
+    .form-check-input:checked {
+      background-color: #0284c7;
+      border-color: #0284c7;
+    }
+
+    /* Styling Opsi Jawaban */
+    .option-box {
+      background-color: #f8fafc;
+      border: 1px solid #e2e8f0;
+      border-radius: 10px;
+      transition: all 0.2s ease;
+      cursor: pointer;
+    }
+
+    .option-box:hover {
+      background-color: #f1f5f9;
+      border-color: #cbd5e1;
+    }
+
+    /* Keterbacaan Tabel Benar/Salah (BS) */
+    .table {
+      color: #0f172a !important;
+      border-color: #cbd5e1 !important;
+    }
+
+    .table td, .table th {
+      color: #0f172a !important;
+      background-color: #ffffff !important;
+    }
+
+    .badge-diff { 
+      font-size: 0.8rem; 
+      padding: 0.4em 0.8em; 
+      font-weight: 600;
+    }
+    
+    .loading-overlay { 
+      display: flex; 
+      justify-content: center; 
+      align-items: center; 
+      position: fixed; 
+      top:0; left:0; width:100%; height:100%; 
+      background: rgba(255, 255, 255, 0.95); 
+      z-index:9999; 
+    }
+
+    .warning-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 1050; display: none; }
+    
+    /* Navigasi Nomor Soal Grid */
+    .grid-nomor {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 8px;
+    }
+
+    .btn-nomor {
+      width: 100%;
+      height: 40px;
+      font-weight: 700;
+      border-radius: 8px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      transition: all 0.2s ease;
+    }
+
+    .btn-nomor.active {
+      border: 2px solid #0284c7 !important;
+      background-color: #e0f2fe !important;
+      color: #0369a1 !important;
+      transform: scale(1.05);
+      box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
+    }
+
+    .btn-nomor.dijawab {
+      background-color: #10b981;
+      color: white;
+      border: none;
+    }
+
+    .btn-nomor.belum {
+      background-color: #f1f5f9;
+      color: #64748b;
+      border: 1px solid #cbd5e1;
+    }
+
+    .soal-card { display: none; }
+    .soal-card.active { display: block; }
+
+    .sticky-top-bar {
+      background-color: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(10px);
+      border: 1px solid #e2e8f0;
+    }
+
+    .soal-text {
+      font-size: 1.1rem;
+      font-weight: 500;
+      color: #0f172a;
+      line-height: 1.6;
+    }
+  </style>
+</head>
+<body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
+
+<!-- HERO HEADER -->
+<header class="hero-header">
+  <div class="math-symbol s1">∑</div>
+  <div class="math-symbol s2">∫</div>
+  <div class="math-symbol s3">π</div>
+  <div class="math-symbol s4">√</div>
+
+  <div class="header-content">
+    <div class="hero-badge">✨ Taklukkan Matematika SMA!</div>
+    <h1 class="main-title">Belajar Matematika</h1>
+    <h2 class="sub-title">bersama <span class="highlight">Pak Ananda</span></h2>
+    <p class="text-white-50 fs-6 mb-0" style="color: #e2e8f0 !important;">Materi: Turunan Fungsi Aljabar, Trigonometri, Aturan Rantai, & Limit</p>
+  </div>
+</header>
+
+<!-- Banner Peringatan Kecurangan -->
+<div id="warningBanner" class="alert alert-danger warning-banner text-center fw-bold shadow" role="alert">
+  ⚠️ PERINGATAN: Anda terdeteksi meninggalkan halaman kuis! Pelanggaran telah dicatat oleh sistem.
+</div>
+
+<!-- Loading Overlay -->
+<div id="loading" class="loading-overlay">
+  <div class="text-center">
+    <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
+    <p class="mt-3 text-dark fw-bold" id="loadingText">Memuat Data Siswa dari Spreadsheet...</p>
+  </div>
+</div>
+
+<div class="container my-5" style="max-width: 1000px;">
+
+  <!-- Form Identitas Siswa -->
+  <div class="card p-4 mb-4" id="form-identitas">
+    <h5 class="fw-bold text-primary mb-3">📋 Identitas Siswa</h5>
+    <div class="row g-3">
+      
+      <!-- Input Nama Siswa dengan Suggestion (Datalist) -->
+      <div class="col-md-5">
+        <label class="form-label fw-bold">Nama Lengkap</label>
+        <input class="form-control" list="listNama" id="inputNama" placeholder="Ketik nama Anda..." autocomplete="off" required>
+        <datalist id="listNama">
+          <!-- Opsi nama diisi otomatis via JS -->
+        </datalist>
+      </div>
+
+      <!-- Input Kelas Dropdown -->
+      <div class="col-md-4">
+        <label class="form-label fw-bold">Kelas</label>
+        <select class="form-select" id="inputKelas" required>
+          <option value="">-- Pilih Kelas --</option>
+        </select>
+      </div>
+
+      <div class="col-md-3">
+        <label class="form-label fw-bold">Nomor Absen</label>
+        <input type="number" class="form-control" id="inputAbsen" placeholder="Contoh: 12" required>
+      </div>
+    </div>
+
+    <!-- Informasi Fitur Keamanan -->
+    <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-dark mt-4 mb-0" role="alert">
+      <strong>⚠️ Sistem Anti-Kecurangan Aktif:</strong>
+      <ul class="mb-0 ps-3 mt-1 small">
+        <li>Dilarang berpindah tab, me-refresh halaman, membuka jendela lain, atau menggunakan AI.</li>
+        <li>Fungsi Klik Kanan, Copy, Paste, dan Pintasan Keyboard (F12, Inspect Element) dinonaktifkan.</li>
+        <li>Setiap kali Anda meninggalkan halaman kuis, jumlah pelanggaran akan dicatat dalam rekapitulasi guru.</li>
+      </ul>
+    </div>
+
+    <button class="btn btn-primary text-white mt-4 w-100 py-2 fw-bold fs-5 shadow-sm" onclick="mulaiKuis()">Mulai Kerjakan Kuis 🚀</button>
+  </div>
+
+  <!-- Area Lembar Kuis -->
+  <div id="area-kuis" style="display: none;">
+    
+    <!-- Top Bar Informasi & Timer -->
+    <div class="card p-3 sticky-top-bar sticky-top shadow-sm mb-4 d-flex flex-row justify-content-between align-items-center" style="top: 15px; z-index: 1000;">
+      <div>
+        <strong class="text-primary">Siswa:</strong> <span id="dispNama" class="fw-semibold"></span> (<span id="dispKelas"></span> / Absen: <span id="dispAbsen"></span>)
+      </div>
+      <div class="d-flex align-items-center gap-2">
+        <span class="badge bg-danger fs-6 fw-semibold" id="pelanggaranCount">Pelanggaran: 0</span>
+        <span class="badge bg-warning text-dark fs-6 fw-semibold" id="timer">Waktu: 00:00</span>
+      </div>
+    </div>
+
+    <div class="row g-4">
+      <!-- Kolom Kiri: Navigasi Nomor Soal -->
+      <div class="col-md-4 col-lg-3">
+        <div class="card p-3 sticky-top" style="top: 90px;">
+          <h6 class="fw-bold text-primary mb-3">Navigasi Soal</h6>
+          <div class="grid-nomor" id="gridNomor">
+            <!-- Dibuat Otomatis via JS -->
+          </div>
+          
+          <hr class="my-3 border-secondary-subtle">
+          
+          <div class="d-flex flex-column gap-2 text-start small fw-medium">
+            <div><span class="badge bg-success me-1">&nbsp;</span> Sudah Dijawab</div>
+            <div><span class="badge bg-secondary me-1">&nbsp;</span> Belum Dijawab</div>
+            <div><span class="badge bg-info text-dark me-1">&nbsp;</span> Sedang Dibuka</div>
+          </div>
+
+          <button class="btn btn-success w-100 fw-bold mt-4 shadow-sm" onclick="konfirmasiKirim()">Selesai & Kirim</button>
+        </div>
+      </div>
+
+      <!-- Kolom Kanan: Soal Aktif -->
+      <div class="col-md-8 col-lg-9">
+        <div id="soal-container">
+          <!-- Dibuat Otomatis via JS -->
+        </div>
+
+        <!-- Tombol Navigasi Bawah -->
+        <div class="d-flex justify-content-between mt-3">
+          <button class="btn btn-outline-secondary fw-bold" id="btnPrev" onclick="pindahSoal(indexAktif - 1)">← Sebelumnya</button>
+          <button class="btn btn-primary fw-bold" id="btnNext" onclick="pindahSoal(indexAktif + 1)">Selanjutnya →</button>
+        </div>
+      </div>
+    </div>
+
+  </div>
+
+  <!-- Area Hasil Pengerjaan -->
+  <div id="area-hasil" style="display: none;">
+    <div class="card p-4 text-center mb-4">
+      <h3 class="fw-bold text-success mb-2">🎉 Kuis Selesai!</h3>
+      <p class="text-secondary">Jawaban, skor, dan data durasi waktu Anda telah berhasil tersimpan otomatis di rekapitulasi guru.</p>
+      
+      <div class="row mt-4 g-3">
+        <div class="col-md-3 col-6">
+          <div class="p-3 border rounded bg-light">
+            <h2 class="fw-bold text-primary mb-0" id="resSkor">0</h2>
+            <small class="text-muted fw-semibold">Skor (Skala 100)</small>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="p-3 border rounded bg-light">
+            <h2 class="fw-bold text-success mb-0" id="resBenar">0</h2>
+            <small class="text-muted fw-semibold">Poin / 20 Soal</small>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="p-3 border rounded bg-light">
+            <h2 class="fw-bold text-warning mb-0" id="resTotalWaktu">00:00</h2>
+            <small class="text-muted fw-semibold">Total Waktu</small>
+          </div>
+        </div>
+        <div class="col-md-3 col-6">
+          <div class="p-3 border rounded bg-light">
+            <h2 class="fw-bold text-dark mb-0" id="resRataWaktu">0s</h2>
+            <small class="text-muted fw-semibold">Rata-rata / Soal</small>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
+
+<script>
+  const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZpm2JU4CpkhNFhDxwTYYhpNkX8Car-RV0bx2hMTM2OJrfx8i6Tc6dc88B2PPE4J2a/exec";
+
+  const daftarSoal = [
+    { id:1, tipe:"PG", tingkat:"Mudah", soal:"Turunan pertama dari $f(x) = 5x^4 - 3x^2 + 7$ adalah...", opsi:["$20x^3 - 6x$","$20x^3 - 6x + 7$","$5x^3 - 3x$","$20x^4 - 6x$"], kunci:"$20x^3 - 6x$" },
+    { id:2, tipe:"PG", tingkat:"Mudah", soal:"Jika $f(x) = \\sin(x) + \\cos(x)$, maka $f'(x)$ adalah...", opsi:["$\\cos(x) - \\sin(x)$","$\\cos(x) + \\sin(x)$","$-\\cos(x) + \\sin(x)$","$-\\cos(x) - \\sin(x)$"], kunci:"$\\cos(x) - \\sin(x)$" },
+    { id:3, tipe:"PG", tingkat:"Mudah", soal:"Nilai dari $\\lim_{h \\to 0} \\frac{(x+h)^3 - x^3}{h}$ adalah...", opsi:["$3x^2$","$x^3$","$3x$","$6x$"], kunci:"$3x^2$" },
+    { id:4, tipe:"PG", tingkat:"Mudah", soal:"Turunan pertama dari $f(x) = 4\\tan(x)$ adalah...", opsi:["$4\\sec^2(x)$","$4\\csc^2(x)$","$-4\\sec^2(x)$","$4\\cos(x)$"], kunci:"$4\\sec^2(x)$" },
+    { id:5, tipe:"PG", tingkat:"Mudah", soal:"Jika $y = (2x + 1)^5$, maka $\\frac{dy}{dx} =$ ...", opsi:["$10(2x+1)^4$","$5(2x+1)^4$","$20(2x+1)^4$","$2(2x+1)^4$"], kunci:"$10(2x+1)^4$" },
+    { id:6, tipe:"PG", tingkat:"Mudah", soal:"Turunan dari $f(x) = 3x^{-2}$ adalah...", opsi:["$-6x^{-3}$","$-6x^{-1}$","$6x^{-3}$","$-3x^{-3}$"], kunci:"$-6x^{-3}$" },
+    { id:7, tipe:"PG", tingkat:"Mudah", soal:"Hasil dari $\\lim_{x \\to 0} \\frac{\\sin(5x)}{2x}$ menggunakan aturan L'Hopital adalah...", opsi:["$5/2$","$2/5$","$5$","$0$"], kunci:"$5/2$" },
+    { id:8, tipe:"PG", tingkat:"Mudah", soal:"Turunan dari $f(x) = \\csc(x)$ adalah...", opsi:["$-\\csc(x)\\cot(x)$","$\\csc(x)\\cot(x)$","$-\\sec(x)\\tan(x)$","$-\\csc^2(x)$"], kunci:"$-\\csc(x)\\cot(x)$" },
+    { id:9, tipe:"PG", tingkat:"Mudah", soal:"Jika $f(x) = x^2 \\cdot \\sin(x)$, turunan pertamanya adalah...", opsi:["$2x\\sin(x) + x^2\\cos(x)$","$2x\\cos(x)$","$x^2\\cos(x)$","$2x\\sin(x) - x^2\\cos(x)$"], kunci:"$2x\\sin(x) + x^2\\cos(x)$" },
+    { id:10, tipe:"PG", tingkat:"Mudah", soal:"Turunan pertama dari $f(x) = \\cos(3x - 1)$ adalah...", opsi:["$-3\\sin(3x-1)$","$3\\sin(3x-1)$","$-\\sin(3x-1)$","$-3\\cos(3x-1)$"], kunci:"$-3\\sin(3x-1)$" },
+    { id:11, tipe:"PG", tingkat:"Menengah", soal:"Jika $f(x) = \\frac{2x+3}{x-1}$, maka $f'(x) =$ ...", opsi:["$\\frac{-5}{(x-1)^2}$","$\\frac{5}{(x-1)^2}$","$\\frac{-1}{(x-1)^2}$","$\\frac{1}{(x-1)^2}$"], kunci:"$\\frac{-5}{(x-1)^2}$" },
+    { id:12, tipe:"PG", tingkat:"Menengah", soal:"Turunan pertama dari $y = \\sin^3(2x)$ adalah...", opsi:["$6\\sin^2(2x)\\cos(2x)$","$3\\sin^2(2x)\\cos(2x)$","$6\\sin(2x)\\cos(2x)$","$2\\sin^3(2x)\\cos(2x)$"], kunci:"$6\\sin^2(2x)\\cos(2x)$" },
+    { id:13, tipe:"PG", tingkat:"Menengah", soal:"Nilai turunan pertama $f(x) = \\sqrt{x^2 + 9}$ pada $x = 4$ adalah...", opsi:["$4/5$","$3/5$","$5/4$","$1/5$"], kunci:"$4/5$" },
+    { id:14, tipe:"PGK", tingkat:"Menengah", soal:"Pilihlah semua pernyataan yang **BENAR** terkait turunan $f(x) = \\tan(2x)$:", opsi:[
+        " Turunan pertamanya adalah $2\\sec^2(2x)$",
+        " Nilai $f'(\\pi/8)$ adalah $4$",
+        " Menggunakan aturan rantai dengan $u = 2x$",
+        " Turunan pertamanya adalah $2\\tan(2x)$"
+      ], kunci:[0,1,2] },
+    { id:15, tipe:"BS", tingkat:"Menengah", soal:"Tentukan kebenaran dari pernyataan turunan berikut:", poin:[
+        { p:"Turunan dari $f(x) = \\sec(x)$ adalah $\\sec(x)\\tan(x)$", k:"B" },
+        { p:"Aturan rantai untuk $y = f(g(x))$ adalah $\\frac{dy}{dx} = f'(x) \\cdot g'(x)$", k:"S" },
+        { p:"$\\lim_{x \\to a} \\frac{f(x)-f(a)}{x-a}$ adalah definisi turunan $f'(a)$", k:"B" }
+      ] },
+    { id:16, tipe:"PG", tingkat:"HOTS", soal:"Jika $f(x) = \\cos^2(3x^2 - 1)$, maka $f'(x) =$ ...", opsi:["$-12x \\cos(3x^2-1)\\sin(3x^2-1)$","$-6x \\sin(3x^2-1)$","$12x \\cos(3x^2-1)$","$-12x \\sin^2(3x^2-1)$"], kunci:"$-12x \\cos(3x^2-1)\\sin(3x^2-1)$" },
+    { id:17, tipe:"PG", tingkat:"HOTS", soal:"Diketahui $\\lim_{x \\to 0} \\frac{\\cos(4x) - 1}{x \\tan(2x)}$. Dengan aturan L'Hopital, nilai limit tersebut adalah...", opsi:["$-4$","$-2$","$2$","$4$"], kunci:"$-4$" },
+    { id:18, tipe:"PGK", tingkat:"HOTS", soal:"Diketahui $f(x) = \\frac{\\sin(x)}{1 + \\cos(x)}$. Pernyataan yang **BENAR** adalah:", opsi:[
+        " Turunan pertamanya dapat disederhanakan menjadi $\\frac{1}{1 + \\cos(x)}$",
+        " Nilai $f'(\\pi/3)$ adalah $2/3$",
+        " Fungsi dapat disederhanakan dulu menjadi $\\tan(x/2)$ sebelum diturunkan",
+        " Turunan pertamanya adalah $\\frac{\\cos(x)}{-\\sin(x)}$"
+      ], kunci:[0,1,2] },
+    { 
+  id: 19, 
+  tipe: "BS", 
+  tingkat: "HOTS", 
+  soal: "Analisis kebenaran pernyataan turunan berikut:", 
+  poin: [
+    { p: "Jika $f(x) = \\sin(x) \\cos(x)$, maka $f'(x) = \\cos(2x)$", k: "B" },
+    { p: "Turunan ke-4 dari $f(x) = \\sin(x)$ adalah $\\sin(x)$", k: "B" },
+    { p: "Jika $f(x) = |x|$, maka $f'(0) = 0$", k: "S" } // Ditulis |x| biasa agar tidak ada konflik MathJax
+  ] 
+},
+    { id:20, tipe:"PG", tingkat:"HOTS", soal:"Jika $g(x) = f(\\sin^2(x))$ dan $f'(x) = 2x+1$, maka nilai $g'(\\pi/4)$ adalah...", opsi:["$2$","$1$","$2\\sqrt{2}$","$0$"], kunci:"$2$" }
+  ];
+
+  let siswaData = {};
+  let timerInterval = null;
+  let totalDetik = 0;
+  let jumlahPelanggaran = 0;
+  let kuisAktif = false;
+  let indexAktif = 0;
+
+  window.onload = function() {
+    fetch(SCRIPT_URL + "?action=getSiswa")
+      .then(res => res.json())
+      .then(data => populateDropdowns(data))
+      .catch(err => {
+        alert("Gagal memuat data siswa: " + err);
+        document.getElementById('loading').style.display = 'none';
+      });
+  };
+
+  // Mengisi opsi ke Datalist & Dropdown Kelas
+  function populateDropdowns(data) {
+    const datalistNama = document.getElementById('listNama');
+    const selectKelas = document.getElementById('inputKelas');
+
+    datalistNama.innerHTML = '';
+    data.nama.forEach(nama => {
+      let opt = document.createElement('option');
+      opt.value = nama;
+      datalistNama.appendChild(opt);
+    });
+
+    data.kelas.forEach(kelas => {
+      let opt = document.createElement('option');
+      opt.value = kelas; opt.textContent = kelas;
+      selectKelas.appendChild(opt);
+    });
+
+    document.getElementById('loading').style.display = 'none';
+  }
+
+  window.addEventListener("beforeunload", function (e) {
+    if (kuisAktif) {
+      e.preventDefault();
+      e.returnValue = "Jawaban Anda berpotensi tidak tersimpan jika Anda menyegarkan (refresh) halaman ini. Yakin ingin keluar?";
+      return e.returnValue;
+    }
+  });
+
+  window.addEventListener("blur", function() {
+    if (kuisAktif) {
+      jumlahPelanggaran++;
+      document.getElementById('pelanggaranCount').textContent = `Pelanggaran: ${jumlahPelanggaran}`;
+      let banner = document.getElementById('warningBanner');
+      banner.style.display = 'block';
+      setTimeout(() => { banner.style.display = 'none'; }, 4000);
+    }
+  });
+
+  window.addEventListener("keydown", function(e) {
+    if (
+      e.keyCode === 123 || 
+      (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 83 || e.keyCode === 65))
+    ) {
+      e.preventDefault();
+      return false;
+    }
+  });
+
+  function mulaiKuis() {
+    const nama = document.getElementById('inputNama').value.trim();
+    const kelas = document.getElementById('inputKelas').value;
+    const absen = document.getElementById('inputAbsen').value;
+
+    if (!nama || !kelas || !absen) {
+      alert("Harap isi semua data identitas terlebih dahulu!");
+      return;
+    }
+
+    siswaData = { nama, kelas, absen };
+    document.getElementById('dispNama').textContent = nama;
+    document.getElementById('dispKelas').textContent = kelas;
+    document.getElementById('dispAbsen').textContent = absen;
+
+    document.getElementById('form-identitas').style.display = 'none';
+    document.getElementById('area-kuis').style.display = 'block';
+
+    renderSoalDanNavigasi();
+    pindahSoal(0);
+
+    kuisAktif = true;
+    timerInterval = setInterval(updateTimer, 1000);
+  }
+
+  function updateTimer() {
+    totalDetik++;
+    let menit = Math.floor(totalDetik / 60);
+    let detik = totalDetik % 60;
+    document.getElementById('timer').textContent = 
+      `Waktu: ${menit < 10 ? '0' : ''}${menit}:${detik < 10 ? '0' : ''}${detik}`;
+  }
+
+  function renderSoalDanNavigasi() {
+    const container = document.getElementById('soal-container');
+    const grid = document.getElementById('gridNomor');
+    container.innerHTML = '';
+    grid.innerHTML = '';
+
+    daftarSoal.forEach((s, idx) => {
+      let btn = document.createElement('button');
+      btn.className = 'btn-nomor belum';
+      btn.id = `nav_${idx}`;
+      btn.textContent = idx + 1;
+      btn.onclick = () => pindahSoal(idx);
+      grid.appendChild(btn);
+
+      let html = `<div class="card p-4 soal-card" id="soal_card_${idx}">
+        <div class="d-flex justify-content-between align-items-center mb-3">
+          <span class="fw-bold fs-5 text-primary">Soal No. ${idx + 1} <small class="text-muted fs-6">(${s.tipe})</small></span>
+          <span class="badge bg-secondary badge-diff">${s.tingkat}</span>
+        </div>
+        <p class="soal-text mb-4">${s.soal}</p>`;
+
+      if (s.tipe === "PG") {
+        s.opsi.forEach((o, i) => {
+          html += `<div class="form-check option-box p-3 mb-2">
+            <input class="form-check-input ms-1" type="radio" name="soal_${s.id}" id="s_${s.id}_${i}" value="${o}" onchange="cekStatusJawaban(${idx})">
+            <label class="form-check-label ms-2 w-100 text-dark fw-medium" for="s_${s.id}_${i}">${o}</label>
+          </div>`;
+        });
+      } else if (s.tipe === "PGK") {
+        s.opsi.forEach((o, i) => {
+          html += `<div class="form-check option-box p-3 mb-2">
+            <input class="form-check-input ms-1" type="checkbox" name="soal_${s.id}" id="s_${s.id}_${i}" value="${i}" onchange="cekStatusJawaban(${idx})">
+            <label class="form-check-label ms-2 w-100 text-dark fw-medium" for="s_${s.id}_${i}">${o}</label>
+          </div>`;
+        });
+      } else if (s.tipe === "BS") {
+        html += `<table class="table table-bordered border-secondary-subtle mt-2"><tbody>`;
+        s.poin.forEach((p, i) => {
+          html += `<tr>
+            <td class="align-middle fw-medium text-dark">${p.p}</td>
+            <td width="140" class="text-center align-middle bg-light">
+              <input type="radio" class="btn-check" name="bs_${s.id}_${i}" id="b_${s.id}_${i}" value="B" onchange="cekStatusJawaban(${idx})">
+              <label class="btn btn-outline-success btn-sm me-1 fw-bold" for="b_${s.id}_${i}">B</label>
+              <input type="radio" class="btn-check" name="bs_${s.id}_${i}" id="s_${s.id}_${i}" value="S" onchange="cekStatusJawaban(${idx})">
+              <label class="btn btn-outline-danger btn-sm fw-bold" for="s_${s.id}_${i}">S</label>
+            </td>
+          </tr>`;
+        });
+        html += `</tbody></table>`;
+      }
+
+      html += `</div>`;
+      container.innerHTML += html;
+    });
+
+    if (window.MathJax && window.MathJax.typesetPromise) {
+      MathJax.typesetPromise();
+    }
+  }
+
+  function pindahSoal(targetIndex) {
+    if (targetIndex < 0 || targetIndex >= daftarSoal.length) return;
+
+    document.querySelectorAll('.soal-card').forEach(el => el.classList.remove('active'));
+    document.querySelectorAll('.btn-nomor').forEach(el => el.classList.remove('active'));
+
+    indexAktif = targetIndex;
+    document.getElementById(`soal_card_${indexAktif}`).classList.add('active');
+    document.getElementById(`nav_${indexAktif}`).classList.add('active');
+
+    document.getElementById('btnPrev').disabled = (indexAktif === 0);
+    document.getElementById('btnNext').disabled = (indexAktif === daftarSoal.length - 1);
+  }
+
+  function cekStatusJawaban(idx) {
+    const s = daftarSoal[idx];
+    let terisi = false;
+
+    if (s.tipe === "PG") {
+      terisi = document.querySelector(`input[name="soal_${s.id}"]:checked`) !== null;
+    } else if (s.tipe === "PGK") {
+      terisi = document.querySelectorAll(`input[name="soal_${s.id}"]:checked`).length > 0;
+    } else if (s.tipe === "BS") {
+      let countBS = 0;
+      s.poin.forEach((p, i) => {
+        if (document.querySelector(`input[name="bs_${s.id}_${i}"]:checked`)) countBS++;
+      });
+      terisi = (countBS === s.poin.length);
+    }
+
+    const navBtn = document.getElementById(`nav_${idx}`);
+    if (terisi) {
+      navBtn.classList.remove('belum');
+      navBtn.classList.add('dijawab');
+    } else {
+      navBtn.classList.remove('dijawab');
+      navBtn.classList.add('belum');
+    }
+  }
+
+  function konfirmasiKirim() {
+    let belumDijawab = 0;
+    daftarSoal.forEach((s, idx) => {
+      const navBtn = document.getElementById(`nav_${idx}`);
+      if (!navBtn.classList.contains('dijawab')) belumDijawab++;
+    });
+
+    let pesan = "Apakah Anda yakin ingin menyelesaikan dan mengirimkan kuis?";
+    if (belumDijawab > 0) {
+      pesan = `Masih ada ${belumDijawab} nomor soal yang belum dijawab! ` + pesan;
+    }
+
+    if (confirm(pesan)) {
+      hitungDanKirimHasil();
+    }
+  }
+
+  function hitungDanKirimHasil() {
+    kuisAktif = false;
+    clearInterval(timerInterval);
+
+    let totalSkorMentah = 0;
+    let totalSoal = daftarSoal.length;
+    let detailJawaban = {};
+    let jumlahLengkapBenar = 0;
+
+    daftarSoal.forEach(s => {
+      if (s.tipe === "PG") {
+        let el = document.querySelector(`input[name="soal_${s.id}"]:checked`);
+        let val = el ? el.value : "";
+        detailJawaban[`No_${s.id}`] = val;
+        
+        if (val === s.kunci) {
+          totalSkorMentah += 1;
+          jumlahLengkapBenar++;
+        }
+
+      } else if (s.tipe === "PGK") {
+        let els = document.querySelectorAll(`input[name="soal_${s.id}"]:checked`);
+        let userAns = Array.from(els).map(e => parseInt(e.value));
+        detailJawaban[`No_${s.id}`] = userAns;
+
+        let totalOpsi = s.opsi.length;
+        let opsiTepat = 0;
+
+        s.opsi.forEach((_, optIdx) => {
+          let kunciSeharusnyaCentang = s.kunci.includes(optIdx);
+          let siswaMencentang = userAns.includes(optIdx);
+
+          if (kunciSeharusnyaCentang === siswaMencentang) {
+            opsiTepat++;
+          }
+        });
+
+        let nilaiSoalThis = opsiTepat / totalOpsi;
+        totalSkorMentah += nilaiSoalThis;
+        if (nilaiSoalThis === 1) jumlahLengkapBenar++;
+
+      } else if (s.tipe === "BS") {
+        let totalSubPoin = s.poin.length;
+        let subPoinBenar = 0;
+        let ansArr = [];
+
+        s.poin.forEach((p, i) => {
+          let el = document.querySelector(`input[name="bs_${s.id}_${i}"]:checked`);
+          let val = el ? el.value : "";
+          ansArr.push(val);
+
+          if (val === p.k) {
+            subPoinBenar++;
+          }
+        });
+
+        detailJawaban[`No_${s.id}`] = ansArr;
+        
+        let nilaiSoalThis = subPoinBenar / totalSubPoin;
+        totalSkorMentah += nilaiSoalThis;
+        if (nilaiSoalThis === 1) jumlahLengkapBenar++;
+      }
+    });
+
+    let skorAkhir = Math.round((totalSkorMentah / totalSoal) * 100);
+
+    let menitTotal = Math.floor(totalDetik / 60);
+    let detikTotal = totalDetik % 60;
+    let totalWaktuFormatted = `${menitTotal}m ${detikTotal}s`;
+
+    let rataDetik = Math.round(totalDetik / totalSoal);
+    let rataRataWaktuFormatted = `${rataDetik} detik/soal`;
+
+    let payload = {
+      nama: siswaData.nama,
+      kelas: siswaData.kelas,
+      absen: siswaData.absen,
+      skor: skorAkhir,
+      skorMentah: totalSkorMentah.toFixed(2),
+      jumlahSempurna: jumlahLengkapBenar,
+      totalWaktuFormatted: totalWaktuFormatted,
+      rataRataWaktuFormatted: rataRataWaktuFormatted,
+      jumlahPelanggaran: jumlahPelanggaran,
+      detailJawaban: detailJawaban
+    };
+
+    document.getElementById('loadingText').textContent = "Menyimpan Hasil Kuis ke Spreadsheet...";
+    document.getElementById('loading').style.display = 'flex';
+
+    fetch(SCRIPT_URL, {
+      method: "POST",
+      body: JSON.stringify(payload)
+    })
+    .then(res => res.json())
+    .then(res => {
+      document.getElementById('loading').style.display = 'none';
+      document.getElementById('area-kuis').style.display = 'none';
+      document.getElementById('area-hasil').style.display = 'block';
+
+      document.getElementById('resSkor').textContent = skorAkhir;
+      document.getElementById('resBenar').textContent = `${totalSkorMentah.toFixed(1)} / ${totalSoal}`;
+      document.getElementById('resTotalWaktu').textContent = totalWaktuFormatted;
+      document.getElementById('resRataWaktu').textContent = rataRataWaktuFormatted;
+    })
+    .catch(err => {
+      document.getElementById('loading').style.display = 'none';
+      alert("Gagal mengirim jawaban: " + err);
+    });
+  }
+</script>
+</body>
+</html>
