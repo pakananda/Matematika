@@ -26,223 +26,52 @@
   <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
   
   <style>
-    * {
-      font-family: 'Poppins', sans-serif;
-    }
-
-    body { 
-      background-color: #f8fafc; 
-      color: #0f172a;
-      user-select: none;
-      -webkit-user-select: none;
-      -moz-user-select: none;
-    }
-
-    /* --- HERO HEADER STYLE (LIGHT TONE) --- */
+    * { font-family: 'Poppins', sans-serif; }
+    body { background-color: #f8fafc; color: #0f172a; user-select: none; -webkit-user-select: none; -moz-user-select: none; }
+    
     .hero-header {
-      position: relative;
-      width: 100%;
-      min-height: 38vh;
+      position: relative; width: 100%; min-height: 38vh;
       background: linear-gradient(135deg, #0284c7 0%, #1e40af 100%);
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      text-align: center;
-      overflow: hidden;
-      padding: 2.5rem 1.5rem;
+      display: flex; justify-content: center; align-items: center;
+      text-align: center; overflow: hidden; padding: 2.5rem 1.5rem;
       box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
     }
-
-    /* Animasi Simbol Matematika Melayang */
-    .math-symbol {
-      position: absolute;
-      color: rgba(255, 255, 255, 0.15);
-      font-size: 4rem;
-      font-weight: 800;
-      animation: float 6s ease-in-out infinite;
-      pointer-events: none;
-    }
-    
+    .math-symbol { position: absolute; color: rgba(255, 255, 255, 0.15); font-size: 4rem; font-weight: 800; animation: float 6s ease-in-out infinite; pointer-events: none; }
     .s1 { top: 15%; left: 8%; animation-delay: 0s; }
     .s2 { bottom: 15%; right: 10%; animation-delay: 2s; font-size: 5rem; }
     .s3 { top: 20%; right: 12%; animation-delay: 4s; }
     .s4 { bottom: 10%; left: 12%; animation-delay: 1s; font-size: 5.5rem; }
-
-    @keyframes float {
-      0% { transform: translateY(0px) rotate(0deg); }
-      50% { transform: translateY(-15px) rotate(8deg); }
-      100% { transform: translateY(0px) rotate(0deg); }
-    }
-
-    .header-content {
-      position: relative;
-      z-index: 10;
-    }
-
-    .hero-badge {
-      display: inline-block;
-      background: rgba(255, 255, 255, 0.2);
-      color: #ffffff;
-      padding: 6px 18px;
-      border-radius: 50px;
-      font-size: 0.85rem;
-      font-weight: 600;
-      margin-bottom: 12px;
-      backdrop-filter: blur(5px);
-      border: 1px solid rgba(255, 255, 255, 0.3);
-    }
-
-    .main-title {
-      font-size: clamp(2rem, 4vw, 3.2rem);
-      font-weight: 800;
-      line-height: 1.2;
-      color: #ffffff;
-      margin-bottom: 6px;
-      text-shadow: 0 2px 4px rgba(0,0,0,0.1);
-    }
-
-    .sub-title {
-      font-size: clamp(1.2rem, 2.5vw, 1.6rem);
-      font-weight: 600;
-      color: #e0f2fe;
-      margin-bottom: 12px;
-    }
-
-    .highlight {
-      color: #fef08a;
-      font-weight: 800;
-    }
-
-    /* --- DASHBOARD / KUIS STYLES (THEMA PUTIH) --- */
-    .card { 
-      background-color: #ffffff;
-      border-radius: 16px; 
-      border: 1px solid #e2e8f0; 
-      box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
-      color: #0f172a;
-    }
-
-    .form-select, .form-control {
-      background-color: #ffffff;
-      border: 1px solid #cbd5e1;
-      color: #0f172a;
-      font-weight: 500;
-    }
-
-    .form-select:focus, .form-control:focus {
-      background-color: #ffffff;
-      color: #0f172a;
-      border-color: #0284c7;
-      box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.2);
-    }
-
-    .form-check-input {
-      background-color: #ffffff;
-      border-color: #94a3b8;
-    }
-
-    .form-check-input:checked {
-      background-color: #0284c7;
-      border-color: #0284c7;
-    }
-
-    /* Styling Opsi Jawaban */
-    .option-box {
-      background-color: #f8fafc;
-      border: 1px solid #e2e8f0;
-      border-radius: 10px;
-      transition: all 0.2s ease;
-      cursor: pointer;
-    }
-
-    .option-box:hover {
-      background-color: #f1f5f9;
-      border-color: #cbd5e1;
-    }
-
-    /* Keterbacaan Tabel Benar/Salah (BS) */
-    .table {
-      color: #0f172a !important;
-      border-color: #cbd5e1 !important;
-    }
-
-    .table td, .table th {
-      color: #0f172a !important;
-      background-color: #ffffff !important;
-    }
-
-    .badge-diff { 
-      font-size: 0.8rem; 
-      padding: 0.4em 0.8em; 
-      font-weight: 600;
-    }
+    @keyframes float { 0% { transform: translateY(0px) rotate(0deg); } 50% { transform: translateY(-15px) rotate(8deg); } 100% { transform: translateY(0px) rotate(0deg); } }
     
-    .loading-overlay { 
-      display: flex; 
-      justify-content: center; 
-      align-items: center; 
-      position: fixed; 
-      top:0; left:0; width:100%; height:100%; 
-      background: rgba(255, 255, 255, 0.95); 
-      z-index:9999; 
-    }
+    .header-content { position: relative; z-index: 10; }
+    .hero-badge { display: inline-block; background: rgba(255, 255, 255, 0.2); color: #ffffff; padding: 6px 18px; border-radius: 50px; font-size: 0.85rem; font-weight: 600; margin-bottom: 12px; backdrop-filter: blur(5px); border: 1px solid rgba(255, 255, 255, 0.3); }
+    .main-title { font-size: clamp(2rem, 4vw, 3.2rem); font-weight: 800; line-height: 1.2; color: #ffffff; margin-bottom: 6px; text-shadow: 0 2px 4px rgba(0,0,0,0.1); }
+    .sub-title { font-size: clamp(1.2rem, 2.5vw, 1.6rem); font-weight: 600; color: #e0f2fe; margin-bottom: 12px; }
+    .highlight { color: #fef08a; font-weight: 800; }
 
+    .card { background-color: #ffffff; border-radius: 16px; border: 1px solid #e2e8f0; box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05); color: #0f172a; }
+    .form-select, .form-control { background-color: #ffffff; border: 1px solid #cbd5e1; color: #0f172a; font-weight: 500; }
+    .form-select:focus, .form-control:focus { background-color: #ffffff; color: #0f172a; border-color: #0284c7; box-shadow: 0 0 0 0.25rem rgba(2, 132, 199, 0.2); }
+    .option-box { background-color: #f8fafc; border: 1px solid #e2e8f0; border-radius: 10px; transition: all 0.2s ease; cursor: pointer; }
+    .option-box:hover { background-color: #f1f5f9; border-color: #cbd5e1; }
+    
+    .table { color: #0f172a !important; border-color: #cbd5e1 !important; }
+    .table td, .table th { color: #0f172a !important; background-color: #ffffff !important; }
+    .badge-diff { font-size: 0.8rem; padding: 0.4em 0.8em; font-weight: 600; }
+    
+    .loading-overlay { display: flex; justify-content: center; align-items: center; position: fixed; top:0; left:0; width:100%; height:100%; background: rgba(255, 255, 255, 0.95); z-index:9999; }
     .warning-banner { position: fixed; top: 0; left: 0; right: 0; z-index: 1050; display: none; }
     
-    /* Navigasi Nomor Soal Grid */
-    .grid-nomor {
-      display: grid;
-      grid-template-columns: repeat(5, 1fr);
-      gap: 8px;
-    }
-
-    .btn-nomor {
-      width: 100%;
-      height: 40px;
-      font-weight: 700;
-      border-radius: 8px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      font-size: 0.9rem;
-      transition: all 0.2s ease;
-    }
-
-    .btn-nomor.active {
-      border: 2px solid #0284c7 !important;
-      background-color: #e0f2fe !important;
-      color: #0369a1 !important;
-      transform: scale(1.05);
-      box-shadow: 0 0 8px rgba(2, 132, 199, 0.3);
-    }
-
-    .btn-nomor.dijawab {
-      background-color: #10b981;
-      color: white;
-      border: none;
-    }
-
-    .btn-nomor.belum {
-      background-color: #f1f5f9;
-      color: #64748b;
-      border: 1px solid #cbd5e1;
-    }
+    .grid-nomor { display: grid; grid-template-columns: repeat(5, 1fr); gap: 8px; }
+    .btn-nomor { width: 100%; height: 40px; font-weight: 700; border-radius: 8px; display: flex; align-items: center; justify-content: center; font-size: 0.9rem; transition: all 0.2s ease; }
+    .btn-nomor.active { border: 2px solid #0284c7 !important; background-color: #e0f2fe !important; color: #0369a1 !important; transform: scale(1.05); box-shadow: 0 0 8px rgba(2, 132, 199, 0.3); }
+    .btn-nomor.dijawab { background-color: #10b981; color: white; border: none; }
+    .btn-nomor.belum { background-color: #f1f5f9; color: #64748b; border: 1px solid #cbd5e1; }
 
     .soal-card { display: none; }
     .soal-card.active { display: block; }
-
-    .sticky-top-bar {
-      background-color: rgba(255, 255, 255, 0.95);
-      backdrop-filter: blur(10px);
-      border: 1px solid #e2e8f0;
-    }
-
-    .soal-text {
-      font-size: 1.1rem;
-      font-weight: 500;
-      color: #0f172a;
-      line-height: 1.6;
-    }
+    .sticky-top-bar { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid #e2e8f0; }
+    .soal-text { font-size: 1.1rem; font-weight: 500; color: #0f172a; line-height: 1.6; }
   </style>
 </head>
 <body oncontextmenu="return false;" oncopy="return false;" oncut="return false;" onpaste="return false;">
@@ -262,16 +91,14 @@
   </div>
 </header>
 
-<!-- Banner Peringatan Kecurangan -->
 <div id="warningBanner" class="alert alert-danger warning-banner text-center fw-bold shadow" role="alert">
   ⚠️ PERINGATAN: Anda terdeteksi meninggalkan halaman kuis! Pelanggaran telah dicatat oleh sistem.
 </div>
 
-<!-- Loading Overlay -->
 <div id="loading" class="loading-overlay">
   <div class="text-center">
     <div class="spinner-border text-primary" role="status" style="width: 3rem; height: 3rem;"></div>
-    <p class="mt-3 text-dark fw-bold" id="loadingText">Memuat Data Siswa dari Spreadsheet...</p>
+    <p class="mt-3 text-dark fw-bold" id="loadingText">Memuat Data Siswa, Mohon bersabar dan Silahkan berdoa :) ...</p>
   </div>
 </div>
 
@@ -281,17 +108,13 @@
   <div class="card p-4 mb-4" id="form-identitas">
     <h5 class="fw-bold text-primary mb-3">📋 Identitas Siswa</h5>
     <div class="row g-3">
-      
-      <!-- Input Nama Siswa dengan Suggestion (Datalist) -->
       <div class="col-md-5">
         <label class="form-label fw-bold">Nama Lengkap</label>
         <input class="form-control" list="listNama" id="inputNama" placeholder="Ketik nama Anda..." autocomplete="off" required>
-        <datalist id="listNama">
-          <!-- Opsi nama diisi otomatis via JS -->
-        </datalist>
+        <datalist id="listNama"></datalist>
+        <div class="form-text text-muted">Ketik nama untuk melihat saran/suggestion nama terdaftar.</div>
       </div>
 
-      <!-- Input Kelas Dropdown -->
       <div class="col-md-4">
         <label class="form-label fw-bold">Kelas</label>
         <select class="form-select" id="inputKelas" required>
@@ -305,13 +128,13 @@
       </div>
     </div>
 
-    <!-- Informasi Fitur Keamanan -->
     <div class="alert alert-warning border-0 bg-warning bg-opacity-10 text-dark mt-4 mb-0" role="alert">
-      <strong>⚠️ Sistem Anti-Kecurangan Aktif:</strong>
+      <strong>⚠️ Aturan & Sistem Keamanan Kuis:</strong>
       <ul class="mb-0 ps-3 mt-1 small">
+        <li>Nama Anda harus <strong>terdaftar di database</strong> sekolah agar dapat memulai kuis.</li>
+        <li>Waktu pengerjaan maksimal adalah <strong>60 menit</strong>. Jawaban otomatis terkirim jika waktu habis.</li>
         <li>Dilarang berpindah tab, me-refresh halaman, membuka jendela lain, atau menggunakan AI.</li>
-        <li>Fungsi Klik Kanan, Copy, Paste, dan Pintasan Keyboard (F12, Inspect Element) dinonaktifkan.</li>
-        <li>Setiap kali Anda meninggalkan halaman kuis, jumlah pelanggaran akan dicatat dalam rekapitulasi guru.</li>
+        <li>Fungsi Klik Kanan, Copy, Paste, dan Pintasan Keyboard dinonaktifkan.</li>
       </ul>
     </div>
 
@@ -320,26 +143,21 @@
 
   <!-- Area Lembar Kuis -->
   <div id="area-kuis" style="display: none;">
-    
-    <!-- Top Bar Informasi & Timer -->
     <div class="card p-3 sticky-top-bar sticky-top shadow-sm mb-4 d-flex flex-row justify-content-between align-items-center" style="top: 15px; z-index: 1000;">
       <div>
         <strong class="text-primary">Siswa:</strong> <span id="dispNama" class="fw-semibold"></span> (<span id="dispKelas"></span> / Absen: <span id="dispAbsen"></span>)
       </div>
       <div class="d-flex align-items-center gap-2">
         <span class="badge bg-danger fs-6 fw-semibold" id="pelanggaranCount">Pelanggaran: 0</span>
-        <span class="badge bg-warning text-dark fs-6 fw-semibold" id="timer">Waktu: 00:00</span>
+        <span class="badge bg-warning text-dark fs-6 fw-semibold" id="timer">Sisa Waktu: 60:00</span>
       </div>
     </div>
 
     <div class="row g-4">
-      <!-- Kolom Kiri: Navigasi Nomor Soal -->
       <div class="col-md-4 col-lg-3">
         <div class="card p-3 sticky-top" style="top: 90px;">
           <h6 class="fw-bold text-primary mb-3">Navigasi Soal</h6>
-          <div class="grid-nomor" id="gridNomor">
-            <!-- Dibuat Otomatis via JS -->
-          </div>
+          <div class="grid-nomor" id="gridNomor"></div>
           
           <hr class="my-3 border-secondary-subtle">
           
@@ -353,20 +171,15 @@
         </div>
       </div>
 
-      <!-- Kolom Kanan: Soal Aktif -->
       <div class="col-md-8 col-lg-9">
-        <div id="soal-container">
-          <!-- Dibuat Otomatis via JS -->
-        </div>
+        <div id="soal-container"></div>
 
-        <!-- Tombol Navigasi Bawah -->
         <div class="d-flex justify-content-between mt-3">
           <button class="btn btn-outline-secondary fw-bold" id="btnPrev" onclick="pindahSoal(indexAktif - 1)">← Sebelumnya</button>
           <button class="btn btn-primary fw-bold" id="btnNext" onclick="pindahSoal(indexAktif + 1)">Selanjutnya →</button>
         </div>
       </div>
     </div>
-
   </div>
 
   <!-- Area Hasil Pengerjaan -->
@@ -391,7 +204,7 @@
         <div class="col-md-3 col-6">
           <div class="p-3 border rounded bg-light">
             <h2 class="fw-bold text-warning mb-0" id="resTotalWaktu">00:00</h2>
-            <small class="text-muted fw-semibold">Total Waktu</small>
+            <small class="text-muted fw-semibold">Total Waktu Digunakan</small>
           </div>
         </div>
         <div class="col-md-3 col-6">
@@ -408,6 +221,7 @@
 
 <script>
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbyZpm2JU4CpkhNFhDxwTYYhpNkX8Car-RV0bx2hMTM2OJrfx8i6Tc6dc88B2PPE4J2a/exec";
+  const WAKTU_MAKSIMAL = 3600; 
 
   const daftarSoal = [
     { id:1, tipe:"PG", tingkat:"Mudah", soal:"Turunan pertama dari $f(x) = 5x^4 - 3x^2 + 7$ adalah...", opsi:["$20x^3 - 6x$","$20x^3 - 6x + 7$","$5x^3 - 3x$","$20x^4 - 6x$"], kunci:"$20x^3 - 6x$" },
@@ -442,26 +256,31 @@
         " Fungsi dapat disederhanakan dulu menjadi $\\tan(x/2)$ sebelum diturunkan",
         " Turunan pertamanya adalah $\\frac{\\cos(x)}{-\\sin(x)}$"
       ], kunci:[0,1,2] },
-    { 
-  id: 19, 
-  tipe: "BS", 
-  tingkat: "HOTS", 
-  soal: "Analisis kebenaran pernyataan turunan berikut:", 
-  poin: [
-    { p: "Jika $f(x) = \\sin(x) \\cos(x)$, maka $f'(x) = \\cos(2x)$", k: "B" },
-    { p: "Turunan ke-4 dari $f(x) = \\sin(x)$ adalah $\\sin(x)$", k: "B" },
-    { p: "Jika $f(x) = |x|$, maka $f'(0) = 0$", k: "S" } // Ditulis |x| biasa agar tidak ada konflik MathJax
-  ] 
-},
+    { id:19, tipe:"BS", tingkat:"HOTS", soal:"Analisis kebenaran pernyataan turunan berikut:", poin:[
+        { p:"Jika $f(x) = \\sin(x) \\cos(x)$, maka $f'(x) = \\cos(2x)$", k:"B" },
+        { p:"Turunan ke-4 dari $f(x) = \\sin(x)$ adalah $\\sin(x)$", k:"B" },
+        { p:"Jika $f(x) = \\vert{}x\\vert{}$, maka $f'(0) = 0$", k:"S" }
+      ] },
     { id:20, tipe:"PG", tingkat:"HOTS", soal:"Jika $g(x) = f(\\sin^2(x))$ dan $f'(x) = 2x+1$, maka nilai $g'(\\pi/4)$ adalah...", opsi:["$2$","$1$","$2\\sqrt{2}$","$0$"], kunci:"$2$" }
   ];
 
+  let databaseNama = [];
   let siswaData = {};
   let timerInterval = null;
-  let totalDetik = 0;
+  let sisaDetik = WAKTU_MAKSIMAL;
   let jumlahPelanggaran = 0;
   let kuisAktif = false;
   let indexAktif = 0;
+
+  // Fungsi pembantu untuk mengacak urutan elemen array
+  function acakArray(array) {
+    let arr = [...array];
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
 
   window.onload = function() {
     fetch(SCRIPT_URL + "?action=getSiswa")
@@ -473,13 +292,14 @@
       });
   };
 
-  // Mengisi opsi ke Datalist & Dropdown Kelas
   function populateDropdowns(data) {
     const datalistNama = document.getElementById('listNama');
     const selectKelas = document.getElementById('inputKelas');
 
     datalistNama.innerHTML = '';
-    data.nama.forEach(nama => {
+    databaseNama = data.nama || [];
+
+    databaseNama.forEach(nama => {
       let opt = document.createElement('option');
       opt.value = nama;
       datalistNama.appendChild(opt);
@@ -497,7 +317,7 @@
   window.addEventListener("beforeunload", function (e) {
     if (kuisAktif) {
       e.preventDefault();
-      e.returnValue = "Jawaban Anda berpotensi tidak tersimpan jika Anda menyegarkan (refresh) halaman ini. Yakin ingin keluar?";
+      e.returnValue = "Jawaban Anda berpotensi tidak tersimpan jika Anda menyegarkan halaman ini. Yakin ingin keluar?";
       return e.returnValue;
     }
   });
@@ -516,7 +336,7 @@
     if (
       e.keyCode === 123 || 
       (e.ctrlKey && e.shiftKey && (e.keyCode === 73 || e.keyCode === 74 || e.keyCode === 67)) || 
-      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 67 || e.keyCode === 86 || e.keyCode === 83 || e.keyCode === 65))
+      (e.ctrlKey && (e.keyCode === 85 || e.keyCode === 87 || e.keyCode === 86 || e.keyCode === 83 || e.keyCode === 65))
     ) {
       e.preventDefault();
       return false;
@@ -524,17 +344,31 @@
   });
 
   function mulaiKuis() {
-    const nama = document.getElementById('inputNama').value.trim();
+    const namaInput = document.getElementById('inputNama').value.trim();
     const kelas = document.getElementById('inputKelas').value;
     const absen = document.getElementById('inputAbsen').value;
 
-    if (!nama || !kelas || !absen) {
+    if (!namaInput || !kelas || !absen) {
       alert("Harap isi semua data identitas terlebih dahulu!");
       return;
     }
 
-    siswaData = { nama, kelas, absen };
-    document.getElementById('dispNama').textContent = nama;
+    const namaValid = databaseNama.some(n => n.toLowerCase() === namaInput.toLowerCase());
+
+    if (!namaValid) {
+      alert("❌ NAMA TIDAK TERDAFTAR!\n\nNama Anda tidak ada di dalam database siswa. Silakan pilih nama lengkap yang sesuai.");
+      return;
+    }
+
+    // Mengacak urutan opsi soal PG saat kuis dimulai
+    daftarSoal.forEach(s => {
+      if (s.tipe === "PG") {
+        s.opsi = acakArray(s.opsi);
+      }
+    });
+
+    siswaData = { nama: namaInput, kelas, absen };
+    document.getElementById('dispNama').textContent = namaInput;
     document.getElementById('dispKelas').textContent = kelas;
     document.getElementById('dispAbsen').textContent = absen;
 
@@ -549,11 +383,19 @@
   }
 
   function updateTimer() {
-    totalDetik++;
-    let menit = Math.floor(totalDetik / 60);
-    let detik = totalDetik % 60;
+    if (sisaDetik <= 0) {
+      clearInterval(timerInterval);
+      alert("⚠️ Waktu pengerjaan 60 menit telah habis! Jawaban Anda akan langsung dikirim otomatis.");
+      hitungDanKirimHasil();
+      return;
+    }
+
+    sisaDetik--;
+    let menit = Math.floor(sisaDetik / 60);
+    let detik = sisaDetik % 60;
+    
     document.getElementById('timer').textContent = 
-      `Waktu: ${menit < 10 ? '0' : ''}${menit}:${detik < 10 ? '0' : ''}${detik}`;
+      `Sisa Waktu: ${menit < 10 ? '0' : ''}${menit}:${detik < 10 ? '0' : ''}${detik}`;
   }
 
   function renderSoalDanNavigasi() {
@@ -680,23 +522,27 @@
     let totalSkorMentah = 0;
     let totalSoal = daftarSoal.length;
     let detailJawaban = {};
+    let statusBenarSalah = {};
     let jumlahLengkapBenar = 0;
 
     daftarSoal.forEach(s => {
       if (s.tipe === "PG") {
         let el = document.querySelector(`input[name="soal_${s.id}"]:checked`);
-        let val = el ? el.value : "";
+        let val = el ? el.value : "Tidak dijawab";
         detailJawaban[`No_${s.id}`] = val;
         
         if (val === s.kunci) {
           totalSkorMentah += 1;
           jumlahLengkapBenar++;
+          statusBenarSalah[`No_${s.id}`] = "BENAR";
+        } else {
+          statusBenarSalah[`No_${s.id}`] = "SALAH";
         }
 
       } else if (s.tipe === "PGK") {
         let els = document.querySelectorAll(`input[name="soal_${s.id}"]:checked`);
         let userAns = Array.from(els).map(e => parseInt(e.value));
-        detailJawaban[`No_${s.id}`] = userAns;
+        detailJawaban[`No_${s.id}`] = userAns.length > 0 ? userAns.join(", ") : "Tidak dijawab";
 
         let totalOpsi = s.opsi.length;
         let opsiTepat = 0;
@@ -712,7 +558,14 @@
 
         let nilaiSoalThis = opsiTepat / totalOpsi;
         totalSkorMentah += nilaiSoalThis;
-        if (nilaiSoalThis === 1) jumlahLengkapBenar++;
+        if (nilaiSoalThis === 1) {
+          jumlahLengkapBenar++;
+          statusBenarSalah[`No_${s.id}`] = "BENAR";
+        } else if (nilaiSoalThis > 0) {
+          statusBenarSalah[`No_${s.id}`] = `SEBAGIAN (${(nilaiSoalThis * 100).toFixed(0)}%)`;
+        } else {
+          statusBenarSalah[`No_${s.id}`] = "SALAH";
+        }
 
       } else if (s.tipe === "BS") {
         let totalSubPoin = s.poin.length;
@@ -721,7 +574,7 @@
 
         s.poin.forEach((p, i) => {
           let el = document.querySelector(`input[name="bs_${s.id}_${i}"]:checked`);
-          let val = el ? el.value : "";
+          let val = el ? el.value : "-";
           ansArr.push(val);
 
           if (val === p.k) {
@@ -729,23 +582,32 @@
           }
         });
 
-        detailJawaban[`No_${s.id}`] = ansArr;
+        detailJawaban[`No_${s.id}`] = ansArr.join("-");
         
         let nilaiSoalThis = subPoinBenar / totalSubPoin;
         totalSkorMentah += nilaiSoalThis;
-        if (nilaiSoalThis === 1) jumlahLengkapBenar++;
+        if (nilaiSoalThis === 1) {
+          jumlahLengkapBenar++;
+          statusBenarSalah[`No_${s.id}`] = "BENAR";
+        } else if (nilaiSoalThis > 0) {
+          statusBenarSalah[`No_${s.id}`] = `SEBAGIAN (${(nilaiSoalThis * 100).toFixed(0)}%)`;
+        } else {
+          statusBenarSalah[`No_${s.id}`] = "SALAH";
+        }
       }
     });
 
     let skorAkhir = Math.round((totalSkorMentah / totalSoal) * 100);
 
-    let menitTotal = Math.floor(totalDetik / 60);
-    let detikTotal = totalDetik % 60;
+    let waktuTerpakai = WAKTU_MAKSIMAL - sisaDetik;
+    let menitTotal = Math.floor(waktuTerpakai / 60);
+    let detikTotal = waktuTerpakai % 60;
     let totalWaktuFormatted = `${menitTotal}m ${detikTotal}s`;
 
-    let rataDetik = Math.round(totalDetik / totalSoal);
+    let rataDetik = Math.round(waktuTerpakai / totalSoal);
     let rataRataWaktuFormatted = `${rataDetik} detik/soal`;
 
+    // Payload dengan rekap jawaban & rekap status benar/salah
     let payload = {
       nama: siswaData.nama,
       kelas: siswaData.kelas,
@@ -756,10 +618,11 @@
       totalWaktuFormatted: totalWaktuFormatted,
       rataRataWaktuFormatted: rataRataWaktuFormatted,
       jumlahPelanggaran: jumlahPelanggaran,
-      detailJawaban: detailJawaban
+      detailJawaban: detailJawaban,
+      statusBenarSalah: statusBenarSalah
     };
 
-    document.getElementById('loadingText').textContent = "Menyimpan Hasil Kuis ke Spreadsheet...";
+    document.getElementById('loadingText').textContent = "Menyimpan Hasil Kuis ke Jurnal Pak Nanda. Semoga hasilnya memuaskan :) ...";
     document.getElementById('loading').style.display = 'flex';
 
     fetch(SCRIPT_URL, {
