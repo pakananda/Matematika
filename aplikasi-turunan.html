@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>LKPD Interaktif V3 - Aplikasi Turunan Fungsi</title>
+    <title>LKPD Interaktif - Kemonotonan & Aplikasi Turunan Fungsi</title>
     
-    <!-- MATHJAX: Library Render Persamaan Matematika (LaTeX) -->
+    <!-- MATHJAX v3: Library Render Persamaan Matematika (LaTeX) -->
     <script>
       window.MathJax = {
         tex: {
@@ -51,7 +51,7 @@
             color: var(--primary-dark);
             text-align: center;
             margin-bottom: 5px;
-            font-size: 24pt;
+            font-size: 22pt;
         }
 
         .subtitle {
@@ -82,6 +82,7 @@
             border-radius: 4px;
             box-sizing: border-box;
             margin-top: 4px;
+            font-size: 10pt;
         }
 
         .section-header {
@@ -90,7 +91,7 @@
             padding: 10px 15px;
             border-radius: 6px;
             margin-top: 30px;
-            font-size: 14pt;
+            font-size: 13pt;
             font-weight: bold;
         }
 
@@ -126,7 +127,7 @@
             padding: 12px;
             border-radius: 4px;
             margin-bottom: 12px;
-            font-size: 10pt;
+            font-size: 9.5pt;
             color: #744210;
         }
 
@@ -191,6 +192,7 @@
             border-radius: 6px;
             display: none;
             font-weight: 500;
+            font-size: 10pt;
         }
 
         .feedback.correct {
@@ -226,9 +228,9 @@
 
 <div class="container">
     <h1>LEMBAR KERJA PESERTA DIDIK (LKPD)</h1>
-    <div class="subtitle">Materi: Aplikasi Turunan Fungsi (Kelas XII Matematika Tingkat Lanjut)</div>
+    <div class="subtitle">Materi: Kemonotonan & Aplikasi Turunan Fungsi (Kelas XII)</div>
 
-    <!-- Identitas -->
+    <!-- Identitas Siswa -->
     <div class="identity-box">
         <div class="identity-grid">
             <div>
@@ -250,81 +252,69 @@
         </div>
     </div>
 
-    <!-- RINGKASAN KONSEP BUKU TEKS -->
+    <!-- RINGKASAN KONSEP KEMONOTONAN FUNGSI -->
     <div class="concept-card">
-        <h3 style="margin-top:0; color:#2c7a7b;">📌 Penjelasan Konsep Resmi & Peran Turunan Fungsi</h3>
-        <p>
-            Berdasarkan Kurikulum Merdeka Matematika Kelas XII, turunan fungsi $f'(x)$ menggambarkan laju perubahan seketika dan digunakan dalam 3 aspek utama geometri dan pemodelan:
+        <h3 style="margin-top:0; color:#2c7a7b;">📌 Ringkasan Konsep: Kemonotonan & Tingkah Laku Fungsi</h3>
+        <p style="font-size: 10pt;">
+            Kemonotonan grafik fungsi $y = f(x)$ menentukan perilaku grafik apakah sedang bergerak naik, turun, atau diam pada suatu interval $I$:
         </p>
         <table class="concept-table">
             <thead>
                 <tr>
-                    <th>Aspek Materi</th>
-                    <th>Konsep Pendekatan / Definisi</th>
-                    <th>Formulasi Turunan</th>
+                    <th>Tingkah Laku Fungsi</th>
+                    <th>Definisi Formal Sifat ($x_1 < x_2$)</th>
+                    <th>Kondisi Turunan Pertama ($f'(x)$)</th>
                 </tr>
             </thead>
             <tbody>
                 <tr>
-                    <td><strong>1. Garis Singgung (Tangen)</strong></td>
-                    <td>Kemiringan garis sekan saat selisih $\Delta x = h \to 0$ mendekati titik singgung $P(x_1, f(x_1))$.</td>
-                    <td>$m = \lim_{h\to 0}\frac{f(x_1+h)-f(x_1)}{h} = f'(x_1)$<br>Persamaan: $(y - b) = m(x - a)$</td>
+                    <td><strong>Fungsi Naik</strong></td>
+                    <td>$f(x_1) < f(x_2)$ (Grafik bergerak ke atas)</td>
+                    <td>$f'(x) > 0$</td>
                 </tr>
                 <tr>
-                    <td><strong>2. Kemonotonan & Fungsi Diam</strong></td>
-                    <td>
-                        • <strong>Naik:</strong> $x_1 < x_2 \implies f(x_1) < f(x_2)$<br>
-                        • <strong>Turun:</strong> $x_1 < x_2 \implies f(x_1) > f(x_2)$<br>
-                        • <strong>Diam (Stasioner):</strong> Fungsi tidak naik & tidak turun.
-                    </td>
-                    <td>
-                        • $f'(x) > 0$ (Fungsi Naik)<br>
-                        • $f'(x) < 0$ (Fungsi Turun)<br>
-                        • $f'(x) = 0$ (Fungsi Diam/Stasioner)
-                    </td>
+                    <td><strong>Fungsi Turun</strong></td>
+                    <td>$f(x_1) > f(x_2)$ (Grafik bergerak ke bawah)</td>
+                    <td>$f'(x) < 0$</td>
                 </tr>
                 <tr>
-                    <td><strong>3. Ekstrem & Kinematika</strong></td>
-                    <td>Menentukan titik balik maksimum/minimum via uji turunan 1 & 2, serta kinematika lintasan $s(t)$.</td>
-                    <td>
-                        • Maksimum: $f''(c) < 0$<br>
-                        • Minimum: $f''(c) > 0$<br>
-                        • $v(t) = s'(t)$, $a(t) = s''(t)$
-                    </td>
+                    <td><strong>Fungsi Diam (Stasioner)</strong></td>
+                    <td>Fungsi tidak naik dan tidak turun</td>
+                    <td>$f'(x) = 0$</td>
+                </tr>
+                <tr>
+                    <td><strong>Tidak Pernah Turun</strong></td>
+                    <td>Fungsi dalam kondisi naik atau diam</td>
+                    <td>$f'(x) \ge 0$</td>
                 </tr>
             </tbody>
         </table>
     </div>
 
     <!-- PERTEMUAN 1 -->
-    <div class="section-header">PERTEMUAN 1: Persamaan Garis Singgung & Kemonotonan Kurva</div>
+    <div class="section-header">PERTEMUAN 1: Persamaan Garis Singgung & Kemonotonan Kurva Aljabar</div>
 
     <!-- Simulasi 1 -->
     <div class="card">
-        <h3>🎨 Ilustrasi Interaktif 1: Garis Tangen (Singgung) Parabola $y = 2 - 4x^2$</h3>
-        <p>Geser titik absis $x_1$ di bawah ini untuk melihat bagaimana kemiringan garis tangen $m = f'(x_1)$ berubah sepanjang kurva parabola!</p>
+        <h3>🎨 Ilustrasi Interaktif 1: Garis Tangen Parabola $y = 2 - 4x^2$</h3>
+        <p>Geser titik absis $x_1$ di bawah ini untuk mengamati perubahan gradien garis tangen $m = f'(x_1)$ sepanjang parabola!</p>
 
         <div class="interactive-canvas-container">
-            <canvas id="canvas1" width="500" height="280"></canvas>
+            <canvas id="canvas1" width="500" height="260"></canvas>
             <div class="slider-container">
                 <label for="xSlider1">Absis $(x_1)$: <span id="xVal1">1.0</span></label>
                 <input type="range" id="xSlider1" min="-2" max="2" step="0.1" value="1">
             </div>
             <p style="margin-top:8px; font-size:10pt; color:#4a5568;">
-                <strong>Gradien Tangen ($m = f'(x_1)$):</strong> <span id="mVal1">-8.0</span> | 
-                <strong>Persamaan Garis:</strong> <span id="pgsVal1">y = -8.00x + 6.00</span>
+                <strong>Gradien ($m = f'(x_1)$):</strong> <span id="mVal1">-8.0</span> | 
+                <strong>Persamaan Garis Singgung:</strong> <span id="pgsVal1">y = -8.00x + 6.00</span>
             </p>
         </div>
     </div>
 
     <!-- Soal Aktivitas 1 -->
     <div class="card">
-        <h3>Aktivitas 1 (Buku Teks Contoh 2.8): Garis Singgung Kurva Parabola</h3>
-        
-        <div class="role-highlight">
-            <strong>💡 Peran Turunan:</strong> Turunan fungsi $f'(x) = -8x$ memberikan rumus umum gradien kemiringan di titik mana saja pada parabola $y = 2 - 4x^2$.
-        </div>
-
+        <h3>Aktivitas 1 (Contoh 2.8): Persamaan Garis Singgung</h3>
         <p><strong>Soal:</strong> Tentukan persamaan garis singgung pada kurva $y = 2 - 4x^2$ tepat di titik $(1, -2)$.</p>
         
         <div>
@@ -338,96 +328,96 @@
 
         <button class="btn-check" onclick="checkAnswer1()">Uji Jawaban</button>
         <div id="feedback1" class="feedback"></div>
-
-        <div style="margin-top:15px;">
-            <label>Tuliskan Langkah Penyelesaian Lengkap (Langkah I - III):</label>
-            <textarea placeholder="Langkah I: f'(x) = -8x... Langkah II: m = f'(1) = -8... Langkah III: y - (-2) = -8(x - 1)..."></textarea>
-        </div>
     </div>
 
-    <!-- Soal Aktivitas 2 (Titik Potong Kurva) -->
+    <!-- Soal Aktivitas 2: Kemonotonan Kurva Aljabar -->
     <div class="card">
-        <h3>Aktivitas 2 (Buku Teks Ayo Mencoba 2.6): Garis Singgung di Titik Potong Dua Kurva</h3>
+        <h3>Aktivitas 2 (Ayo Mencoba 2.7 No. 1): Syarat Kurva Tidak Pernah Turun</h3>
 
         <div class="role-highlight">
-            <strong>💡 Peran Turunan:</strong> Pertama cari titik potong dengan menyamakan $y_{garis} = y_{parabola}$, lalu gunakan $y' = 2x + 2$ untuk menemukan gradien di masing-masing titik potong.
+            <strong>💡 Peran Turunan:</strong> Kurva $g(x)$ tidak pernah turun jika turunan pertamanya memenuhi syarat pertidaksamaan $g'(x) \ge 0$.
         </div>
 
-        <p><strong>Soal:</strong> Tentukan salah satu persamaan garis singgung di titik potong garis $y = x + 1$ dengan parabola $y = x^2 + 2x + 1$ pada absis $x = 0$.</p>
+        <p><strong>Soal:</strong> Diberikan kurva $g(x) = x(6-x)^2 = x^3 - 12x^2 + 36x$. Tentukan batasan interval $x$ agar kurva tersebut <strong>tidak pernah turun</strong>!</p>
 
         <div>
-            <label>Persamaan Garis Singgung di titik $(0,1)$:</label>
-            <input type="text" id="ans2_pgs" placeholder="Contoh: y = 2x + 1">
+            <label>Isikan batasan interval $x$ (Contoh format: <i>x <= 2 atau x >= 6</i>):</label>
+            <input type="text" id="ans2_interval" placeholder="Contoh: x <= 2 atau x >= 6">
         </div>
 
         <button class="btn-check" onclick="checkAnswer2()">Uji Jawaban</button>
         <div id="feedback2" class="feedback"></div>
+
+        <div style="margin-top:15px;">
+            <label>Tuliskan Turunan $g'(x) \ge 0$ dan Langkah Pemfaktoran Garis Bilangan Anda:</label>
+            <textarea placeholder="Tuliskan g'(x) = 3x^2 - 24x + 36 = 3(x - 2)(x - 6) >= 0..."></textarea>
+        </div>
     </div>
 
     <!-- PERTEMUAN 2 -->
-    <div class="section-header">PERTEMUAN 2: Titik Ekstrem, Uji Turunan Kedua & Kinematika</div>
+    <div class="section-header">PERTEMUAN 2: Uji Kemonotonan Trigonometri & Uji Turunan Kedua Titik Ekstrem</div>
 
     <!-- Simulasi 2 -->
     <div class="card">
-        <h3>📦 Ilustrasi Interaktif 2: Titik Balik Ekstrem & Kemonotonan Kurva Kubik</h3>
-        <p>Amati grafik $f(x) = \frac{1}{3}x^3 - x^2 - 3x + 2$. Geser slider $x$ untuk mengamati daerah fungsi naik ($f'(x)>0$), turun ($f'(x)<0$), dan titik stasioner ($f'(x)=0$)!</p>
+        <h3>📦 Ilustrasi Interaktif 2: Uji Tanda $f'(x)$ & Garis Bilangan Kemonotonan</h3>
+        <p>Amati grafik $f(x) = \frac{1}{3}x^3 - x^2 - 3x + 2$. Geser slider untuk melihat perubahan tanda $f'(x)$ pada garis bilangan!</p>
 
         <div class="interactive-canvas-container">
-            <canvas id="canvas2" width="500" height="250"></canvas>
+            <canvas id="canvas2" width="500" height="260"></canvas>
             <div class="slider-container">
                 <label for="xSlider2">Absis $(x)$: <span id="xVal2">3.0</span></label>
-                <input type="range" id="xSlider2" min="-2" max="4" step="0.1" value="3">
+                <input type="range" id="xSlider2" min="-2.5" max="4.5" step="0.1" value="3">
             </div>
             <p style="margin-top:8px; font-size:10pt; color:#4a5568;">
-                <strong>Nilai $f'(x)$:</strong> <span id="fprime2">0.0</span> | 
-                <strong>Nilai $f''(x)$:</strong> <span id="fdouble2">4.0</span> | 
-                <strong>Status:</strong> <span id="status2">Titik Balik Minimum (3, -7)</span>
+                <strong>Nilai $f'(x)$:</strong> <span id="fprime2">0.00</span> | 
+                <strong>Nilai $f''(x)$:</strong> <span id="fdouble2">4.00</span> | 
+                <strong>Status Kemonotonan:</strong> <span id="status2">Titik Balik Minimum (3, -7)</span>
             </p>
         </div>
     </div>
 
-    <!-- Soal Aktivitas 3 -->
+    <!-- Soal Aktivitas 3: Kemonotonan Trigonometri -->
     <div class="card">
-        <h3>Aktivitas 3 (Buku Teks Contoh 2.13): Uji Turunan Kedua Titik Ekstrem</h3>
+        <h3>Aktivitas 3 (Ayo Mencoba 2.7 No. 3): Interval Fungsi Naik Trigonometri</h3>
 
         <div class="role-highlight">
-            <strong>💡 Peran Turunan:</strong> Turunan pertama $f'(x)=0$ menentukan absis stasioner, sedangkan tanda turunan kedua $f''(c)$ menentukan jenisnya ($f''(c)>0 \implies$ Minimum, $f''(c)<0 \implies$ Maksimum).
+            <strong>💡 Peran Turunan:</strong> Untuk $f(x) = \sin^2 x$, turunannya adalah $f'(x) = 2\sin x \cos x = \sin 2x$. Fungsi naik saat $\sin 2x > 0$.
         </div>
 
-        <p><strong>Soal:</strong> Untuk kurva $f(x) = \frac{1}{3}x^3 - x^2 - 3x + 2$, tentukan nilai balik minimumnya menggunakan uji turunan kedua!</p>
+        <p><strong>Soal:</strong> Diketahui $f(x) = \sin^2 x$ pada interval $0 < x < 2\pi$. Tentukan interval $x$ di kuadran I di mana $f(x)$ merupakan <strong>fungsi naik</strong>!</p>
 
         <div>
-            <label>Nilai Balik Minimum $f(3)$:</label>
-            <input type="text" id="ans3_val" placeholder="Contoh: -7">
+            <label>Interval Fungsi Naik Kuadran I (format: <i>0 < x < pi/2</i> atau <i>0 < x < 90</i>):</label>
+            <input type="text" id="ans3_trig" placeholder="Contoh: 0 < x < pi/2">
         </div>
 
         <button class="btn-check" onclick="checkAnswer3()">Uji Jawaban</button>
         <div id="feedback3" class="feedback"></div>
     </div>
 
-    <!-- Soal Aktivitas 4 (Kinematika) -->
+    <!-- Soal Aktivitas 4: Uji Turunan Kedua -->
     <div class="card">
-        <h3>Aktivitas 4 (Latihan Soal No. 10): Aplikasi Kinematika Gerak Partikel</h3>
+        <h3>Aktivitas 4 (Contoh 2.13): Uji Turunan Kedua Nilai Ekstrem</h3>
 
         <div class="role-highlight">
-            <strong>💡 Peran Turunan:</strong> Kecepatan $v(t) = s'(t) = 3t^2 - 15t + 18$, dan percepatan $a(t) = s''(t) = 6t - 15$.
+            <strong>💡 Peran Turunan:</strong> $f''(x) = 2x - 2$. Karena $f''(3) = 4 > 0$, titik $(3, -7)$ adalah titik balik minimum.
         </div>
 
-        <p><strong>Soal:</strong> Sebuah partikel bergerak dengan persamaan lintasan $s(t) = t^3 - \frac{15}{2}t^2 + 18t - 1$. Tentukan nilai $t$ saat percepatan partikel sama dengan nol ($a(t) = 0$)!</p>
+        <p><strong>Soal:</strong> Hitunglah nilai balik minimum dari kurva $f(x) = \frac{1}{3}x^3 - x^2 - 3x + 2$!</p>
 
         <div>
-            <label>Nilai $t$ (dalam detik):</label>
-            <input type="text" id="ans4_t" placeholder="Contoh: 2.5">
+            <label>Nilai Balik Minimum $f(3)$:</label>
+            <input type="text" id="ans4_val" placeholder="Contoh: -7">
         </div>
 
         <button class="btn-check" onclick="checkAnswer4()">Uji Jawaban</button>
         <div id="feedback4" class="feedback"></div>
     </div>
 
-    <!-- Refleksi -->
+    <!-- Refleksi Kelompok -->
     <div class="card">
         <h3>Refleksi Diskusi Kelompok</h3>
-        <textarea placeholder="Tuliskan kesimpulan kelompok Anda mengenai peranan turunan pertama dan kedua dalam menentukan garis singgung, interval fungsi naik/turun, serta kinematika gerak..."></textarea>
+        <textarea placeholder="Tuliskan pemahaman kelompok Anda mengenai hubungan tanda turunan pertama f'(x) > 0, f'(x) < 0, dan f'(x) = 0 terhadap kemonotonan grafik fungsi..."></textarea>
     </div>
 
 </div>
@@ -456,16 +446,14 @@
         ctx1.clearRect(0, 0, canvas1.width, canvas1.height);
 
         function toCanvasX(x) { return 250 + x * 80; }
-        function toCanvasY(y) { return 180 - y * 20; }
+        function toCanvasY(y) { return 170 - y * 20; }
 
-        // Sumbu Koordinat
         ctx1.strokeStyle = '#cbd5e0';
         ctx1.beginPath();
-        ctx1.moveTo(0, 180); ctx1.lineTo(500, 180);
-        ctx1.moveTo(250, 0); ctx1.lineTo(250, 280);
+        ctx1.moveTo(0, 170); ctx1.lineTo(500, 170);
+        ctx1.moveTo(250, 0); ctx1.lineTo(250, 260);
         ctx1.stroke();
 
-        // Parabola
         ctx1.strokeStyle = '#2b6cb0';
         ctx1.lineWidth = 2;
         ctx1.beginPath();
@@ -477,7 +465,6 @@
         }
         ctx1.stroke();
 
-        // Garis Singgung
         ctx1.strokeStyle = '#e53e3e';
         ctx1.lineWidth = 2;
         ctx1.beginPath();
@@ -487,7 +474,6 @@
         ctx1.lineTo(toCanvasX(lx2), toCanvasY(ly2));
         ctx1.stroke();
 
-        // Titik Singgung
         ctx1.fillStyle = '#319795';
         ctx1.beginPath();
         ctx1.arc(toCanvasX(x1), toCanvasY(y1), 6, 0, Math.PI * 2);
@@ -497,7 +483,7 @@
     slider1.addEventListener('input', drawSimulation1);
     drawSimulation1();
 
-    // SIMULASI 2: f(x) = 1/3 x^3 - x^2 - 3x + 2
+    // SIMULASI 2: f(x) = 1/3 x^3 - x^2 - 3x + 2 + GARIS BILANGAN
     const canvas2 = document.getElementById('canvas2');
     const ctx2 = canvas2.getContext('2d');
     const slider2 = document.getElementById('xSlider2');
@@ -516,24 +502,24 @@
         document.getElementById('fprime2').innerText = fp.toFixed(2);
         document.getElementById('fdouble2').innerText = fpp.toFixed(2);
 
-        let status = "Fungsi Turun";
+        let status = "Fungsi Turun (f'(x) < 0)";
         if (Math.abs(fp) < 0.1) {
-            status = fpp > 0 ? "Titik Balik Minimum" : "Titik Balik Maksimum";
+            status = fpp > 0 ? "Titik Balik Minimum (3, -7)" : "Titik Balik Maksimum (-1, 3.67)";
         } else if (fp > 0) {
-            status = "Fungsi Naik";
+            status = "Fungsi Naik (f'(x) > 0)";
         }
         document.getElementById('status2').innerText = status;
 
         ctx2.clearRect(0, 0, canvas2.width, canvas2.height);
 
-        function toCanvasX(x) { return 180 + x * 50; }
-        function toCanvasY(y) { return 140 - y * 12; }
+        function toCanvasX(x) { return 180 + x * 45; }
+        function toCanvasY(y) { return 130 - y * 10; }
 
         // Sumbu
         ctx2.strokeStyle = '#cbd5e0';
         ctx2.beginPath();
-        ctx2.moveTo(0, 140); ctx2.lineTo(500, 140);
-        ctx2.moveTo(180, 0); ctx2.lineTo(180, 250);
+        ctx2.moveTo(0, 130); ctx2.lineTo(500, 130);
+        ctx2.moveTo(180, 0); ctx2.lineTo(180, 200);
         ctx2.stroke();
 
         // Kurva
@@ -548,8 +534,33 @@
         }
         ctx2.stroke();
 
-        // Titik penanda
+        // Garis Bilangan Kemonotonan
+        ctx2.strokeStyle = '#4a5568';
+        ctx2.lineWidth = 2;
+        ctx2.beginPath();
+        ctx2.moveTo(30, 225); ctx2.lineTo(470, 225);
+        ctx2.stroke();
+
+        // Titik Stasioner (-1 dan 3)
         ctx2.fillStyle = '#e53e3e';
+        ctx2.beginPath(); ctx2.arc(toCanvasX(-1), 225, 4, 0, Math.PI*2); ctx2.fill();
+        ctx2.beginPath(); ctx2.arc(toCanvasX(3), 225, 4, 0, Math.PI*2); ctx2.fill();
+
+        ctx2.fillStyle = '#2d3748';
+        ctx2.font = '10px Arial';
+        ctx2.fillText('-1', toCanvasX(-1)-5, 240);
+        ctx2.fillText('3', toCanvasX(3)-3, 240);
+
+        // Tanda Kemonotonan
+        ctx2.fillStyle = '#2b6cb0';
+        ctx2.fillText('+++ (Naik)', toCanvasX(-2.2), 218);
+        ctx2.fillStyle = '#e53e3e';
+        ctx2.fillText('--- (Turun)', toCanvasX(0.8)-10, 218);
+        ctx2.fillStyle = '#2b6cb0';
+        ctx2.fillText('+++ (Naik)', toCanvasX(3.6), 218);
+
+        // Indicator Titik Aktif
+        ctx2.fillStyle = '#dd6b20';
         ctx2.beginPath();
         ctx2.arc(toCanvasX(x), toCanvasY(y), 6, 0, Math.PI * 2);
         ctx2.fill();
@@ -558,7 +569,7 @@
     slider2.addEventListener('input', drawSimulation2);
     drawSimulation2();
 
-    // VALIDASI JAWABAN
+    // VALIDASI JAWABAN INTERAKTIF
     function checkAnswer1() {
         const m = document.getElementById('ans1_m').value.trim();
         const pgs = document.getElementById('ans1_pgs').value.trim().toLowerCase().replace(/\s+/g, '');
@@ -567,32 +578,47 @@
         fb.style.display = 'block';
         if (m === '-8' && (pgs === 'y=-8x+6' || pgs === 'y=-8*x+6')) {
             fb.className = 'feedback correct';
-            fb.innerHTML = '✅ <strong>Sangat Tepat!</strong> Gradien $m = f\'(1) = -8(1) = -8$ dan PGS adalah $y = -8x + 6$.';
+            fb.innerHTML = '✅ <strong>Sangat Tepat!</strong> Gradien $m = f\'(1) = -8(1) = -8$ dan persamaan garis singgung $y = -8x + 6$.';
         } else {
             fb.className = 'feedback incorrect';
-            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Petunjuk: $y\' = -8x$, substitusi $x=1$ maka $m=-8$. Gunakan $(y - (-2)) = -8(x - 1)$.';
+            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Petunjuk: $y\' = -8x$, substitusi $x=1$ diperoleh $m=-8$. Gunakan rumus $(y - (-2)) = -8(x - 1)$.';
         }
         if (window.MathJax) { MathJax.typesetPromise([fb]); }
     }
 
     function checkAnswer2() {
-        const pgs = document.getElementById('ans2_pgs').value.trim().toLowerCase().replace(/\s+/g, '');
+        const ans = document.getElementById('ans2_interval').value.trim().toLowerCase().replace(/\s+/g, '');
         const fb = document.getElementById('feedback2');
 
         fb.style.display = 'block';
-        if (pgs === 'y=2x+1' || pgs === 'y=2*x+1') {
+        if (ans.includes('2') && ans.includes('6')) {
             fb.className = 'feedback correct';
-            fb.innerHTML = '✅ <strong>Benar!</strong> Titik potong di $(0,1)$, gradien $m = y\'(0) = 2(0)+2 = 2$, sehingga PGS adalah $y = 2x + 1$.';
+            fb.innerHTML = '✅ <strong>Sangat Luar Biasa!</strong> Syarat $g\'(x) = 3x^2 - 24x + 36 \\ge 0 \\implies 3(x-2)(x-6) \\ge 0$, sehingga intervalnya $x \\le 2$ atau $x \\ge 6$.';
         } else {
             fb.className = 'feedback incorrect';
-            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Petunjuk: $y\' = 2x + 2$. Di $x=0$, $m = 2$ dan titik potong $(0,1)$.';
+            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Petunjuk: Turunan $g\'(x) = 3x^2 - 24x + 36 = 3(x-2)(x-6) \\ge 0$. Cari daerah positif pada garis bilangan.';
         }
         if (window.MathJax) { MathJax.typesetPromise([fb]); }
     }
 
     function checkAnswer3() {
-        const val = document.getElementById('ans3_val').value.trim();
+        const ans = document.getElementById('ans3_trig').value.trim().toLowerCase().replace(/\s+/g, '');
         const fb = document.getElementById('feedback3');
+
+        fb.style.display = 'block';
+        if (ans.includes('0') && (ans.includes('pi/2') || ans.includes('90') || ans.includes('1/2pi'))) {
+            fb.className = 'feedback correct';
+            fb.innerHTML = '✅ <strong>Benar!</strong> Pada $0 < x < \\frac{\\pi}{2}$, nilai $\\sin 2x > 0$ sehingga $f(x)$ merupakan fungsi naik.';
+        } else {
+            fb.className = 'feedback incorrect';
+            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Petunjuk: Pembuat nol $\\sin 2x = 0$ di kuadran I adalah $x = 0$ dan $x = \\frac{\\pi}{2}$. Uji tanda pada interval $0 < x < \\frac{\\pi}{2}$.';
+        }
+        if (window.MathJax) { MathJax.typesetPromise([fb]); }
+    }
+
+    function checkAnswer4() {
+        const val = document.getElementById('ans4_val').value.trim();
+        const fb = document.getElementById('feedback4');
 
         fb.style.display = 'block';
         if (val === '-7') {
@@ -601,21 +627,6 @@
         } else {
             fb.className = 'feedback incorrect';
             fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Hitung $f(3) = \\frac{1}{3}(3)^3 - (3)^2 - 3(3) + 2 = 9 - 9 - 9 + 2 = -7$.';
-        }
-        if (window.MathJax) { MathJax.typesetPromise([fb]); }
-    }
-
-    function checkAnswer4() {
-        const tVal = parseFloat(document.getElementById('ans4_t').value.replace(',', '.'));
-        const fb = document.getElementById('feedback4');
-
-        fb.style.display = 'block';
-        if (tVal === 2.5) {
-            fb.className = 'feedback correct';
-            fb.innerHTML = '✅ <strong>Benar!</strong> Percepatan $a(t) = s\'\'(t) = 6t - 15 = 0 \\implies 6t = 15 \\implies t = 2{,}5\\text{ detik}$.';
-        } else {
-            fb.className = 'feedback incorrect';
-            fb.innerHTML = '❌ <strong>Kurang Tepat.</strong> Turunkan dua kali: $v(t) = 3t^2 - 15t + 18$, lalu $a(t) = 6t - 15 = 0$.';
         }
         if (window.MathJax) { MathJax.typesetPromise([fb]); }
     }
