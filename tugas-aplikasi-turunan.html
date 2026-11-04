@@ -1,0 +1,1077 @@
+<!DOCTYPE html>
+<html lang="id" class="scroll-smooth">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Modul Interaktif: Aplikasi Turunan Fungsi Kelas XII</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- MathJax for rendering LaTeX math formulas -->
+    <script>
+        window.MathJax = {
+            tex: {
+                inlineMath: [['$', '$'], ['\\(', '\\)']],
+                displayMath: [['$$', '$$'], ['\\[', '\\]']]
+            },
+            svg: { fontCache: 'global' }
+        };
+    </script>
+    <script id="MathJax-script" async src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-mml-chtml.js"></script>
+    <!-- FontAwesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Fira+Code:wght@400;500&display=swap" rel="stylesheet">
+
+    <style>
+        body {
+            font-family: 'Inter', sans-serif;
+        }
+        .code-font {
+            font-family: 'Fira Code', monospace;
+        }
+        canvas {
+            touch-action: none;
+        }
+        /* Custom Scrollbar */
+        ::-webkit-scrollbar {
+            width: 8px;
+            height: 8px;
+        }
+        ::-webkit-scrollbar-track {
+            background: #f1f5f9;
+        }
+        ::-webkit-scrollbar-thumb {
+            background: #cbd5e1;
+            border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+            background: #94a3b8;
+        }
+    </style>
+</head>
+<body class="bg-slate-50 text-slate-800 flex flex-col min-h-screen">
+
+    <!-- HEADER / NAVIGATION -->
+    <header class="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-slate-200 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="flex justify-between items-center h-16">
+                <!-- Logo & Title -->
+                <div class="flex items-center space-x-3">
+                    <div class="w-10 h-10 rounded-xl bg-indigo-600 flex items-center justify-center text-white shadow-md shadow-indigo-200">
+                        <i class="fa-solid fa-chart-line text-lg"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-slate-900 leading-tight">Aplikasi Turunan Fungsi</h1>
+                        <p class="text-xs text-indigo-600 font-medium">Matematika Tingkat Lanjut Kelas XII</p>
+                    </div>
+                </div>
+
+                <!-- Desktop Navigation Tabs -->
+                <nav class="hidden md:flex space-x-1 bg-slate-100 p-1 rounded-xl text-sm font-medium">
+                    <button onclick="switchTab('materi-1')" id="nav-materi-1" class="tab-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-[#000000] fa-ruler-combined mr-1.5 text-xs"></i>Garis Singgung
+                    </button>
+                    <button onclick="switchTab('materi-2')" id="nav-materi-2" class="tab-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-arrow-trend-up mr-1.5 text-xs"></i>Kemonotonan
+                    </button>
+                    <button onclick="switchTab('materi-3')" id="nav-materi-3" class="tab-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-mountain mr-1.5 text-xs"></i>Titik Ekstrem
+                    </button>
+                    <button onclick="switchTab('latihan')" id="nav-latihan" class="tab-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-pen-to-square mr-1.5 text-xs"></i>Latihan Soal
+                    </button>
+                    <button onclick="switchTab('kuis')" id="nav-kuis" class="tab-btn px-4 py-2 rounded-lg text-slate-600 hover:text-slate-900 transition">
+                        <i class="fa-solid fa-award mr-1.5 text-xs"></i>Kuis Interaktif
+                    </button>
+                </nav>
+
+                <!-- Mobile menu button -->
+                <div class="md:hidden">
+                    <button id="mobile-menu-btn" onclick="toggleMobileMenu()" class="text-slate-600 hover:text-slate-900 focus:outline-none p-2 rounded-lg">
+                        <i class="fa-solid fa-bars text-xl"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+
+        <!-- Mobile Navigation Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-b border-slate-200 px-4 pt-2 pb-4 space-y-1 text-sm font-medium shadow-lg">
+            <button onclick="switchTab('materi-1'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 flex items-center">
+                <i class="fa-solid fa-ruler-combined w-6 text-indigo-500"></i> Persamaan Garis Singgung
+            </button>
+            <button onclick="switchTab('materi-2'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 flex items-center">
+                <i class="fa-solid fa-arrow-trend-up w-6 text-indigo-500"></i> Fungsi Naik, Turun & Diam
+            </button>
+            <button onclick="switchTab('materi-3'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 flex items-center">
+                <i class="fa-solid fa-mountain w-6 text-indigo-500"></i> Titik Ekstrem & Uji Turunan
+            </button>
+            <button onclick="switchTab('latihan'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 flex items-center">
+                <i class="fa-solid fa-pen-to-square w-6 text-indigo-500"></i> Latihan Soal PDF
+            </button>
+            <button onclick="switchTab('kuis'); toggleMobileMenu()" class="w-full text-left px-3 py-2.5 rounded-lg text-slate-700 hover:bg-indigo-50 hover:text-indigo-600 flex items-center">
+                <i class="fa-solid fa-award w-6 text-indigo-500"></i> Kuis Evaluasi Interaktif
+            </button>
+        </div>
+    </header>
+
+    <!-- MAIN CONTENT CONTAINER -->
+    <main class="flex-grow max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-8">
+
+        <!-- ========================================== -->
+        <!-- TAB 1: PERSAMAAN GARIS SINGGUNG KURVA -->
+        <!-- ========================================== -->
+        <div id="materi-1" class="tab-content space-y-8">
+            <!-- Header Section -->
+            <div class="bg-gradient-to-r from-indigo-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="px-3 py-1 bg-indigo-500/30 text-indigo-300 border border-indigo-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Sub-Materi 1</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-3 mb-2">Persamaan Garis Singgung pada Kurva</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Garis singgung pada kurva merupakan garis lurus yang menyentuh kurva tepat pada satu titik dan memiliki kemiringan (gradien) yang sama dengan kurva pada titik tersebut.
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white font-bold select-none">
+                    $m=f'(x)$
+                </div>
+            </div>
+
+            <!-- Theory Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                <!-- Concept Card 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">1</div>
+                        <h3 class="font-bold text-slate-900">Gradien Garis Singgung ($m$)</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                        Jika garis tangen mendekati titik $P(x_1, f(x_1))$, gradiennya $m$ didefinisikan sebagai limit perubahan garis sekan saat $h \rightarrow 0$, yang nilainya setara dengan **turunan pertama** fungsi di titik tersebut.
+                    </p>
+                    <div class="bg-indigo-50/70 border border-indigo-100 p-4 rounded-xl text-center">
+                        $$m = \lim_{h \rightarrow 0} \frac{f(x_1 + h) - f(x_1)}{h} = f'(x_1)$$
+                    </div>
+                </div>
+
+                <!-- Concept Card 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-center space-x-3 mb-4">
+                        <div class="w-8 h-8 rounded-lg bg-indigo-100 text-indigo-600 flex items-center justify-center font-bold">2</div>
+                        <h3 class="font-bold text-slate-900">Rumus Persamaan Garis Singgung</h3>
+                    </div>
+                    <p class="text-slate-600 text-sm mb-4 leading-relaxed">
+                        Dengan mengetahui gradien $m = f'(a)$ dan titik singgung $P(a, b)$ di mana $b = f(a)$, persamaan garis singgungnya dapat ditentukan dengan rumus dasar garis lurus:
+                    </p>
+                    <div class="bg-indigo-50/70 border border-indigo-100 p-4 rounded-xl text-center">
+                        $$(y - b) = m(x - a) \quad \text{atau} \quad (y - y_1) = f'(x_1)(x - x_1)$$
+                    </div>
+                </div>
+            </div>
+
+            <!-- INTERACTIVE CANVAS SIMULATOR 1 -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
+                <div class="flex flex-col md:flex-row md:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-4">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-compass-drafting text-indigo-600"></i> Simulation: Garis Singgung Kurva Parabola
+                        </h3>
+                        <p class="text-xs text-slate-500 mt-0.5">Geser posisi titik $x_1$ untuk melihat bagaimana gradien $m = f'(x_1)$ dan persamaan garis singgung berubah secara dinamis.</p>
+                    </div>
+                    <div class="flex items-center space-x-2 bg-slate-100 px-3 py-1.5 rounded-xl text-sm font-semibold text-slate-700">
+                        <span>Fungsi:</span>
+                        <span class="text-indigo-600 font-mono">$f(x) = x^2 - 2x - 1$</span>
+                    </div>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-center">
+                    <!-- Canvas Box -->
+                    <div class="lg:col-span-2 relative bg-slate-900 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center min-h-[320px] border border-slate-800">
+                        <canvas id="tangentCanvas" class="w-full h-80 cursor-crosshair"></canvas>
+                        <div class="absolute top-3 left-3 bg-slate-800/80 backdrop-blur-md px-3 py-1.5 rounded-lg border border-slate-700 text-xs text-slate-300 font-mono">
+                            Grafik $y = x^2 - 2x - 1$
+                        </div>
+                    </div>
+
+                    <!-- Controls & Live Display -->
+                    <div class="space-y-5 bg-slate-50 p-5 rounded-2xl border border-slate-200">
+                        <div>
+                            <label class="flex justify-between text-xs font-semibold text-slate-700 mb-2">
+                                <span>Posisi Titik Singgung ($x_1$):</span>
+                                <span id="val-x1" class="text-indigo-600 font-bold">1.0</span>
+                            </label>
+                            <input type="range" id="slider-x1" min="-2" max="4" step="0.1" value="1.0" class="w-full accent-indigo-600 cursor-pointer">
+                        </div>
+
+                        <div class="space-y-3 text-xs border-t border-slate-200 pt-4">
+                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-slate-500">Koordinat Titik $P(x_1, y_1)$:</span>
+                                <span id="disp-p" class="font-mono font-bold text-slate-900">(1.0, -2.0)</span>
+                            </div>
+
+                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-slate-500">Turunan $f'(x) = 2x - 2$:</span>
+                                <span id="disp-fp" class="font-mono font-bold text-slate-900">$f'(1.0)$</span>
+                            </div>
+
+                            <div class="flex justify-between items-center bg-white p-2.5 rounded-xl border border-slate-200">
+                                <span class="text-slate-500">Gradien ($m$):</span>
+                                <span id="disp-m" class="font-mono font-bold text-emerald-600">0.0</span>
+                            </div>
+
+                            <div class="bg-indigo-600 text-white p-3 rounded-xl shadow-sm text-center">
+                                <p class="text-[10px] opacity-80 uppercase tracking-wider font-semibold mb-1">Persamaan Garis Singgung</p>
+                                <p id="disp-eq" class="font-mono font-bold text-sm sm:text-base">$y = 0x - 2$</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sample Problem Box -->
+            <div class="bg-white rounded-2xl border border-slate-200 p-6 shadow-sm">
+                <h3 class="font-bold text-slate-900 mb-3 flex items-center gap-2">
+                    <i class="fa-solid fa-lightbulb text-amber-500"></i> Contoh Soal 2.8 (Buku Teks PDF)
+                </h3>
+                <p class="text-sm text-slate-700 mb-4">
+                    Tentukan persamaan garis singgung pada kurva $y = 2 - 4x^2$ di titik $(1, -2)$.
+                </p>
+                <div class="bg-slate-50 p-4 rounded-xl border border-slate-200 text-sm space-y-2 font-mono text-slate-700">
+                    <p class="text-indigo-600 font-semibold font-sans">Alternatif Penyelesaian:</p>
+                    <p>1. Turunan fungsi: $f'(x) = -8x$</p>
+                    <p>2. Gradien di titik $(1,-2)$: $m = f'(1) = -8(1) = -8$</p>
+                    <p>3. Persamaan garis singgung:</p>
+                    <p class="pl-4">$(y - y_1) = m(x - x_1)$</p>
+                    <p class="pl-4">$(y - (-2)) = -8(x - 1)$</p>
+                    <p class="pl-4">$y + 2 = -8x + 8 \implies \mathbf{y = -8x + 6}$</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 2: FUNGSI NAIK, TURUN, DAN DIAM -->
+        <!-- ========================================== -->
+        <div id="materi-2" class="tab-content hidden space-y-8">
+            <!-- Header Section -->
+            <div class="bg-gradient-to-r from-emerald-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="px-3 py-1 bg-emerald-500/30 text-emerald-300 border border-emerald-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Sub-Materi 2</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-3 mb-2">Fungsi Naik, Fungsi Turun, dan Fungsi Diam</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Kemonotonan grafik suatu fungsi dapat diperiksa melalui tanda positif/negatif dari turunan pertamanya $f'(x)$ pada interval tertentu.
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white font-bold select-none">
+                    $f'(x)\gtrless0$
+                </div>
+            </div>
+
+            <!-- Definition Cards Grid -->
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+                <!-- Card 1: Fungsi Naik -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-emerald-300 transition">
+                    <div class="w-10 h-10 rounded-xl bg-emerald-100 text-emerald-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-arrow-trend-up"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">1. Fungsi Naik</h3>
+                    <p class="text-xs text-slate-500 mb-3">Grafik bergerak ke atas saat $x$ bergerak ke kanan.</p>
+                    <div class="bg-emerald-50 border border-emerald-100 p-3 rounded-xl text-center text-emerald-800 font-semibold text-sm">
+                        $f'(x) > 0 \quad \forall x \in I$
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">
+                        $x_1 < x_2 \implies f(x_1) < f(x_2)$
+                    </p>
+                </div>
+
+                <!-- Card 2: Fungsi Turun -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-rose-300 transition">
+                    <div class="w-10 h-10 rounded-xl bg-rose-100 text-rose-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-arrow-trend-down"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">2. Fungsi Turun</h3>
+                    <p class="text-xs text-slate-500 mb-3">Grafik bergerak ke bawah saat $x$ bergerak ke kanan.</p>
+                    <div class="bg-rose-50 border border-rose-100 p-3 rounded-xl text-center text-rose-800 font-semibold text-sm">
+                        $f'(x) < 0 \quad \forall x \in I$
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">
+                        $x_1 < x_2 \implies f(x_1) > f(x_2)$
+                    </p>
+                </div>
+
+                <!-- Card 3: Fungsi Diam -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:border-amber-300 transition">
+                    <div class="w-10 h-10 rounded-xl bg-amber-100 text-amber-600 flex items-center justify-center font-bold mb-4">
+                        <i class="fa-solid fa-minus"></i>
+                    </div>
+                    <h3 class="font-bold text-slate-900 mb-1">3. Fungsi Diam (Stasioner)</h3>
+                    <p class="text-xs text-slate-500 mb-3">Grafik mendatar, tidak naik dan tidak turun.</p>
+                    <div class="bg-amber-50 border border-amber-100 p-3 rounded-xl text-center text-amber-800 font-semibold text-sm">
+                        $f'(x) = 0 \quad \text{atau t.t.}$
+                    </div>
+                    <p class="text-xs text-slate-500 mt-3">
+                        Garis singgung sejajar sumbu-$x$.
+                    </p>
+                </div>
+            </div>
+
+            <!-- SIMULATOR 2: VISUALISASI KEMONOTONAN -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-chart-area text-emerald-600"></i> Visualisasi Interval Kemonotonan $f(x) = 2x^3 - 9x^2 + 12x + 10$
+                        </h3>
+                        <p class="text-xs text-slate-500">Cermati perubahan interval naik (hijau) dan turun (merah) sesuai Contoh Soal 2.9.</p>
+                    </div>
+                </div>
+
+                <div class="relative bg-slate-900 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center min-h-[340px] border border-slate-800">
+                    <canvas id="monoCanvas" class="w-full h-80"></canvas>
+                </div>
+
+                <!-- Interval Legend -->
+                <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 mt-6 text-xs text-center font-semibold">
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl">
+                        <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Naik: $x < 1$ ($f'(x) > 0$)
+                    </div>
+                    <div class="bg-rose-50 border border-rose-200 text-rose-800 p-3 rounded-xl">
+                        <i class="fa-solid fa-circle-minus text-rose-600 mr-1"></i> Turun: $1 < x < 2$ ($f'(x) < 0$)
+                    </div>
+                    <div class="bg-emerald-50 border border-emerald-200 text-emerald-800 p-3 rounded-xl">
+                        <i class="fa-solid fa-circle-check text-emerald-600 mr-1"></i> Naik: $x > 2$ ($f'(x) > 0$)
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 3: TITIK EKSTREM & UJI TURUNAN -->
+        <!-- ========================================== -->
+        <div id="materi-3" class="tab-content hidden space-y-8">
+            <!-- Header Section -->
+            <div class="bg-gradient-to-r from-violet-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl relative overflow-hidden">
+                <div class="relative z-10 max-w-3xl">
+                    <span class="px-3 py-1 bg-violet-500/30 text-violet-300 border border-violet-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Sub-Materi 3</span>
+                    <h2 class="text-2xl sm:text-3xl font-bold mt-3 mb-2">Titik Ekstrem & Uji Turunan</h2>
+                    <p class="text-slate-300 text-sm sm:text-base leading-relaxed">
+                        Titik ekstrem (stasioner) terjadi saat $f'(c) = 0$. Jenis titik ekstrem (minimum, maksimum, atau belok) ditentukan melalui Uji Turunan Pertama dan Uji Turunan Kedua $f''(c)$.
+                    </p>
+                </div>
+                <div class="absolute -right-10 -bottom-10 opacity-10 text-9xl text-white font-bold select-none">
+                    $f''(x)$
+                </div>
+            </div>
+
+            <!-- Comparison Tests Section -->
+            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                <!-- Test 1: First Derivative Test -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base border-b border-slate-100 pb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center text-xs">1</span>
+                        Uji Turunan Pertama
+                    </h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Memeriksa perubahan tanda $f'(x)$ di sekitar nilai stasioner $x = c$:
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-emerald-600">Maksimum Relatif:</strong> $f'(x)$ berubah tanda dari <span class="font-bold text-emerald-600">positif (+)</span> ke <span class="font-bold text-rose-600">negatif (-)</span>.
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-indigo-600">Minimum Relatif:</strong> $f'(x)$ berubah tanda dari <span class="font-bold text-rose-600">negatif (-)</span> ke <span class="font-bold text-emerald-600">positif (+)</span>.
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-slate-600">Titik Belok Horizontal:</strong> $f'(x)$ tidak mengalami perubahan tanda di sekitar $c$.
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Test 2: Second Derivative Test -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm space-y-4">
+                    <h3 class="font-bold text-slate-900 text-base border-b border-slate-100 pb-3 flex items-center gap-2">
+                        <span class="w-7 h-7 rounded-lg bg-violet-100 text-violet-600 flex items-center justify-center text-xs">2</span>
+                        Uji Turunan Kedua ($f''(c)$)
+                    </h3>
+                    <p class="text-xs text-slate-600 leading-relaxed">
+                        Jika $f'(c) = 0$, nilai turunan kedua $f''(c)$ menentukan cekung grafik dan jenis ekstrem:
+                    </p>
+                    <ul class="space-y-2 text-xs text-slate-700">
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-rose-600">Maksimum Relatif:</strong> $f''(c) < 0$ (Kurva cekung ke bawah $\cap$).
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-emerald-600">Minimum Relatif:</strong> $f''(c) > 0$ (Kurva cekung ke atas $\cup$).
+                        </li>
+                        <li class="bg-slate-50 p-3 rounded-xl border border-slate-200">
+                            <strong class="text-amber-600">Uji Gagal:</strong> Jika $f''(c) = 0$, gunakan Uji Turunan Pertama.
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- SIMULATOR 3: EXTREMA CANVAS -->
+            <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-lg">
+                <div class="flex flex-col sm:flex-row sm:items-center justify-between border-b border-slate-100 pb-4 mb-6 gap-2">
+                    <div>
+                        <h3 class="font-bold text-slate-900 text-lg flex items-center gap-2">
+                            <i class="fa-solid fa-chart-line text-violet-600"></i> Eksplorasi Titik Maksimum & Minimum: $f(x) = \frac{1}{3}x^3 - x^2 - 3x + 2$
+                        </h3>
+                        <p class="text-xs text-slate-500">Visualisasi Uji Turunan Kedua berdasarkan Contoh Soal 2.13 dari buku teks.</p>
+                    </div>
+                </div>
+
+                <div class="relative bg-slate-900 rounded-2xl overflow-hidden shadow-inner flex items-center justify-center min-h-[340px] border border-slate-800">
+                    <canvas id="extremaCanvas" class="w-full h-80"></canvas>
+                </div>
+
+                <div class="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-6">
+                    <div class="bg-violet-50 border border-violet-200 p-4 rounded-2xl text-xs space-y-1">
+                        <p class="font-bold text-violet-900 text-sm">Titik Maksimum: $(-1, 3.67)$</p>
+                        <p class="text-slate-600 font-mono">$f'(-1) = 0 \quad \text{dan} \quad f''(-1) = -4 < 0$</p>
+                        <p class="text-slate-500">Turunan kedua negatif menunjukkan grafik cekung ke bawah di titik puncak ini.</p>
+                    </div>
+
+                    <div class="bg-indigo-50 border border-indigo-200 p-4 rounded-2xl text-xs space-y-1">
+                        <p class="font-bold text-indigo-900 text-sm">Titik Minimum: $(3, -7)$</p>
+                        <p class="text-slate-600 font-mono">$f'(3) = 0 \quad \text{dan} \quad f''(3) = 4 > 0$</p>
+                        <p class="text-slate-500">Turunan kedua positif menunjukkan grafik cekung ke atas di titik lembah ini.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 4: LATIHAN SOAL PDF INTERAKTIF -->
+        <!-- ========================================== -->
+        <div id="latihan" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-blue-900 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+                <span class="px-3 py-1 bg-blue-500/30 text-blue-300 border border-blue-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Latihan Terbimbing</span>
+                <h2 class="text-2xl sm:text-3xl font-bold mt-3 mb-2">Latihan Soal dari Buku Teks PDF</h2>
+                <p class="text-slate-300 text-sm sm:text-base">
+                    Selesaikan soal-soal terpilih berikut dan periksa hasil serta pembahasan langkah demi langkah secara mandiri.
+                </p>
+            </div>
+
+            <!-- PDF Exercise Cards -->
+            <div class="space-y-6">
+
+                <!-- Soal 1 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-start justify-between">
+                        <span class="px-3 py-1 bg-indigo-100 text-indigo-700 font-bold rounded-lg text-xs">Soal 1.b (Hal 146)</span>
+                        <span class="text-xs text-slate-400">Persamaan Garis Singgung</span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-800 mt-3">
+                        Tentukan persamaan garis singgung dari kurva $y = 2x^2 - 3x + 5$ pada titik yang berordinat $y = 4$.
+                    </p>
+
+                    <!-- Interactive Input / Check -->
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <input type="text" id="ans-pdf-1" placeholder="Masukkan persamaan misal y = x + 3" class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none flex-grow">
+                        <button onclick="checkPdfAns(1, ['y=x+3', 'y = x + 3', 'x-y+3=0', 'y-x-3=0'])" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition">
+                            Cek Jawaban
+                        </button>
+                        <button onclick="toggleSolution('sol-1')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition">
+                            Pembahasan
+                        </button>
+                    </div>
+                    <div id="feedback-1" class="hidden mt-3 text-xs font-semibold"></div>
+
+                    <!-- Collapsible Solution -->
+                    <div id="sol-1" class="hidden mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-700 font-mono">
+                        <p class="font-bold text-indigo-600 font-sans">Langkah Pembahasan:</p>
+                        <p>1. Substitusi $y = 4$ ke parabola: $2x^2 - 3x + 5 = 4 \implies 2x^2 - 3x + 1 = 0$</p>
+                        <p>2. Pemfaktoran: $(2x - 1)(x - 1) = 0 \implies x_1 = 1$ atau $x_2 = 1/2$.</p>
+                        <p>3. Turunan kurva: $y' = 4x - 3$.</p>
+                        <p>4. Untuk titik $(1, 4)$: $m_1 = 4(1) - 3 = 1 \implies (y - 4) = 1(x - 1) \implies \mathbf{y = x + 3}$.</p>
+                        <p>5. Untuk titik $(1/2, 4)$: $m_2 = 4(1/2) - 3 = -1 \implies (y - 4) = -1(x - 1/2) \implies \mathbf{y = -x + 4.5}$.</p>
+                    </div>
+                </div>
+
+                <!-- Soal 2 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-start justify-between">
+                        <span class="px-3 py-1 bg-emerald-100 text-emerald-700 font-bold rounded-lg text-xs">Soal 6.a (Hal 146)</span>
+                        <span class="text-xs text-slate-400">Fungsi Naik & Turun</span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-800 mt-3">
+                        Tentukan interval fungsi naik dari fungsi $f(x) = x^3 - 3x^2 - 15$.
+                    </p>
+
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <input type="text" id="ans-pdf-2" placeholder="Contoh: x < 0 atau x > 2" class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none flex-grow">
+                        <button onclick="checkPdfAns(2, ['x<0 atau x>2', 'x < 0 atau x > 2', 'x<0,x>2'])" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition">
+                            Cek Jawaban
+                        </button>
+                        <button onclick="toggleSolution('sol-2')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition">
+                            Pembahasan
+                        </button>
+                    </div>
+                    <div id="feedback-2" class="hidden mt-3 text-xs font-semibold"></div>
+
+                    <div id="sol-2" class="hidden mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-700 font-mono">
+                        <p class="font-bold text-emerald-600 font-sans">Langkah Pembahasan:</p>
+                        <p>1. Turunan pertama: $f'(x) = 3x^2 - 6x = 3x(x - 2)$.</p>
+                        <p>2. Pembuat nol $f'(x) = 0 \implies x = 0$ atau $x = 2$.</p>
+                        <p>3. Syarat fungsi naik $f'(x) > 0 \implies 3x(x - 2) > 0$.</p>
+                        <p>4. Berdasarkan garis bilangan: $\mathbf{x < 0 \text{ atau } x > 2}$.</p>
+                    </div>
+                </div>
+
+                <!-- Soal 3 -->
+                <div class="bg-white p-6 rounded-2xl border border-slate-200 shadow-sm hover:shadow-md transition">
+                    <div class="flex items-start justify-between">
+                        <span class="px-3 py-1 bg-violet-100 text-violet-700 font-bold rounded-lg text-xs">Soal 11.a (Hal 147)</span>
+                        <span class="text-xs text-slate-400">Titik Ekstrem</span>
+                    </div>
+                    <p class="text-sm font-medium text-slate-800 mt-3">
+                        Tentukan titik balik maksimum dari fungsi $f(x) = x^3 - 6x^2 + 9x + 4$.
+                    </p>
+
+                    <div class="mt-4 pt-4 border-t border-slate-100 flex flex-col sm:flex-row items-stretch sm:items-center gap-3">
+                        <input type="text" id="ans-pdf-3" placeholder="Format koordinat (x, y) misal (1, 8)" class="px-4 py-2 text-sm border border-slate-300 rounded-xl focus:ring-2 focus:ring-indigo-500 focus:outline-none flex-grow">
+                        <button onclick="checkPdfAns(3, ['(1,8)', '(1, 8)'])" class="px-5 py-2 bg-indigo-600 hover:bg-indigo-700 text-white text-sm font-semibold rounded-xl transition">
+                            Cek Jawaban
+                        </button>
+                        <button onclick="toggleSolution('sol-3')" class="px-4 py-2 bg-slate-100 hover:bg-slate-200 text-slate-700 text-sm font-semibold rounded-xl transition">
+                            Pembahasan
+                        </button>
+                    </div>
+                    <div id="feedback-3" class="hidden mt-3 text-xs font-semibold"></div>
+
+                    <div id="sol-3" class="hidden mt-4 p-4 bg-slate-50 border border-slate-200 rounded-xl text-xs space-y-2 text-slate-700 font-mono">
+                        <p class="font-bold text-violet-600 font-sans">Langkah Pembahasan:</p>
+                        <p>1. $f'(x) = 3x^2 - 12x + 9 = 3(x - 1)(x - 3) = 0 \implies x = 1$ atau $x = 3$.</p>
+                        <p>2. Uji Turunan Kedua: $f''(x) = 6x - 12$.</p>
+                        <p>3. Untuk $x = 1 \implies f''(1) = -6 < 0$ (Titik Balik Maksimum).</p>
+                        <p>4. Nilai Maksimum: $f(1) = 1^3 - 6(1)^2 + 9(1) + 4 = 8$.</p>
+                        <p>5. Koordinat Titik Balik Maksimum adalah $\mathbf{(1, 8)}$.</p>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+
+        <!-- ========================================== -->
+        <!-- TAB 5: KUIS EVALUASI INTERAKTIF -->
+        <!-- ========================================== -->
+        <div id="kuis" class="tab-content hidden space-y-8">
+            <div class="bg-gradient-to-r from-amber-600 to-slate-900 text-white rounded-3xl p-6 sm:p-8 shadow-xl">
+                <span class="px-3 py-1 bg-amber-500/30 text-amber-300 border border-amber-400/30 rounded-full text-xs font-semibold uppercase tracking-wider">Evaluasi Pemahaman</span>
+                <h2 class="text-2xl sm:text-3xl font-bold mt-3 mb-2">Kuis Evaluasi Aplikasi Turunan</h2>
+                <p class="text-slate-300 text-sm sm:text-base">
+                    Uji pemahaman Anda melalui 5 pertanyaan kuis pilihan ganda berikut.
+                </p>
+            </div>
+
+            <!-- Quiz Box -->
+            <div id="quiz-container" class="bg-white rounded-2xl border border-slate-200 p-6 sm:p-8 shadow-md space-y-8">
+                <!-- Questions generated dynamically or pre-structured -->
+
+                <!-- Question 1 -->
+                <div class="quiz-item space-y-3">
+                    <p class="font-semibold text-slate-900 text-sm sm:text-base">
+                        1. Gradien garis singgung kurva $y = 3x^2 - 5x + 2$ di titik yang berabsis $x = 2$ adalah...
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q1" value="A" class="accent-indigo-600 mr-3"> A. 5
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q1" value="B" class="accent-indigo-600 mr-3"> B. 7
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q1" value="C" class="accent-indigo-600 mr-3"> C. 12
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q1" value="D" class="accent-indigo-600 mr-3"> D. 14
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 2 -->
+                <div class="quiz-item space-y-3 pt-6 border-t border-slate-100">
+                    <p class="font-semibold text-slate-900 text-sm sm:text-base">
+                        2. Grafik fungsi $f(x) = \frac{1}{3}x^3 - 2x^2 - 5x + 10$ akan selalu turun pada interval...
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q2" value="A" class="accent-indigo-600 mr-3"> A. $-1 < x < 5$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q2" value="B" class="accent-indigo-600 mr-3"> B. $x < -1 \text{ atau } x > 5$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q2" value="C" class="accent-indigo-600 mr-3"> C. $-5 < x < 1$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q2" value="D" class="accent-indigo-600 mr-3"> D. $1 < x < 5$
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 3 -->
+                <div class="quiz-item space-y-3 pt-6 border-t border-slate-100">
+                    <p class="font-semibold text-slate-900 text-sm sm:text-base">
+                        3. Jika $f''(c) < 0$ pada titik di mana $f'(c) = 0$, maka titik $(c, f(c))$ merupakan...
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q3" value="A" class="accent-indigo-600 mr-3"> A. Titik balik minimum
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q3" value="B" class="accent-indigo-600 mr-3"> B. Titik balik maksimum
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q3" value="C" class="accent-indigo-600 mr-3"> C. Titik belok horizontal
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q3" value="D" class="accent-indigo-600 mr-3"> D. Titik potong sumbu-$x$
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 4 -->
+                <div class="quiz-item space-y-3 pt-6 border-t border-slate-100">
+                    <p class="font-semibold text-slate-900 text-sm sm:text-base">
+                        4. Persamaan garis singgung kurva $y = x^2 - 4x + 3$ yang sejajar dengan garis $y = 2x + 5$ adalah...
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q4" value="A" class="accent-indigo-600 mr-3"> A. $y = 2x - 6$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q4" value="B" class="accent-indigo-600 mr-3"> B. $y = 2x + 6$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q4" value="C" class="accent-indigo-600 mr-3"> C. $y = 2x - 12$
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q4" value="D" class="accent-indigo-600 mr-3"> D. $y = -2x + 6$
+                        </label>
+                    </div>
+                </div>
+
+                <!-- Question 5 -->
+                <div class="quiz-item space-y-3 pt-6 border-t border-slate-100">
+                    <p class="font-semibold text-slate-900 text-sm sm:text-base">
+                        5. Nilai stasioner minimum dari fungsi $f(x) = x^2 - 6x + 8$ adalah...
+                    </p>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 text-sm">
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q5" value="A" class="accent-indigo-600 mr-3"> A. 3
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q5" value="B" class="accent-indigo-600 mr-3"> B. 1
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q5" value="C" class="accent-indigo-600 mr-3"> C. -1
+                        </label>
+                        <label class="flex items-center p-3 rounded-xl border border-slate-200 hover:bg-slate-50 cursor-pointer transition">
+                            <input type="radio" name="q5" value="D" class="accent-indigo-600 mr-3"> D. -3
+                        </label>
+                    </div>
+                </div>
+
+                <div class="pt-6 border-t border-slate-200 text-center">
+                    <button onclick="submitQuiz()" class="px-8 py-3 bg-amber-600 hover:bg-amber-700 text-white font-bold rounded-2xl shadow-lg transition transform hover:-translate-y-0.5">
+                        <i class="fa-solid fa-paper-plane mr-2"></i>Kirim Jawaban Kuis
+                    </button>
+                </div>
+            </div>
+
+            <!-- Quiz Result Modal / Card -->
+            <div id="quiz-result" class="hidden bg-slate-900 text-white p-6 sm:p-8 rounded-3xl shadow-xl text-center space-y-4">
+                <div class="w-16 h-16 rounded-2xl bg-amber-500/20 text-amber-400 flex items-center justify-center mx-auto text-2xl font-bold border border-amber-500/30">
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <h3 class="text-2xl font-bold">Hasil Evaluasi Kuis</h3>
+                <div class="text-5xl font-extrabold text-amber-400 font-mono" id="quiz-score">0 / 100</div>
+                <p id="quiz-feedback-msg" class="text-sm text-slate-300 max-w-md mx-auto">
+                    Kerja bagus! Anda telah menyelesaikan kuis evaluasi materi turunan fungsi.
+                </p>
+                <div class="pt-4">
+                    <button onclick="resetQuiz()" class="px-6 py-2.5 bg-slate-800 hover:bg-slate-700 text-slate-200 font-semibold rounded-xl border border-slate-700 transition">
+                        Coba Lagi
+                    </button>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <!-- FOOTER -->
+    <footer class="bg-white border-t border-slate-200 py-6 mt-12 text-center text-xs text-slate-500">
+        <div class="max-w-7xl mx-auto px-4">
+            <p>Modul Pembelajaran Interaktif Matematika Tingkat Lanjut Kelas XII SMA/MA</p>
+            <p class="mt-1">Materi: Bab 2 - Aplikasi Turunan Fungsi (Edisi Revisi)</p>
+        </div>
+    </footer>
+
+    <!-- JAVASCRIPT LOGIC -->
+    <script>
+        // TAB SWITCHING LOGIC
+        function switchTab(tabId) {
+            document.querySelectorAll('.tab-content').forEach(el => el.classList.add('hidden'));
+            document.querySelectorAll('.tab-btn').forEach(btn => {
+                btn.classList.remove('bg-indigo-600', 'text-white', 'shadow-sm');
+                btn.classList.add('text-slate-600');
+            });
+
+            document.getElementById(tabId).classList.remove('hidden');
+            const activeBtn = document.getElementById(`nav-${tabId}`);
+            if (activeBtn) {
+                activeBtn.classList.add('bg-indigo-600', 'text-white', 'shadow-sm');
+                activeBtn.classList.remove('text-slate-600');
+            }
+
+            // Trigger Canvas Renders when switching to tabs
+            if (tabId === 'materi-1') renderTangentCanvas();
+            if (tabId === 'materi-2') renderMonoCanvas();
+            if (tabId === 'materi-3') renderExtremaCanvas();
+
+            // Re-render MathJax
+            if (window.MathJax) {
+                MathJax.typesetPromise();
+            }
+        }
+
+        function toggleMobileMenu() {
+            const menu = document.getElementById('mobile-menu');
+            menu.classList.toggle('hidden');
+        }
+
+        // ==========================================
+        // CANVAS 1: TANGENT LINE SIMULATOR
+        // ==========================================
+        const sliderX1 = document.getElementById('slider-x1');
+        const valX1 = document.getElementById('val-x1');
+        const dispP = document.getElementById('disp-p');
+        const dispFp = document.getElementById('disp-fp');
+        const dispM = document.getElementById('disp-m');
+        const dispEq = document.getElementById('disp-eq');
+
+        function f1(x) { return x * x - 2 * x - 1; }
+        function df1(x) { return 2 * x - 2; }
+
+        function renderTangentCanvas() {
+            const canvas = document.getElementById('tangentCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            // Responsive DPI setup
+            const width = canvas.parentElement.clientWidth;
+            const height = canvas.parentElement.clientHeight || 320;
+            canvas.width = width;
+            canvas.height = height;
+
+            const xVal = parseFloat(sliderX1.value);
+            const yVal = f1(xVal);
+            const mVal = df1(xVal);
+
+            // Update UI elements
+            valX1.innerText = xVal.toFixed(1);
+            dispP.innerText = `(${xVal.toFixed(1)}, ${yVal.toFixed(1)})`;
+            dispFp.innerText = `f'(${xVal.toFixed(1)}) = 2(${xVal.toFixed(1)})-2`;
+            dispM.innerText = mVal.toFixed(1);
+
+            const c = yVal - mVal * xVal;
+            const sign = c >= 0 ? '+' : '-';
+            dispEq.innerText = `y = ${mVal.toFixed(1)}x ${sign} ${Math.abs(c).toFixed(1)}`;
+
+            // Coordinate Transforms: World (-4 to 6, -5 to 10) to Canvas
+            const scaleX = width / 8;
+            const scaleY = height / 12;
+            const originX = width / 2;
+            const originY = height / 2 + 50;
+
+            function toCanvasX(x) { return originX + x * scaleX; }
+            function toCanvasY(y) { return originY - y * scaleY; }
+
+            // Clear
+            ctx.clearRect(0, 0, width, height);
+
+            // Grid Lines
+            ctx.strokeStyle = '#334155';
+            ctx.lineWidth = 1;
+            for (let x = -6; x <= 6; x++) {
+                ctx.beginPath();
+                ctx.moveTo(toCanvasX(x), 0);
+                ctx.lineTo(toCanvasX(x), height);
+                ctx.stroke();
+            }
+            for (let y = -6; y <= 12; y++) {
+                ctx.beginPath();
+                ctx.moveTo(0, toCanvasY(y));
+                ctx.lineTo(width, toCanvasY(y));
+                ctx.stroke();
+            }
+
+            // Axes
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 2;
+            ctx.beginPath(); ctx.moveTo(0, originY); ctx.lineTo(width, originY); ctx.stroke(); // X-axis
+            ctx.beginPath(); ctx.moveTo(originX, 0); ctx.lineTo(originX, height); ctx.stroke(); // Y-axis
+
+            // Draw Curve f(x) = x^2 - 2x - 1
+            ctx.strokeStyle = '#818cf8';
+            ctx.lineWidth = 3.5;
+            ctx.beginPath();
+            let first = true;
+            for (let px = -3; px <= 5; px += 0.05) {
+                const py = f1(px);
+                const cx = toCanvasX(px);
+                const cy = toCanvasY(py);
+                if (first) { ctx.moveTo(cx, cy); first = false; }
+                else { ctx.lineTo(cx, cy); }
+            }
+            ctx.stroke();
+
+            // Draw Tangent Line
+            ctx.strokeStyle = '#f59e0b';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            const tanX1 = xVal - 4;
+            const tanY1 = mVal * tanX1 + c;
+            const tanX2 = xVal + 4;
+            const tanY2 = mVal * tanX2 + c;
+            ctx.moveTo(toCanvasX(tanX1), toCanvasY(tanY1));
+            ctx.lineTo(toCanvasX(tanX2), toCanvasY(tanY2));
+            ctx.stroke();
+
+            // Draw Point P(x1, y1)
+            ctx.fillStyle = '#ef4444';
+            ctx.beginPath();
+            ctx.arc(toCanvasX(xVal), toCanvasY(yVal), 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+        }
+
+        if (sliderX1) {
+            sliderX1.addEventListener('input', renderTangentCanvas);
+        }
+
+        // ==========================================
+        // CANVAS 2: MONOTONICITY VISUALIZER
+        // ==========================================
+        function renderMonoCanvas() {
+            const canvas = document.getElementById('monoCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const width = canvas.parentElement.clientWidth;
+            const height = canvas.parentElement.clientHeight || 340;
+            canvas.width = width;
+            canvas.height = height;
+
+            // Function f(x) = 2x^3 - 9x^2 + 12x + 10
+            function f2(x) { return 2 * Math.pow(x, 3) - 9 * Math.pow(x, 2) + 12 * x + 10; }
+
+            const scaleX = width / 5;
+            const scaleY = height / 30;
+            const originX = width / 4;
+            const originY = height - 40;
+
+            function toCanvasX(x) { return originX + x * scaleX; }
+            function toCanvasY(y) { return originY - y * scaleY; }
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Shading Intervals (x < 1 GREEN, 1 < x < 2 RED, x > 2 GREEN)
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+            ctx.fillRect(0, 0, toCanvasX(1), height); // x < 1
+            ctx.fillStyle = 'rgba(244, 63, 94, 0.12)';
+            ctx.fillRect(toCanvasX(1), 0, toCanvasX(2) - toCanvasX(1), height); // 1 < x < 2
+            ctx.fillStyle = 'rgba(16, 185, 129, 0.1)';
+            ctx.fillRect(toCanvasX(2), 0, width - toCanvasX(2), height); // x > 2
+
+            // Axes
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(0, originY); ctx.lineTo(width, originY); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(originX, 0); ctx.lineTo(originX, height); ctx.stroke();
+
+            // Draw f(x)
+            ctx.strokeStyle = '#38bdf8';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            let first = true;
+            for (let px = -0.5; px <= 3.2; px += 0.02) {
+                const py = f2(px);
+                const cx = toCanvasX(px);
+                const cy = toCanvasY(py);
+                if (first) { ctx.moveTo(cx, cy); first = false; }
+                else { ctx.lineTo(cx, cy); }
+            }
+            ctx.stroke();
+
+            // Critical Points x = 1 (Local Max y=15), x = 2 (Local Min y=14)
+            // x = 1
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath(); ctx.arc(toCanvasX(1), toCanvasY(15), 6, 0, Math.PI * 2); ctx.fill();
+            // x = 2
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath(); ctx.arc(toCanvasX(2), toCanvasY(14), 6, 0, Math.PI * 2); ctx.fill();
+
+            // Labels
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Inter';
+            ctx.fillText('Puncak (x=1)', toCanvasX(1) - 35, toCanvasY(15) - 15);
+            ctx.fillText('Lembah (x=2)', toCanvasX(2) - 35, toCanvasY(14) + 20);
+        }
+
+        // ==========================================
+        // CANVAS 3: EXTREMA VISUALIZER
+        // ==========================================
+        function renderExtremaCanvas() {
+            const canvas = document.getElementById('extremaCanvas');
+            if (!canvas) return;
+            const ctx = canvas.getContext('2d');
+
+            const width = canvas.parentElement.clientWidth;
+            const height = canvas.parentElement.clientHeight || 340;
+            canvas.width = width;
+            canvas.height = height;
+
+            // f(x) = (1/3)x^3 - x^2 - 3x + 2
+            function f3(x) { return (1/3)*Math.pow(x,3) - Math.pow(x,2) - 3*x + 2; }
+
+            const scaleX = width / 8;
+            const scaleY = height / 20;
+            const originX = width / 2 - 20;
+            const originY = height / 2 + 20;
+
+            function toCanvasX(x) { return originX + x * scaleX; }
+            function toCanvasY(y) { return originY - y * scaleY; }
+
+            ctx.clearRect(0, 0, width, height);
+
+            // Axes
+            ctx.strokeStyle = '#475569';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath(); ctx.moveTo(0, originY); ctx.lineTo(width, originY); ctx.stroke();
+            ctx.beginPath(); ctx.moveTo(originX, 0); ctx.lineTo(originX, height); ctx.stroke();
+
+            // Draw f(x)
+            ctx.strokeStyle = '#a855f7';
+            ctx.lineWidth = 4;
+            ctx.beginPath();
+            let first = true;
+            for (let px = -3.2; px <= 4.5; px += 0.05) {
+                const py = f3(px);
+                const cx = toCanvasX(px);
+                const cy = toCanvasY(py);
+                if (first) { ctx.moveTo(cx, cy); first = false; }
+                else { ctx.lineTo(cx, cy); }
+            }
+            ctx.stroke();
+
+            // Tangent line at Max (-1, 3.67)
+            ctx.strokeStyle = '#f43f5e';
+            ctx.setLineDash([5, 5]);
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(-2.5), toCanvasY(3.67));
+            ctx.lineTo(toCanvasX(0.5), toCanvasY(3.67));
+            ctx.stroke();
+
+            // Tangent line at Min (3, -7)
+            ctx.strokeStyle = '#10b981';
+            ctx.beginPath();
+            ctx.moveTo(toCanvasX(1.5), toCanvasY(-7));
+            ctx.lineTo(toCanvasX(4.5), toCanvasY(-7));
+            ctx.stroke();
+            ctx.setLineDash([]);
+
+            // Draw Points
+            ctx.fillStyle = '#f43f5e';
+            ctx.beginPath(); ctx.arc(toCanvasX(-1), toCanvasY(3.67), 7, 0, Math.PI * 2); ctx.fill();
+            ctx.fillStyle = '#10b981';
+            ctx.beginPath(); ctx.arc(toCanvasX(3), toCanvasY(-7), 7, 0, Math.PI * 2); ctx.fill();
+
+            // Annotations
+            ctx.fillStyle = '#ffffff';
+            ctx.font = '12px Inter';
+            ctx.fillText('Maksimum (-1, 3.67)', toCanvasX(-1) - 45, toCanvasY(3.67) - 15);
+            ctx.fillText('Minimum (3, -7)', toCanvasX(3) - 35, toCanvasY(-7) + 25);
+        }
+
+        // Window Resize Listener for Canvases
+        window.addEventListener('resize', () => {
+            renderTangentCanvas();
+            renderMonoCanvas();
+            renderExtremaCanvas();
+        });
+
+        // ==========================================
+        // PRACTICE EXERCISE SOLUTIONS TOGGLE & CHECK
+        // ==========================================
+        function toggleSolution(solId) {
+            const solEl = document.getElementById(solId);
+            solEl.classList.toggle('hidden');
+        }
+
+        function checkPdfAns(id, validAnsArray) {
+            const userAns = document.getElementById(`ans-pdf-${id}`).value.trim().toLowerCase().replace(/\s+/g, '');
+            const feedback = document.getElementById(`feedback-${id}`);
+            feedback.classList.remove('hidden', 'text-emerald-600', 'text-rose-600');
+
+            const isCorrect = validAnsArray.some(ans => ans.toLowerCase().replace(/\s+/g, '') === userAns);
+
+            if (isCorrect) {
+                feedback.classList.add('text-emerald-600');
+                feedback.innerHTML = '<i class="fa-solid fa-circle-check mr-1"></i> Jawaban Anda Benar! Tepat Sekali.';
+            } else {
+                feedback.classList.add('text-rose-600');
+                feedback.innerHTML = '<i class="fa-solid fa-circle-xmark mr-1"></i> Jawaban belum tepat. Silakan periksa tombol pembahasannya.';
+            }
+        }
+
+        // ==========================================
+        // QUIZ SYSTEM LOGIC
+        // ==========================================
+        const quizAnswers = {
+            q1: 'B', // 3(2)^2 - 5(2) = 12 - 5 = 7
+            q2: 'A', // f'(x) = x^2 - 4x - 5 = (x-5)(x+1) < 0 -> -1 < x < 5
+            q3: 'B', // f''(c) < 0 => Maksimum Relatif
+            q4: 'A', // y' = 2x - 4 = 2 => x=3, y=-0. y - 0 = 2(x - 3) => y = 2x - 6
+            q5: 'C'  // f'(x) = 2x - 6 = 0 => x=3. f(3) = 9 - 18 + 8 = -1
+        };
+
+        function submitQuiz() {
+            let score = 0;
+            const total = 5;
+
+            for (let q in quizAnswers) {
+                const selected = document.querySelector(`input[name="${q}"]:checked`);
+                if (selected && selected.value === quizAnswers[q]) {
+                    score += 20;
+                }
+            }
+
+            document.getElementById('quiz-score').innerText = `${score} / 100`;
+            const msg = document.getElementById('quiz-feedback-msg');
+
+            if (score === 100) {
+                msg.innerText = "Sempurna! Anda telah menguasai seluruh materi Aplikasi Turunan Fungsi dengan sangat baik!";
+            } else if (score >= 60) {
+                msg.innerText = "Hasil yang bagus! Pelajari kembali beberapa konsep yang belum tepat pada sub-materi terkait.";
+            } else {
+                msg.innerText = "Jangan berkecil hati! Pelajari kembali materi modul interaktif di atas dan coba latihan soal lagi.";
+            }
+
+            document.getElementById('quiz-result').classList.remove('hidden');
+            document.getElementById('quiz-result').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        function resetQuiz() {
+            document.querySelectorAll('input[type="radio"]').forEach(r => r.checked = false);
+            document.getElementById('quiz-result').classList.add('hidden');
+            document.getElementById('quiz-container').scrollIntoView({ behavior: 'smooth' });
+        }
+
+        // Initial Load Configuration
+        window.onload = function() {
+            switchTab('materi-1');
+        };
+    </script>
+</body>
+</html>
