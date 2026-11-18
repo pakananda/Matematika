@@ -1,0 +1,1338 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Eksplorasi Optimasi Turunan: Tantangan Kotak Karton</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Three.js untuk Simulasi 3D -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/r128/three.min.js"></script>
+    <!-- Google Fonts: Inter & Plus Jakarta Sans -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome untuk Ikon -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    fontFamily: {
+                        sans: ['Inter', 'sans-serif'],
+                        display: ['Plus Jakarta Sans', 'sans-serif'],
+                    },
+                    colors: {
+                        emerald: {
+                            850: '#064e3b',
+                            900: '#022c22',
+                            950: '#011c16',
+                        },
+                        gold: {
+                            400: '#fbbf24',
+                            500: '#f59e0b',
+                            600: '#d97706',
+                        }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        body {
+            background-color: #f8fafc;
+            color: #0f172a;
+        }
+        /* Custom Range Slider Styling */
+        input[type=range] {
+            -webkit-appearance: none;
+            background: transparent;
+        }
+        input[type=range]::-webkit-slider-thumb {
+            -webkit-appearance: none;
+            height: 22px;
+            width: 22px;
+            border-radius: 50%;
+            background: #d97706;
+            border: 3px solid #ffffff;
+            box-shadow: 0 2px 6px rgba(0,0,0,0.3);
+            cursor: pointer;
+            margin-top: -8px;
+            transition: transform 0.15s ease;
+        }
+        input[type=range]::-webkit-slider-thumb:hover {
+            transform: scale(1.15);
+        }
+        input[type=range]::-webkit-slider-runnable-track {
+            width: 100%;
+            height: 6px;
+            cursor: pointer;
+            background: #cbd5e1;
+            border-radius: 999px;
+        }
+        .math-font {
+            font-family: 'Cambria Math', 'Georgia', serif;
+        }
+        #three-container {
+            touch-action: none;
+            cursor: grab;
+        }
+        #three-container:active {
+            cursor: grabbing;
+        }
+        .fade-in {
+            animation: fadeIn 0.3s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(6px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+    </style>
+</head>
+<body class="min-h-screen flex flex-col">
+
+    <!-- Header & Identitas Pembelajaran -->
+    <header class="bg-gradient-to-r from-emerald-950 via-emerald-900 to-emerald-800 text-white border-b-4 border-gold-500 shadow-lg">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-5">
+            <div class="flex flex-col lg:flex-row lg:items-center lg:justify-between gap-4">
+                <div>
+                    <div class="flex flex-wrap items-center gap-2 text-xs font-bold tracking-wider uppercase text-gold-400 mb-1.5">
+                        <span class="bg-emerald-950/70 px-2.5 py-1 rounded border border-gold-500/40">
+                            <i class="fas fa-school mr-1.5"></i>SMAN Taruna Nala Jawa Timur
+                        </span>
+                        <span class="bg-emerald-950/70 px-2.5 py-1 rounded border border-emerald-700">
+                            Kelas XII • Semester Ganjil T.A. 2026/2027
+                        </span>
+                    </div>
+                    <h1 class="font-display text-2xl sm:text-3xl font-extrabold tracking-tight text-white">
+                        Eksplorasi Optimasi Turunan: <span class="text-gold-400">Tantangan Kotak Karton</span>
+                    </h1>
+                    <p class="text-emerald-100 text-sm sm:text-base mt-1">
+                        Matematika Tingkat Lanjut • Aplikasi Turunan (Nilai Maksimum & Nilai Minimum Fungsi)
+                    </p>
+                </div>
+                <div class="bg-emerald-950/60 border border-emerald-700/80 rounded-xl px-4 py-3 text-sm shrink-0">
+                    <div class="text-emerald-300 text-xs uppercase tracking-wider font-semibold">Guru Pengampu</div>
+                    <div class="font-bold text-white text-base mt-0.5">Ananda Syahriya Rachmatullah, M.Pd.</div>
+                    <div class="text-gold-400 text-xs mt-0.5"><i class="fas fa-bullseye mr-1"></i>Karton Dasar: 30 cm × 30 cm</div>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Navigasi Step-by-Step Panduan Pembelajaran -->
+    <nav class="bg-white border-b border-slate-200 sticky top-0 z-30 shadow-sm">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div class="grid grid-cols-2 lg:grid-cols-4 gap-2 py-3" id="step-nav">
+                <button onclick="switchStep(1)" id="nav-btn-1" class="step-btn flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all bg-emerald-50 border-emerald-700 text-emerald-950 shadow-sm">
+                    <span class="w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold flex items-center justify-center shrink-0">1</span>
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-emerald-700">Langkah 1</div>
+                        <div class="font-bold text-xs sm:text-sm leading-tight">Kurva & Konsep Turunan</div>
+                    </div>
+                </button>
+                <button onclick="switchStep(2)" id="nav-btn-2" class="step-btn flex items-center gap-3 p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 text-left transition-all bg-white text-slate-700">
+                    <span class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 font-bold flex items-center justify-center shrink-0">2</span>
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Langkah 2</div>
+                        <div class="font-bold text-xs sm:text-sm leading-tight">Eksperimen Fisik Karton</div>
+                    </div>
+                </button>
+                <button onclick="switchStep(3)" id="nav-btn-3" class="step-btn flex items-center gap-3 p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 text-left transition-all bg-white text-slate-700">
+                    <span class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 font-bold flex items-center justify-center shrink-0">3</span>
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Langkah 3</div>
+                        <div class="font-bold text-xs sm:text-sm leading-tight">Simulasi 3D Lipat Kotak</div>
+                    </div>
+                </button>
+                <button onclick="switchStep(4)" id="nav-btn-4" class="step-btn flex items-center gap-3 p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 text-left transition-all bg-white text-slate-700">
+                    <span class="w-8 h-8 rounded-lg bg-slate-200 text-slate-700 font-bold flex items-center justify-center shrink-0">4</span>
+                    <div>
+                        <div class="text-[11px] font-bold uppercase tracking-wider text-slate-500">Langkah 4</div>
+                        <div class="font-bold text-xs sm:text-sm leading-tight">Klasemen & Pembuktian</div>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Konten Utama -->
+    <main class="flex-1 max-w-7xl w-full mx-auto px-4 sm:px-6 lg:px-8 py-6">
+
+        <!-- ========================================================= -->
+        <!-- LANGKAH 1: EKSPLORASI KURVA & KONSEP TURUNAN              -->
+        <!-- ========================================================= -->
+        <section id="step-1" class="step-section fade-in space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider mb-2">
+                            Tahap Konseptual • LKPD 1
+                        </span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                            Menemukan Titik Puncak & Lembah dari Turunan Pertama
+                        </h2>
+                    </div>
+                    <button onclick="switchStep(2)" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-sm transition flex items-center gap-2 self-start">
+                        Lanjut ke Langkah 2 <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Penjelasan Konsep -->
+                    <div class="lg:col-span-5 space-y-4">
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                            <h3 class="font-bold text-emerald-900 text-base mb-2 flex items-center gap-2">
+                                <i class="fas fa-lightbulb text-gold-500"></i> Ingat Materi Sebelumnya!
+                            </h3>
+                            <ul class="space-y-2 text-sm text-slate-700">
+                                <li class="flex items-start gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-emerald-100 text-emerald-800 font-bold text-xs mt-0.5">Naik</span>
+                                    <span>Kurva bergerak naik ketika gradien garis singgung positif (<span class="math-font font-bold">f′(x) &gt; 0</span>).</span>
+                                </li>
+                                <li class="flex items-start gap-2">
+                                    <span class="px-2 py-0.5 rounded bg-rose-100 text-rose-800 font-bold text-xs mt-0.5">Turun</span>
+                                    <span>Kurva bergerak turun ketika gradien garis singgung negatif (<span class="math-font font-bold">f′(x) &lt; 0</span>).</span>
+                                </li>
+                            </ul>
+                        </div>
+
+                        <div class="p-4 rounded-xl bg-amber-50 border border-amber-200">
+                            <h3 class="font-bold text-amber-950 text-base mb-2">
+                                Apa yang Terjadi di Titik Peralihan?
+                            </h3>
+                            <p class="text-sm text-amber-900 leading-relaxed mb-3">
+                                Saat kurva berhenti naik dan berbalik arah menjadi turun, garis singgungnya mendatar (<span class="math-font font-bold">f′(x) = 0</span>). Titik ini disebut <strong>Titik Stasioner</strong>.
+                            </p>
+                            <div class="space-y-2 text-xs sm:text-sm bg-white p-3 rounded-lg border border-amber-200">
+                                <div class="flex items-center gap-2 text-emerald-900">
+                                    <i class="fas fa-arrow-trend-up text-emerald-600"></i>
+                                    <span><strong>Maksimum Lokal:</strong> Tanda <span class="math-font font-bold">f′(x)</span> berubah dari <strong>(+) ke (−)</strong>.</span>
+                                </div>
+                                <div class="flex items-center gap-2 text-slate-800">
+                                    <i class="fas fa-arrow-trend-down text-rose-600"></i>
+                                    <span><strong>Minimum Lokal:</strong> Tanda <span class="math-font font-bold">f′(x)</span> berubah dari <strong>(−) ke (+)</strong>.</span>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Kontrol Eksplorasi Grafik -->
+                        <div class="p-4 rounded-xl bg-emerald-950 text-white space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label for="curve-x-slider" class="text-xs font-bold uppercase tracking-wider text-gold-400">
+                                    Geser Titik Uji x pada Kurva
+                                </label>
+                                <span id="curve-x-val" class="font-mono font-bold text-base bg-emerald-900 px-2.5 py-0.5 rounded border border-emerald-700">x = 1.0</span>
+                            </div>
+                            <input type="range" id="curve-x-slider" min="-0.2" max="4.2" step="0.1" value="1.0" class="w-full">
+                            <div class="grid grid-cols-3 gap-2 text-center pt-1">
+                                <div class="bg-emerald-900/80 p-2 rounded-lg">
+                                    <div class="text-[11px] text-emerald-300">Nilai f(x)</div>
+                                    <div id="curve-fx-val" class="font-bold text-sm text-white">5.00</div>
+                                </div>
+                                <div class="bg-emerald-900/80 p-2 rounded-lg">
+                                    <div class="text-[11px] text-emerald-300">Gradien f′(x)</div>
+                                    <div id="curve-dfx-val" class="font-bold text-sm text-gold-400">0.00</div>
+                                </div>
+                                <div class="bg-emerald-900/80 p-2 rounded-lg">
+                                    <div class="text-[11px] text-emerald-300">Status Kurva</div>
+                                    <div id="curve-status-val" class="font-bold text-xs text-amber-300">PUNCAK (MAKS)</div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Canvas Grafik Interaktif -->
+                    <div class="lg:col-span-7 bg-slate-50 rounded-2xl border border-slate-200 p-4 flex flex-col">
+                        <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                            <div>
+                                <span class="text-xs font-bold uppercase tracking-wider text-slate-500">Visualisasi Fungsi LKPD 1</span>
+                                <h4 class="math-font font-bold text-base sm:text-lg text-slate-900">
+                                    f(x) = x³ − 6x² + 9x + 1 &nbsp;|&nbsp; f′(x) = 3x² − 12x + 9
+                                </h4>
+                            </div>
+                            <div class="flex gap-2">
+                                <button onclick="setCurveX(1.0)" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-emerald-100 text-emerald-900 hover:bg-emerald-200 transition">
+                                    Cek x = 1 (Puncak)
+                                </button>
+                                <button onclick="setCurveX(3.0)" class="px-3 py-1.5 text-xs font-bold rounded-lg bg-amber-100 text-amber-900 hover:bg-amber-200 transition">
+                                    Cek x = 3 (Lembah)
+                                </button>
+                            </div>
+                        </div>
+                        <div class="relative w-full h-72 sm:h-80 bg-white rounded-xl border border-slate-200 overflow-hidden">
+                            <canvas id="curve-canvas" class="w-full h-full block"></canvas>
+                        </div>
+                        <p class="text-xs text-slate-500 mt-2.5 flex items-center gap-1.5">
+                            <i class="fas fa-info-circle text-emerald-700"></i>
+                            Perhatikan garis singgung (garis putus-putus emas): saat mendatar (f′(x) = 0), kurva berada tepat di titik maksimum lokal (1, 5) atau minimum lokal (3, 1).
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- LANGKAH 2: TANTANGAN EKSPERIMEN FISIK                     -->
+        <!-- ========================================================= -->
+        <section id="step-2" class="step-section hidden fade-in space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-amber-100 text-amber-900 text-xs font-bold uppercase tracking-wider mb-2">
+                            Tahap Eksperimen • Intuisi vs Matematika
+                        </span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                            Tantangan Praktik: Rancang Kotak Karton Versi Kelompokmu!
+                        </h2>
+                    </div>
+                    <button onclick="switchStep(3)" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-sm transition flex items-center gap-2 self-start">
+                        Lihat Simulasi 3D <i class="fas fa-cube"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-center">
+                    <!-- Ilustrasi SVG Jaring-jaring Karton -->
+                    <div class="lg:col-span-5 bg-slate-50 rounded-2xl border border-slate-200 p-5 flex flex-col items-center">
+                        <svg viewBox="0 0 320 320" class="w-full max-w-[280px] h-auto drop-shadow-sm">
+                            <!-- Karton Utama -->
+                            <rect x="30" y="30" width="260" height="260" fill="#fef3c7" stroke="#b45309" stroke-width="2.5" rx="4"/>
+                            <!-- Garis Lipatan Putus-putus -->
+                            <rect x="75" y="75" width="170" height="170" fill="#fde68a" stroke="#065f46" stroke-width="2" stroke-dasharray="6,4"/>
+                            <!-- 4 Pojok Potongan x -->
+                            <rect x="30" y="30" width="45" height="45" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+                            <rect x="245" y="30" width="45" height="45" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+                            <rect x="30" y="245" width="45" height="45" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+                            <rect x="245" y="245" width="45" height="45" fill="#fee2e2" stroke="#dc2626" stroke-width="2" stroke-dasharray="4,3"/>
+                            <!-- Label Potongan x -->
+                            <text x="52" y="57" text-anchor="middle" fill="#b91c1c" font-weight="bold" font-size="14">x</text>
+                            <text x="267" y="57" text-anchor="middle" fill="#b91c1c" font-weight="bold" font-size="14">x</text>
+                            <text x="52" y="272" text-anchor="middle" fill="#b91c1c" font-weight="bold" font-size="14">x</text>
+                            <text x="267" y="272" text-anchor="middle" fill="#b91c1c" font-weight="bold" font-size="14">x</text>
+                            <!-- Label Alas -->
+                            <text x="160" y="155" text-anchor="middle" fill="#064e3b" font-weight="bold" font-size="14">ALAS KOTAK</text>
+                            <text x="160" y="175" text-anchor="middle" fill="#065f46" font-weight="bold" font-size="13">(30 − 2x) × (30 − 2x)</text>
+                            <!-- Dimensi Luar 30 cm -->
+                            <text x="160" y="18" text-anchor="middle" fill="#1e293b" font-weight="bold" font-size="13">30 cm</text>
+                            <text x="14" y="165" text-anchor="middle" fill="#1e293b" font-weight="bold" font-size="13" transform="rotate(-90 14,165)">30 cm</text>
+                        </svg>
+                        <div class="mt-3 text-center text-xs text-slate-600">
+                            <span class="inline-block w-3 h-3 bg-red-100 border border-red-600 mr-1 align-middle"></span> Bagian pojok berukuran <strong>x × x cm</strong> yang dipotong & dibuang.
+                        </div>
+                    </div>
+
+                    <!-- Instruksi Step-by-Step Kelompok -->
+                    <div class="lg:col-span-7 space-y-4">
+                        <div class="p-4 rounded-xl bg-emerald-900 text-white">
+                            <h3 class="font-bold text-gold-400 text-base mb-1">
+                                <i class="fas fa-scissors mr-2"></i>Misi Sebelum Menggunakan Rumus Turunan!
+                            </h3>
+                            <p class="text-sm text-emerald-100 leading-relaxed">
+                                Setiap kelompok telah dibagikan selembar karton persegi berukuran <strong>30 cm × 30 cm</strong>. Sebelum menghitung menggunakan rumus turunan di LKPD 2, gunakan intuisi dan diskusi kelompok kalian untuk membuat kotak tanpa tutup dengan volume terbesar!
+                            </p>
+                        </div>
+
+                        <div class="space-y-3">
+                            <div class="flex items-start gap-3.5 p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                                <span class="w-7 h-7 rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">1</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Tentukan Ukuran Potongan Pojok (x) Pilihan Kelompok</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Diskusikan dalam kelompok: berapa cm ukuran persegi di keempat pojok yang akan kalian potong? (Pilih angka bebas antara <span class="font-semibold text-slate-800">1 cm hingga 14 cm</span> berdasarkan perkiraan terbaik kalian).</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5 p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                                <span class="w-7 h-7 rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">2</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Gunting Keempat Pojok & Lipat Menjadi Kotak</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Ukur dengan penggaris secara presisi, gunting keempat persegi di pojok karton, lalu lipat keempat sisinya ke atas dan rekatkan dengan selotip hingga membentuk balok tanpa tutup.</p>
+                                </div>
+                            </div>
+
+                            <div class="flex items-start gap-3.5 p-3.5 rounded-xl border border-slate-200 bg-slate-50">
+                                <span class="w-7 h-7 rounded-full bg-emerald-800 text-white font-bold text-sm flex items-center justify-center shrink-0 mt-0.5">3</span>
+                                <div>
+                                    <h4 class="font-bold text-slate-900 text-sm">Daftarkan Hasil Kotak Kelompok ke Portal Klasemen</h4>
+                                    <p class="text-xs sm:text-sm text-slate-600 mt-0.5">Laporkan ukuran potongan pojok (<span class="math-font font-bold">x</span>) kelompok kalian pada <strong>Langkah 4 (Portal Pendataan)</strong> untuk melihat kelompok mana yang memperoleh volume paling besar!</p>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="flex flex-wrap gap-3 pt-2">
+                            <button onclick="switchStep(3)" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold rounded-xl text-sm transition shadow-sm">
+                                <i class="fas fa-cube mr-1.5"></i> Uji Ukuran di Simulasi 3D
+                            </button>
+                            <button onclick="switchStep(4)" class="px-4 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-sm transition shadow-sm">
+                                <i class="fas fa-trophy mr-1.5 text-gold-400"></i> Input Data ke Klasemen Kelompok
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- LANGKAH 3: SIMULASI 3D KOTAK INTERAKTIF (THREE.JS)        -->
+        <!-- ========================================================= -->
+        <section id="step-3" class="step-section hidden fade-in space-y-6">
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col md:flex-row md:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-emerald-100 text-emerald-900 text-xs font-bold uppercase tracking-wider mb-2">
+                            Laboratorium Virtual 3D • Three.js
+                        </span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                            Simulasi 3D Lipat Jaring-Jaring Karton (30 cm × 30 cm)
+                        </h2>
+                    </div>
+                    <button onclick="switchStep(4)" class="px-5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-sm transition flex items-center gap-2 self-start">
+                        Ke Portal Pendataan <i class="fas fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6">
+                    <!-- Panel Kontrol Simulasi -->
+                    <div class="lg:col-span-5 space-y-5">
+                        <!-- Kontrol Potongan x -->
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label for="cut-slider" class="font-bold text-sm text-slate-800">
+                                    1. Ukuran Potongan Pojok (<span class="math-font">x</span>)
+                                </label>
+                                <span id="cut-val-badge" class="font-mono font-extrabold text-base px-3 py-1 rounded-lg bg-emerald-800 text-gold-400">
+                                    3.0 cm
+                                </span>
+                            </div>
+                            <input type="range" id="cut-slider" min="0.5" max="14.5" step="0.5" value="3.0" class="w-full">
+                            <div class="flex justify-between text-xs text-slate-500 font-medium">
+                                <span>0.5 cm (Sangat Pendek)</span>
+                                <span>7.5 cm</span>
+                                <span>14.5 cm (Sangat Tinggi)</span>
+                            </div>
+                        </div>
+
+                        <!-- Kontrol Sudut Lipatan -->
+                        <div class="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-3">
+                            <div class="flex justify-between items-center">
+                                <label for="fold-slider" class="font-bold text-sm text-slate-800">
+                                    2. Animasi Lipatan Sisi Karton
+                                </label>
+                                <span id="fold-val-badge" class="font-mono font-bold text-sm px-2.5 py-0.5 rounded bg-amber-100 text-amber-900">
+                                    100% Terlipat (90°)
+                                </span>
+                            </div>
+                            <input type="range" id="fold-slider" min="0" max="100" step="1" value="100" class="w-full">
+                            <div class="flex gap-2 pt-1">
+                                <button onclick="animateFold(0)" class="flex-1 py-2 px-3 rounded-lg bg-white border border-slate-300 hover:bg-slate-100 text-xs font-bold text-slate-700 transition">
+                                    <i class="fas fa-expand mr-1"></i> Bentangkan (0%)
+                                </button>
+                                <button onclick="animateFold(100)" class="flex-1 py-2 px-3 rounded-lg bg-emerald-800 hover:bg-emerald-900 text-xs font-bold text-white transition">
+                                    <i class="fas fa-box mr-1"></i> Lipat Kotak (100%)
+                                </button>
+                            </div>
+                        </div>
+
+                        <!-- Output Dimensi & Volume Real-Time -->
+                        <div class="p-5 rounded-xl bg-gradient-to-br from-emerald-950 to-emerald-900 text-white border border-emerald-700 shadow-md">
+                            <div class="text-xs font-bold uppercase tracking-wider text-gold-400 mb-3">
+                                Hasil Pengukuran Dimensi & Volume Real-Time
+                            </div>
+                            <div class="grid grid-cols-3 gap-2.5 text-center mb-4">
+                                <div class="bg-emerald-950/70 p-2.5 rounded-lg border border-emerald-800">
+                                    <div class="text-[11px] text-emerald-300">Panjang (30−2x)</div>
+                                    <div id="sim-length" class="font-bold text-base sm:text-lg text-white mt-0.5">24.0 cm</div>
+                                </div>
+                                <div class="bg-emerald-950/70 p-2.5 rounded-lg border border-emerald-800">
+                                    <div class="text-[11px] text-emerald-300">Lebar (30−2x)</div>
+                                    <div id="sim-width" class="font-bold text-base sm:text-lg text-white mt-0.5">24.0 cm</div>
+                                </div>
+                                <div class="bg-emerald-950/70 p-2.5 rounded-lg border border-emerald-800">
+                                    <div class="text-[11px] text-emerald-300">Tinggi (x)</div>
+                                    <div id="sim-height" class="font-bold text-base sm:text-lg text-gold-400 mt-0.5">3.0 cm</div>
+                                </div>
+                            </div>
+                            <div class="bg-emerald-950 p-3.5 rounded-xl border border-gold-500/40 flex items-center justify-between">
+                                <div>
+                                    <div class="text-xs text-emerald-300">Volume Kotak <span class="math-font">V(x) = p × l × t</span></div>
+                                    <div class="text-[11px] text-emerald-400 mt-0.5" id="sim-formula-text">24.0 × 24.0 × 3.0</div>
+                                </div>
+                                <div class="text-right">
+                                    <span id="sim-volume" class="font-display font-extrabold text-2xl sm:text-3xl text-gold-400">1.728</span>
+                                    <span class="text-xs font-bold text-emerald-200 ml-1">cm³</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Viewport Canvas 3D -->
+                    <div class="lg:col-span-7 flex flex-col">
+                        <div id="three-container" class="relative w-full h-80 sm:h-[420px] rounded-2xl border-2 border-slate-200 bg-gradient-to-b from-slate-100 to-slate-200 overflow-hidden shadow-inner">
+                            <!-- Overlay Instruksi Kamera -->
+                            <div class="absolute top-3 left-3 bg-white/90 backdrop-blur-sm px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-semibold text-slate-700 shadow-sm pointer-events-none">
+                                <i class="fas fa-hand-pointer text-emerald-700 mr-1.5"></i>Geser layar untuk memutar sudut pandang 3D
+                            </div>
+                            <button onclick="resetCamera3D()" class="absolute top-3 right-3 bg-white/90 hover:bg-white backdrop-blur-sm px-3 py-1.5 rounded-lg border border-slate-200 text-xs font-bold text-slate-700 shadow-sm transition">
+                                <i class="fas fa-sync-alt mr-1"></i> Reset Kamera
+                            </button>
+                            <!-- Legend Warna 3D -->
+                            <div class="absolute bottom-3 left-3 right-3 flex flex-wrap justify-between items-center gap-2 bg-white/90 backdrop-blur-sm px-3 py-2 rounded-lg border border-slate-200 text-xs pointer-events-none">
+                                <div class="flex items-center gap-3">
+                                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#065f46] inline-block"></span> Alas Kotak</span>
+                                    <span class="flex items-center gap-1.5"><span class="w-3 h-3 rounded-sm bg-[#d97706] inline-block"></span> 4 Dinding Lipatan</span>
+                                </div>
+                                <span class="text-slate-500 font-medium">Skala 1 unit = 1 cm</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- ========================================================= -->
+        <!-- LANGKAH 4: PORTAL PENDATAAN & KLASEMEN KELOMPOK           -->
+        <!-- ========================================================= -->
+        <section id="step-4" class="step-section hidden fade-in space-y-6">
+            <!-- Header & Tombol Aksi -->
+            <div class="bg-white rounded-2xl border border-slate-200 shadow-sm p-6">
+                <div class="flex flex-col lg:flex-row lg:items-center justify-between gap-4 border-b border-slate-100 pb-4 mb-6">
+                    <div>
+                        <span class="inline-block px-3 py-1 rounded-full bg-gold-500/20 text-amber-900 text-xs font-bold uppercase tracking-wider mb-2">
+                            Portal Pendataan Kelas • Live Leaderboard
+                        </span>
+                        <h2 class="font-display text-xl sm:text-2xl font-bold text-slate-900">
+                            Klasemen Volume Kotak Eksperimen Kelompok
+                        </h2>
+                        <p class="text-sm text-slate-600 mt-0.5">
+                            Masukkan hasil kotak buatan setiap kelompok untuk melihat peringkat volume terbesar secara otomatis.
+                        </p>
+                    </div>
+                    <div class="flex flex-wrap gap-2">
+                        <button onclick="toggleMathProof()" id="btn-math-proof" class="px-4 py-2.5 bg-amber-500 hover:bg-amber-600 text-emerald-950 font-bold rounded-xl text-xs sm:text-sm transition shadow-sm flex items-center gap-2">
+                            <i class="fas fa-key"></i> Lihat kunci
+                        </button>
+                        <button onclick="exportCSV()" class="px-3.5 py-2.5 bg-emerald-800 hover:bg-emerald-900 text-white font-semibold rounded-xl text-xs sm:text-sm transition flex items-center gap-1.5">
+                            <i class="fas fa-file-csv"></i> Ekspor CSV
+                        </button>
+                        <button onclick="confirmResetModal()" class="px-3.5 py-2.5 bg-rose-50 hover:bg-rose-100 text-rose-700 border border-rose-200 font-semibold rounded-xl text-xs sm:text-sm transition flex items-center gap-1.5">
+                            <i class="fas fa-trash-alt"></i> Reset Data
+                        </button>
+                    </div>
+                </div>
+
+                <!-- Panel Pembuktian Matematis (Tersembunyi sampai tombol diklik) -->
+                <div id="math-proof-panel" class="hidden mb-6 p-5 rounded-2xl bg-gradient-to-r from-emerald-950 to-emerald-900 text-white border-2 border-gold-500 shadow-lg fade-in">
+                    <div class="flex items-start justify-between gap-4 mb-3">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-9 h-9 rounded-lg bg-gold-500 text-emerald-950 flex items-center justify-center font-bold text-lg">
+                                <i class="fas fa-award"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-display font-bold text-lg text-gold-400">Pembuktian Matematis Menggunakan Turunan (LKPD 2)</h3>
+                                <p class="text-xs text-emerald-200">Mengapa ukuran potongan pojok paling optimal adalah tepat 5 cm?</p>
+                            </div>
+                        </div>
+                        <button onclick="toggleMathProof()" class="text-emerald-300 hover:text-white text-sm">
+                            <i class="fas fa-times"></i>
+                        </button>
+                    </div>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4 text-sm bg-emerald-950/60 p-4 rounded-xl border border-emerald-800">
+                        <div>
+                            <div class="text-gold-400 font-bold text-xs uppercase mb-1">1. Model Fungsi Volume</div>
+                            <p class="math-font text-emerald-100">
+                                V(x) = (30 − 2x)(30 − 2x)x<br>
+                                V(x) = 4x³ − 120x² + 900x<br>
+                                <span class="text-xs text-emerald-300">Domain fisik: 0 &lt; x &lt; 15</span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-gold-400 font-bold text-xs uppercase mb-1">2. Syarat Stasioner V′(x) = 0</div>
+                            <p class="math-font text-emerald-100">
+                                V′(x) = 12x² − 240x + 900 = 0<br>
+                                12(x − 5)(x − 15) = 0<br>
+                                <span class="text-xs text-gold-300">Diperoleh x = 5 cm (memenuhi)</span>
+                            </p>
+                        </div>
+                        <div>
+                            <div class="text-gold-400 font-bold text-xs uppercase mb-1">3. Volume Maksimum</div>
+                            <p class="math-font text-emerald-100">
+                                Alas = 20 cm × 20 cm, Tinggi = 5 cm<br>
+                                <strong class="text-gold-400 text-base">V(5) = 20 × 20 × 5 = 2.000 cm³</strong><br>
+                                <span class="text-xs text-emerald-300">Uji turunan: (+) di x &lt; 5 ke (−) di x &gt; 5</span>
+                            </p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Grid Form Input & Klasemen -->
+                <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 items-start">
+                    <!-- Form Input Kelompok -->
+                    <div class="lg:col-span-4 bg-slate-50 rounded-2xl border border-slate-200 p-5">
+                        <h3 class="font-bold text-base text-slate-900 mb-3 flex items-center gap-2">
+                            <i class="fas fa-plus-circle text-emerald-700"></i> Input Data Kotak Kelompok
+                        </h3>
+                        <form id="group-form" onsubmit="addGroupData(event)" class="space-y-4">
+                            <div>
+                                <label for="group-name" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                                    Nama Kelompok / Nomor
+                                </label>
+                                <input type="text" id="group-name" required placeholder="Contoh: Kelompok 1 (Garuda)" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 text-sm bg-white">
+                            </div>
+                            <div>
+                                <label for="group-cut" class="block text-xs font-bold uppercase tracking-wider text-slate-700 mb-1">
+                                    Ukuran Potongan Pojok x (cm)
+                                </label>
+                                <input type="number" id="group-cut" required step="0.1" min="0.1" max="14.9" placeholder="Masukkan angka (0.1 - 14.9)" oninput="updateLivePreview()" class="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 focus:outline-none focus:ring-2 focus:ring-emerald-700 focus:border-emerald-700 text-sm bg-white">
+                                <p class="text-[11px] text-slate-500 mt-1">Syarat fisik karton 30×30 cm: nilai x harus antara 0 dan 15 cm.</p>
+                            </div>
+
+                            <!-- Pratinjau Otomatis sebelum Simpan -->
+                            <div class="p-3 rounded-xl bg-white border border-slate-200 text-xs space-y-1">
+                                <div class="font-bold text-slate-500 uppercase text-[10px]">Pratinjau Perhitungan Otomatis:</div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Ukuran Alas (30 − 2x):</span>
+                                    <span id="preview-base" class="font-bold text-slate-900">- cm × - cm</span>
+                                </div>
+                                <div class="flex justify-between">
+                                    <span class="text-slate-600">Tinggi Kotak (x):</span>
+                                    <span id="preview-height" class="font-bold text-slate-900">- cm</span>
+                                </div>
+                                <div class="flex justify-between pt-1 border-t border-slate-100">
+                                    <span class="font-bold text-emerald-900">Volume Kotak:</span>
+                                    <span id="preview-vol" class="font-extrabold text-emerald-800">- cm³</span>
+                                </div>
+                            </div>
+
+                            <button type="submit" class="w-full py-3 px-4 bg-emerald-800 hover:bg-emerald-900 text-white font-bold rounded-xl text-sm transition shadow-sm flex items-center justify-center gap-2">
+                                <i class="fas fa-save"></i> Simpan ke Klasemen
+                            </button>
+                        </form>
+                    </div>
+
+                    <!-- Tabel Klasemen & Grafik Perbandingan -->
+                    <div class="lg:col-span-8 space-y-6">
+                        <!-- Tabel Klasemen -->
+                        <div class="bg-white rounded-2xl border border-slate-200 overflow-hidden shadow-sm">
+                            <div class="bg-emerald-950 text-white px-4 py-3 flex items-center justify-between">
+                                <span class="font-bold text-sm flex items-center gap-2">
+                                    <i class="fas fa-trophy text-gold-400"></i> Peringkat Volume Terbesar (Otomatis Terurut)
+                                </span>
+                                <span id="total-groups-badge" class="text-xs bg-emerald-800 px-2.5 py-0.5 rounded-full text-emerald-100">
+                                    0 Kelompok
+                                </span>
+                            </div>
+                            <div class="overflow-x-auto">
+                                <table class="w-full text-left border-collapse text-sm">
+                                    <thead>
+                                        <tr class="bg-slate-100 text-slate-700 text-xs uppercase border-b border-slate-200">
+                                            <th class="py-3 px-4 font-bold w-16 text-center">Rank</th>
+                                            <th class="py-3 px-4 font-bold">Nama Kelompok</th>
+                                            <th class="py-3 px-4 font-bold text-center">Potongan (x)</th>
+                                            <th class="py-3 px-4 font-bold text-center">Alas (p × l)</th>
+                                            <th class="py-3 px-4 font-bold text-right">Volume (cm³)</th>
+                                            <th class="py-3 px-3 font-bold text-center w-14">Aksi</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody id="leaderboard-body" class="divide-y divide-slate-100">
+                                        <!-- Diisi melalui JavaScript -->
+                                    </tbody>
+                                </table>
+                            </div>
+                        </div>
+
+                        <!-- Grafik Batang Perbandingan Volume -->
+                        <div class="bg-slate-50 rounded-2xl border border-slate-200 p-4">
+                            <div class="flex flex-wrap items-center justify-between gap-2 mb-3">
+                                <h4 class="font-bold text-sm text-slate-800 flex items-center gap-2">
+                                    <i class="fas fa-chart-bar text-emerald-700"></i> Grafik Perbandingan Volume Antar Kelompok
+                                </h4>
+                                <span class="text-xs text-slate-500">Batas Maksimum Teoretis: <strong>2.000 cm³</strong></span>
+                            </div>
+                            <div id="volume-chart-container" class="space-y-2.5">
+                                <!-- Batang grafik diisi oleh JS -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-white border-t border-slate-200 py-4 mt-8">
+        <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex flex-col sm:flex-row justify-between items-center gap-2 text-xs text-slate-500">
+            <div>© 2026 • <strong>SMAN Taruna Nala Jawa Timur</strong> • Matematika Tingkat Lanjut Kelas XII</div>
+            <div>Disusun oleh: <strong>Ananda Syahriya Rachmatullah, M.Pd.</strong></div>
+        </div>
+    </footer>
+
+    <!-- Custom Notification Toast (Pengganti alert) -->
+    <div id="toast-box" class="fixed bottom-5 right-5 z-50 hidden transform transition-all duration-300">
+        <div class="bg-emerald-950 text-white px-4 py-3 rounded-xl shadow-xl border border-gold-500 flex items-center gap-3 text-sm font-medium">
+            <i id="toast-icon" class="fas fa-check-circle text-gold-400 text-base"></i>
+            <span id="toast-message">Pesan notifikasi</span>
+        </div>
+    </div>
+
+    <!-- Custom Confirmation Modal (Pengganti confirm) -->
+    <div id="confirm-modal" class="fixed inset-0 z-50 hidden bg-slate-900/60 backdrop-blur-sm flex items-center justify-center p-4">
+        <div class="bg-white rounded-2xl max-w-sm w-full p-6 shadow-2xl border border-slate-200">
+            <div class="w-12 h-12 rounded-full bg-rose-100 text-rose-600 flex items-center justify-center text-xl mb-4">
+                <i class="fas fa-exclamation-triangle"></i>
+            </div>
+            <h3 class="font-display font-bold text-lg text-slate-900">Hapus Semua Data Klasemen?</h3>
+            <p class="text-sm text-slate-600 mt-1">Seluruh data ukuran kotak kelompok yang telah dimasukkan akan dihapus dari tabel klasemen.</p>
+            <div class="flex gap-3 mt-6">
+                <button onclick="closeResetModal()" class="flex-1 py-2.5 px-4 rounded-xl border border-slate-300 text-slate-700 font-semibold text-sm hover:bg-slate-50">
+                    Batal
+                </button>
+                <button onclick="executeResetData()" class="flex-1 py-2.5 px-4 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm">
+                    Ya, Reset Data
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // =========================================================================
+        // 1. MANAJEMEN NAVIGASI STEP-BY-STEP & NOTIFIKASI
+        // =========================================================================
+        let currentStep = 1;
+        let threeInitialized = false;
+
+        function switchStep(step) {
+            currentStep = step;
+            // Sembunyikan semua section
+            document.querySelectorAll('.step-section').forEach(sec => sec.classList.add('hidden'));
+            // Tampilkan section yang dipilih
+            document.getElementById(`step-${step}`).classList.remove('hidden');
+
+            // Update styling tombol navigasi
+            for (let i = 1; i <= 4; i++) {
+                const btn = document.getElementById(`nav-btn-${i}`);
+                const badge = btn.querySelector('span');
+                const label = btn.querySelector('div > div:first-child');
+                if (i === step) {
+                    btn.className = 'step-btn flex items-center gap-3 p-3 rounded-xl border-2 text-left transition-all bg-emerald-50 border-emerald-700 text-emerald-950 shadow-sm';
+                    badge.className = 'w-8 h-8 rounded-lg bg-emerald-800 text-white font-bold flex items-center justify-center shrink-0';
+                    label.className = 'text-[11px] font-bold uppercase tracking-wider text-emerald-700';
+                } else {
+                    btn.className = 'step-btn flex items-center gap-3 p-3 rounded-xl border-2 border-slate-200 hover:border-emerald-300 text-left transition-all bg-white text-slate-700';
+                    badge.className = 'w-8 h-8 rounded-lg bg-slate-200 text-slate-700 font-bold flex items-center justify-center shrink-0';
+                    label.className = 'text-[11px] font-bold uppercase tracking-wider text-slate-500';
+                }
+            }
+
+            if (step === 1) {
+                drawCurveCanvas();
+            } else if (step === 3) {
+                if (!threeInitialized) {
+                    initThreeJS();
+                    threeInitialized = true;
+                } else {
+                    onThreeResize();
+                }
+            } else if (step === 4) {
+                renderLeaderboard();
+            }
+        }
+
+        function showToast(msg, isError = false) {
+            const box = document.getElementById('toast-box');
+            const icon = document.getElementById('toast-icon');
+            const text = document.getElementById('toast-message');
+            text.textContent = msg;
+            if (isError) {
+                icon.className = 'fas fa-exclamation-circle text-rose-400 text-base';
+            } else {
+                icon.className = 'fas fa-check-circle text-gold-400 text-base';
+            }
+            box.classList.remove('hidden');
+            clearTimeout(window.toastTimer);
+            window.toastTimer = setTimeout(() => {
+                box.classList.add('hidden');
+            }, 3200);
+        }
+
+        // =========================================================================
+        // 2. GRAFIK INTERAKTIF LANGKAH 1: f(x) = x^3 - 6x^2 + 9x + 1
+        // =========================================================================
+        const curveSlider = document.getElementById('curve-x-slider');
+        curveSlider.addEventListener('input', () => {
+            updateCurveInfo(parseFloat(curveSlider.value));
+            drawCurveCanvas();
+        });
+
+        function setCurveX(val) {
+            curveSlider.value = val;
+            updateCurveInfo(val);
+            drawCurveCanvas();
+        }
+
+        function f(x) {
+            return Math.pow(x, 3) - 6 * Math.pow(x, 2) + 9 * x + 1;
+        }
+
+        function df(x) {
+            return 3 * Math.pow(x, 2) - 12 * x + 9;
+        }
+
+        function updateCurveInfo(x) {
+            const y = f(x);
+            const m = df(x);
+            document.getElementById('curve-x-val').textContent = `x = ${x.toFixed(1)}`;
+            document.getElementById('curve-fx-val').textContent = y.toFixed(2);
+            document.getElementById('curve-dfx-val').textContent = m.toFixed(2);
+
+            const statusEl = document.getElementById('curve-status-val');
+            if (Math.abs(m) < 0.05) {
+                if (Math.abs(x - 1.0) < 0.2) {
+                    statusEl.textContent = 'PUNCAK (MAKS)';
+                    statusEl.className = 'font-bold text-xs text-gold-400';
+                } else {
+                    statusEl.textContent = 'LEMBAH (MIN)';
+                    statusEl.className = 'font-bold text-xs text-amber-300';
+                }
+            } else if (m > 0) {
+                statusEl.textContent = 'FUNGSI NAIK (↗)';
+                statusEl.className = 'font-bold text-xs text-emerald-300';
+            } else {
+                statusEl.textContent = 'FUNGSI TURUN (↘)';
+                statusEl.className = 'font-bold text-xs text-rose-300';
+            }
+        }
+
+        function drawCurveCanvas() {
+            const canvas = document.getElementById('curve-canvas');
+            if (!canvas) return;
+            const dpr = window.devicePixelRatio || 1;
+            const rect = canvas.getBoundingClientRect();
+            canvas.width = rect.width * dpr;
+            canvas.height = rect.height * dpr;
+
+            const ctx = canvas.getContext('2d');
+            ctx.scale(dpr, dpr);
+            const w = rect.width;
+            const h = rect.height;
+
+            ctx.clearRect(0, 0, w, h);
+
+            // Mapping koordinat matematika: x in [-0.5, 4.5], y in [-1, 7]
+            const xMin = -0.5, xMax = 4.5;
+            const yMin = -1.0, yMax = 7.0;
+            const toPxX = (x) => ((x - xMin) / (xMax - xMin)) * w;
+            const toPxY = (y) => h - ((y - yMin) / (yMax - yMin)) * h;
+
+            // Grid tipis
+            ctx.strokeStyle = '#f1f5f9';
+            ctx.lineWidth = 1;
+            for (let gx = 0; gx <= 4; gx++) {
+                ctx.beginPath();
+                ctx.moveTo(toPxX(gx), 0);
+                ctx.lineTo(toPxX(gx), h);
+                ctx.stroke();
+            }
+            for (let gy = 0; gy <= 6; gy++) {
+                ctx.beginPath();
+                ctx.moveTo(0, toPxY(gy));
+                ctx.lineTo(w, toPxY(gy));
+                ctx.stroke();
+            }
+
+            // Sumbu X dan Y
+            ctx.strokeStyle = '#94a3b8';
+            ctx.lineWidth = 1.5;
+            ctx.beginPath();
+            ctx.moveTo(0, toPxY(0));
+            ctx.lineTo(w, toPxY(0));
+            ctx.moveTo(toPxX(0), 0);
+            ctx.lineTo(toPxX(0), h);
+            ctx.stroke();
+
+            // Label angka sumbu X
+            ctx.fillStyle = '#64748b';
+            ctx.font = '600 11px Inter, sans-serif';
+            for (let gx = 1; gx <= 4; gx++) {
+                ctx.fillText(gx.toString(), toPxX(gx) - 3, toPxY(0) + 14);
+            }
+
+            // Gambar Kurva f(x)
+            ctx.strokeStyle = '#065f46';
+            ctx.lineWidth = 3;
+            ctx.beginPath();
+            for (let px = 0; px <= w; px += 2) {
+                const x = xMin + (px / w) * (xMax - xMin);
+                const y = f(x);
+                const py = toPxY(y);
+                if (px === 0) ctx.moveTo(px, py);
+                else ctx.lineTo(px, py);
+            }
+            ctx.stroke();
+
+            // Tandai Titik Maksimum Lokal (1, 5) dan Minimum Lokal (3, 1)
+            const drawStationaryMarker = (sx, sy, label, color) => {
+                ctx.fillStyle = color;
+                ctx.beginPath();
+                ctx.arc(toPxX(sx), toPxY(sy), 5, 0, Math.PI * 2);
+                ctx.fill();
+                ctx.font = 'bold 11px Inter, sans-serif';
+                ctx.fillText(label, toPxX(sx) - 36, toPxY(sy) + (sy > 3 ? -10 : 18));
+            };
+            drawStationaryMarker(1, 5, 'Maks Lokal (1, 5)', '#065f46');
+            drawStationaryMarker(3, 1, 'Min Lokal (3, 1)', '#b45309');
+
+            // Gambar Garis Singgung & Titik Uji Aktif
+            const currX = parseFloat(curveSlider.value);
+            const currY = f(currX);
+            const slope = df(currX);
+
+            const x1 = currX - 0.85;
+            const y1 = currY + slope * (x1 - currX);
+            const x2 = currX + 0.85;
+            const y2 = currY + slope * (x2 - currX);
+
+            ctx.save();
+            ctx.setLineDash([6, 4]);
+            ctx.strokeStyle = '#d97706';
+            ctx.lineWidth = 2.5;
+            ctx.beginPath();
+            ctx.moveTo(toPxX(x1), toPxY(y1));
+            ctx.lineTo(toPxX(x2), toPxY(y2));
+            ctx.stroke();
+            ctx.restore();
+
+            // Titik aktif
+            ctx.fillStyle = '#d97706';
+            ctx.strokeStyle = '#ffffff';
+            ctx.lineWidth = 2;
+            ctx.beginPath();
+            ctx.arc(toPxX(currX), toPxY(currY), 7, 0, Math.PI * 2);
+            ctx.fill();
+            ctx.stroke();
+        }
+
+        // =========================================================================
+        // 3. SIMULASI 3D KOTAK KARTON INTERAKTIF (THREE.JS)
+        // =========================================================================
+        let scene, camera, renderer, boxGroup;
+        let baseMesh, flapNorth, flapSouth, flapEast, flapWest;
+        let isDragging = false, prevMouse = { x: 0, y: 0 };
+        let camTheta = Math.PI / 4, camPhi = Math.PI / 3.2, camRadius = 52;
+        let animInterval = null;
+
+        function initThreeJS() {
+            const container = document.getElementById('three-container');
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+
+            scene = new THREE.Scene();
+
+            camera = new THREE.PerspectiveCamera(42, w / h, 0.1, 1000);
+            updateCameraPosition();
+
+            renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true });
+            renderer.setSize(w, h);
+            renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2));
+            container.appendChild(renderer.domElement);
+
+            // Pencahayaan
+            const ambientLight = new THREE.AmbientLight(0xffffff, 0.72);
+            scene.add(ambientLight);
+
+            const dirLight1 = new THREE.DirectionalLight(0xffffff, 0.65);
+            dirLight1.position.set(30, 50, 35);
+            scene.add(dirLight1);
+
+            const dirLight2 = new THREE.DirectionalLight(0xfef3c7, 0.35);
+            dirLight2.position.set(-30, 20, -25);
+            scene.add(dirLight2);
+
+            // Grid lantai referensi
+            const gridHelper = new THREE.GridHelper(44, 22, 0x94a3b8, 0xcbd5e1);
+            gridHelper.position.y = -0.1;
+            scene.add(gridHelper);
+
+            boxGroup = new THREE.Group();
+            scene.add(boxGroup);
+
+            buildBoxGeometry();
+            setupThreeInteraction(container);
+
+            // Loop Animasi
+            function animate() {
+                requestAnimationFrame(animate);
+                renderer.render(scene, camera);
+            }
+            animate();
+        }
+
+        function buildBoxGeometry() {
+            if (!boxGroup) return;
+            // Bersihkan mesh lama
+            while (boxGroup.children.length > 0) {
+                boxGroup.remove(boxGroup.children[0]);
+            }
+
+            const x = parseFloat(document.getElementById('cut-slider').value);
+            const foldPct = parseFloat(document.getElementById('fold-slider').value);
+            const foldAngle = (foldPct / 100) * (Math.PI / 2);
+
+            const baseSize = 30 - 2 * x;
+            const height = x;
+            const thickness = 0.25;
+
+            const baseMat = new THREE.MeshStandardMaterial({
+                color: 0x065f46,
+                roughness: 0.55,
+                metalness: 0.05
+            });
+            const flapMat = new THREE.MeshStandardMaterial({
+                color: 0xd97706,
+                roughness: 0.5,
+                metalness: 0.05
+            });
+            const edgeMat = new THREE.LineBasicMaterial({ color: 0x022c22 });
+
+            // Alas Kotak
+            const baseGeo = new THREE.BoxGeometry(baseSize, thickness, baseSize);
+            baseMesh = new THREE.Mesh(baseGeo, baseMat);
+            baseMesh.position.y = thickness / 2;
+            const baseEdges = new THREE.LineSegments(new THREE.EdgesGeometry(baseGeo), edgeMat);
+            baseMesh.add(baseEdges);
+            boxGroup.add(baseMesh);
+
+            // Helper membuat sisi lipatan dengan pivot di engsel alas
+            function createFlap(w, d, pivotX, pivotZ, rotAxis, rotSign) {
+                const pivot = new THREE.Group();
+                pivot.position.set(pivotX, thickness / 2, pivotZ);
+
+                const geo = new THREE.BoxGeometry(w, thickness, d);
+                const mesh = new THREE.Mesh(geo, flapMat);
+                const edges = new THREE.LineSegments(new THREE.EdgesGeometry(geo), edgeMat);
+                mesh.add(edges);
+
+                if (rotAxis === 'x') {
+                    mesh.position.set(0, 0, rotSign * (d / 2));
+                    pivot.rotation.x = -rotSign * foldAngle;
+                } else {
+                    mesh.position.set(rotSign * (w / 2), 0, 0);
+                    pivot.rotation.z = rotSign * foldAngle;
+                }
+
+                pivot.add(mesh);
+                boxGroup.add(pivot);
+                return pivot;
+            }
+
+            const halfBase = baseSize / 2;
+            // Sisi Utara (-Z) & Selatan (+Z)
+            flapNorth = createFlap(baseSize, height, 0, -halfBase, 'x', -1);
+            flapSouth = createFlap(baseSize, height, 0, halfBase, 'x', 1);
+            // Sisi Barat (-X) & Timur (+X)
+            flapWest = createFlap(height, baseSize, -halfBase, 0, 'z', -1);
+            flapEast = createFlap(height, baseSize, halfBase, 0, 'z', 1);
+
+            // Update Teks UI Dimensi & Volume
+            const vol = baseSize * baseSize * height;
+            document.getElementById('cut-val-badge').textContent = `${x.toFixed(1)} cm`;
+            document.getElementById('fold-val-badge').textContent = `${foldPct}% Terlipat (${Math.round((foldPct / 100) * 90)}°)`;
+            document.getElementById('sim-length').textContent = `${baseSize.toFixed(1)} cm`;
+            document.getElementById('sim-width').textContent = `${baseSize.toFixed(1)} cm`;
+            document.getElementById('sim-height').textContent = `${height.toFixed(1)} cm`;
+            document.getElementById('sim-formula-text').textContent = `${baseSize.toFixed(1)} × ${baseSize.toFixed(1)} × ${height.toFixed(1)}`;
+            document.getElementById('sim-volume').textContent = vol.toLocaleString('id-ID', { maximumFractionDigits: 1 });
+        }
+
+        document.getElementById('cut-slider').addEventListener('input', buildBoxGeometry);
+        document.getElementById('fold-slider').addEventListener('input', buildBoxGeometry);
+
+        function animateFold(targetPct) {
+            clearInterval(animInterval);
+            const slider = document.getElementById('fold-slider');
+            animInterval = setInterval(() => {
+                let curr = parseInt(slider.value, 10);
+                if (curr === targetPct) {
+                    clearInterval(animInterval);
+                    return;
+                }
+                const step = curr < targetPct ? 4 : -4;
+                let next = curr + step;
+                if ((step > 0 && next >= targetPct) || (step < 0 && next <= targetPct)) {
+                    next = targetPct;
+                }
+                slider.value = next;
+                buildBoxGeometry();
+            }, 16);
+        }
+
+        function updateCameraPosition() {
+            if (!camera) return;
+            camera.position.x = camRadius * Math.sin(camPhi) * Math.cos(camTheta);
+            camera.position.y = camRadius * Math.cos(camPhi);
+            camera.position.z = camRadius * Math.sin(camPhi) * Math.sin(camTheta);
+            camera.lookAt(0, 3, 0);
+        }
+
+        function resetCamera3D() {
+            camTheta = Math.PI / 4;
+            camPhi = Math.PI / 3.2;
+            camRadius = 52;
+            updateCameraPosition();
+        }
+
+        function setupThreeInteraction(el) {
+            el.addEventListener('mousedown', (e) => {
+                isDragging = true;
+                prevMouse = { x: e.clientX, y: e.clientY };
+            });
+            window.addEventListener('mouseup', () => isDragging = false);
+            window.addEventListener('mousemove', (e) => {
+                if (!isDragging) return;
+                const dx = e.clientX - prevMouse.x;
+                const dy = e.clientY - prevMouse.y;
+                camTheta -= dx * 0.01;
+                camPhi = Math.max(0.2, Math.min(Math.PI / 2.1, camPhi - dy * 0.01));
+                prevMouse = { x: e.clientX, y: e.clientY };
+                updateCameraPosition();
+            });
+
+            // Touch support untuk layar sentuh / tablet
+            el.addEventListener('touchstart', (e) => {
+                if (e.touches.length === 1) {
+                    isDragging = true;
+                    prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                }
+            }, { passive: true });
+            el.addEventListener('touchend', () => isDragging = false);
+            el.addEventListener('touchmove', (e) => {
+                if (!isDragging || e.touches.length !== 1) return;
+                const dx = e.touches[0].clientX - prevMouse.x;
+                const dy = e.touches[0].clientY - prevMouse.y;
+                camTheta -= dx * 0.012;
+                camPhi = Math.max(0.2, Math.min(Math.PI / 2.1, camPhi - dy * 0.012));
+                prevMouse = { x: e.touches[0].clientX, y: e.touches[0].clientY };
+                updateCameraPosition();
+            }, { passive: true });
+        }
+
+        function onThreeResize() {
+            if (!renderer || !camera) return;
+            const container = document.getElementById('three-container');
+            const w = container.clientWidth;
+            const h = container.clientHeight;
+            if (w > 0 && h > 0) {
+                camera.aspect = w / h;
+                camera.updateProjectionMatrix();
+                renderer.setSize(w, h);
+            }
+        }
+
+        // =========================================================================
+        // 4. PORTAL PENDATAAN & KLASEMEN KELOMPOK (LEADERBOARD)
+        // =========================================================================
+        const STORAGE_KEY = 'sman_tarnala_kotak_karton_2026';
+        let groupEntries = JSON.parse(localStorage.getItem(STORAGE_KEY)) || [];
+
+        function updateLivePreview() {
+            const val = parseFloat(document.getElementById('group-cut').value);
+            const baseEl = document.getElementById('preview-base');
+            const heightEl = document.getElementById('preview-height');
+            const volEl = document.getElementById('preview-vol');
+
+            if (isNaN(val) || val <= 0 || val >= 15) {
+                baseEl.textContent = '- cm × - cm';
+                heightEl.textContent = '- cm';
+                volEl.textContent = '- cm³';
+                return;
+            }
+            const side = 30 - 2 * val;
+            const vol = side * side * val;
+            baseEl.textContent = `${side.toFixed(1)} cm × ${side.toFixed(1)} cm`;
+            heightEl.textContent = `${val.toFixed(1)} cm`;
+            volEl.textContent = `${vol.toLocaleString('id-ID', { maximumFractionDigits: 2 })} cm³`;
+        }
+
+        function addGroupData(e) {
+            e.preventDefault();
+            const nameInput = document.getElementById('group-name');
+            const cutInput = document.getElementById('group-cut');
+
+            const name = nameInput.value.trim();
+            const x = parseFloat(cutInput.value);
+
+            if (!name) {
+                showToast('Nama kelompok tidak boleh kosong.', true);
+                return;
+            }
+            if (isNaN(x) || x <= 0 || x >= 15) {
+                showToast('Ukuran potongan x harus antara 0.1 cm hingga 14.9 cm.', true);
+                return;
+            }
+
+            const side = +(30 - 2 * x).toFixed(2);
+            const volume = +(side * side * x).toFixed(2);
+
+            groupEntries.push({
+                id: Date.now(),
+                name: name,
+                x: +x.toFixed(2),
+                side: side,
+                volume: volume
+            });
+
+            saveAndRender();
+            nameInput.value = '';
+            cutInput.value = '';
+            updateLivePreview();
+            showToast(`Data ${name} (V = ${volume.toLocaleString('id-ID')} cm³) berhasil ditambahkan!`);
+        }
+
+        function deleteGroup(id) {
+            groupEntries = groupEntries.filter(item => item.id !== id);
+            saveAndRender();
+            showToast('Data kelompok dihapus dari klasemen.');
+        }
+
+        function saveAndRender() {
+            // Urutkan dari volume terbesar ke terkecil
+            groupEntries.sort((a, b) => b.volume - a.volume);
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(groupEntries));
+            renderLeaderboard();
+        }
+
+        function renderLeaderboard() {
+            const tbody = document.getElementById('leaderboard-body');
+            const chartContainer = document.getElementById('volume-chart-container');
+            const badge = document.getElementById('total-groups-badge');
+
+            badge.textContent = `${groupEntries.length} Kelompok`;
+
+            if (groupEntries.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="6" class="py-8 px-4 text-center text-slate-400">
+                            <i class="fas fa-inbox text-2xl mb-2 block text-slate-300"></i>
+                            Belum ada data kotak kelompok yang dimasukkan. Silakan isi form di samping.
+                        </td>
+                    </tr>
+                `;
+                chartContainer.innerHTML = `
+                    <div class="text-xs text-slate-400 text-center py-4">
+                        Grafik perbandingan akan muncul otomatis setelah data kelompok dimasukkan.
+                    </div>
+                `;
+                return;
+            }
+
+            tbody.innerHTML = groupEntries.map((item, idx) => {
+                const isFirst = idx === 0;
+                const isOptimal = Math.abs(item.x - 5) < 0.01;
+                const rowClass = isFirst ? 'bg-amber-50/70' : 'hover:bg-slate-50';
+                const rankBadge = isFirst
+                    ? `<span class="inline-flex items-center justify-center w-7 h-7 rounded-full bg-gold-500 text-emerald-950 font-extrabold text-xs shadow-sm" title="Peringkat 1"><i class="fas fa-crown"></i></span>`
+                    : `<span class="inline-flex items-center justify-center w-6 h-6 rounded-full bg-slate-200 text-slate-700 font-bold text-xs">${idx + 1}</span>`;
+
+                return `
+                    <tr class="${rowClass} transition">
+                        <td class="py-3 px-4 text-center">${rankBadge}</td>
+                        <td class="py-3 px-4 font-bold text-slate-900">
+                            ${escapeHTML(item.name)}
+                            ${isFirst ? '<span class="ml-1.5 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-gold-500/20 text-amber-900 font-extrabold">Terbesar</span>' : ''}
+                            ${isOptimal ? '<span class="ml-1 text-[10px] uppercase tracking-wider px-2 py-0.5 rounded-full bg-emerald-100 text-emerald-800 font-bold">Optimal</span>' : ''}
+                        </td>
+                        <td class="py-3 px-4 text-center font-mono font-semibold text-slate-700">${item.x} cm</td>
+                        <td class="py-3 px-4 text-center text-slate-600 text-xs">${item.side} × ${item.side} cm</td>
+                        <td class="py-3 px-4 text-right font-extrabold ${isFirst ? 'text-emerald-800 text-base' : 'text-slate-800'}">
+                            ${item.volume.toLocaleString('id-ID')} cm³
+                        </td>
+                        <td class="py-3 px-3 text-center">
+                            <button onclick="deleteGroup(${item.id})" class="text-slate-400 hover:text-rose-600 transition p-1" title="Hapus baris">
+                                <i class="fas fa-times-circle"></i>
+                            </button>
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Render Bar Chart Perbandingan terhadap batas maksimum 2000 cm^3
+            chartContainer.innerHTML = groupEntries.map((item, idx) => {
+                const pct = Math.min(100, (item.volume / 2000) * 100);
+                const barColor = idx === 0 ? 'bg-gradient-to-r from-emerald-800 to-gold-500' : 'bg-emerald-700';
+                return `
+                    <div>
+                        <div class="flex justify-between text-xs mb-1">
+                            <span class="font-bold text-slate-800">${idx + 1}. ${escapeHTML(item.name)} <span class="font-normal text-slate-500">(x = ${item.x} cm)</span></span>
+                            <span class="font-bold text-emerald-900">${item.volume.toLocaleString('id-ID')} cm³ <span class="text-slate-400 font-normal">(${pct.toFixed(1)}%)</span></span>
+                        </div>
+                        <div class="w-full h-3 bg-slate-200 rounded-full overflow-hidden">
+                            <div class="h-full ${barColor} rounded-full transition-all duration-500" style="width: ${pct}%"></div>
+                        </div>
+                    </div>
+                `;
+            }).join('');
+        }
+
+        function toggleMathProof() {
+            const panel = document.getElementById('math-proof-panel');
+            panel.classList.toggle('hidden');
+        }
+
+        function exportCSV() {
+            if (groupEntries.length === 0) {
+                showToast('Belum ada data untuk diekspor.', true);
+                return;
+            }
+            let csv = 'Peringkat,Nama Kelompok,Potongan Pojok x (cm),Panjang Alas (cm),Lebar Alas (cm),Volume Kotak (cm3)\n';
+            groupEntries.forEach((item, index) => {
+                csv += `${index + 1},"${item.name.replace(/"/g, '""')}",${item.x},${item.side},${item.side},${item.volume}\n`;
+            });
+            const blob = new Blob([csv], { type: 'text/csv;charset=utf-8;' });
+            const url = URL.createObjectURL(blob);
+            const a = document.createElement('a');
+            a.href = url;
+            a.download = 'Klasemen_Kotak_Karton_SMAN_Taruna_Nala.csv';
+            document.body.appendChild(a);
+            a.click();
+            document.body.removeChild(a);
+            URL.revokeObjectURL(url);
+            showToast('File CSV klasemen berhasil diunduh.');
+        }
+
+        function confirmResetModal() {
+            if (groupEntries.length === 0) {
+                showToast('Data klasemen sudah kosong.', true);
+                return;
+            }
+            document.getElementById('confirm-modal').classList.remove('hidden');
+        }
+
+        function closeResetModal() {
+            document.getElementById('confirm-modal').classList.add('hidden');
+        }
+
+        function executeResetData() {
+            groupEntries = [];
+            saveAndRender();
+            closeResetModal();
+            showToast('Seluruh data klasemen telah direset.');
+        }
+
+        function escapeHTML(str) {
+            return str.replace(/[&<>'"]/g, tag => ({
+                '&': '&amp;', '<': '&lt;', '>': '&gt;', "'": '&#39;', '"': '&quot;'
+            }[tag]));
+        }
+
+        // Inisialisasi saat halaman selesai dimuat
+        window.onload = function () {
+            updateCurveInfo(1.0);
+            drawCurveCanvas();
+            saveAndRender();
+        };
+
+        window.addEventListener('resize', () => {
+            if (currentStep === 1) drawCurveCanvas();
+            if (currentStep === 3) onThreeResize();
+        });
+    </script>
+</body>
+</html>
